@@ -46,5 +46,5 @@ Visokofunkcionalan informacioni sistem za visokoškolske ustanove koji olakšava
 + **Nastavno osoblje** - Osobe koje imaju uvid u rezultate studenata na predmetu i kreiraju fakultetske obaveze.
   + **Profesor**
   + **Asistent** - Ima manja prava od profesora(ne može ocijenjivati studente, ali im može bodovati/ocijeniti zadaću i prisustvo)
-+ **Studentska služba** (administrator sistema) - Ima uvid i kontrolu nad svim fakultetskim procesima, može da mijenja sve podatke na sistemu kao i da dodaje i briše nove korisnike(profesore/asistente/studente)
++ **Studentska služba** (administrator sistema) - Ima uvid i kontrolu nad svim fakultetskim procesima, može da mijenja sve podatke na sistemu kao i da dodaje i briše nove korisnike(profesore/asistente/studente).
 

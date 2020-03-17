@@ -34,7 +34,7 @@ Visokofunkcionalan informacioni sistem za visokoškolske ustanove koji olakšava
 + Upravlja izdavanjem potvrda i ostalih dokumenata vezanih za fakultet.
 + Ima uvid u studentske ankete za sve predmete(može vidjeti prosječnu ocjenu svakog profesora zasebno i dobiti dojam o radu svakog od njih).
 + Odobrava studentu mijenjanje njegovih ličnih podataka itd...
-
++ Dodaje, briše i uređuje nove korisnike na sistemu(profesore/asistente/studente).
 ### Funkcionalnosti:
 + Uvid u ostvareni uspjeh studenata.
 + Upravljanje svim fakultetskim procesima.
@@ -46,5 +46,5 @@ Visokofunkcionalan informacioni sistem za visokoškolske ustanove koji olakšava
 + **Nastavno osoblje** - Osobe koje imaju uvid u rezultate studenata na predmetu i kreiraju fakultetske obaveze.
   + **Profesor**
   + **Asistent** - Ima manja prava od profesora(ne može ocijenjivati studente, ali im može bodovati/ocijeniti zadaću i prisustvo)
-+ **Studentska služba** (administrator sistema) - Ima uvid i kontrolu nad svim fakultetskim procesima, može da mijenja sve podatke na sistemu.
++ **Studentska služba** (administrator sistema) - Ima uvid i kontrolu nad svim fakultetskim procesima, može da mijenja sve podatke na sistemu kao i da dodaje i briše nove korisnike(profesore/asistente/studente)
 

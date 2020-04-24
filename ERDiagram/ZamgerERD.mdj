@@ -4587,10 +4587,9 @@
 							"_parent": {
 								"$ref": "AAAAAAFxqF23cl20C9E="
 							},
-							"name": "idZadaće",
+							"name": "redniBroj",
 							"type": "INTEGER",
-							"length": 0,
-							"primaryKey": true
+							"length": 0
 						},
 						{
 							"_type": "ERDColumn",

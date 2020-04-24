@@ -909,20 +909,35 @@
 											"top": 424,
 											"width": 173.60693359375,
 											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAFxrN926k7KUrY=",
+											"_parent": {
+												"$ref": "AAAAAAFxqF8Bb13w+XU="
+											},
+											"model": {
+												"$ref": "AAAAAAFxrN92hU7Ho5s="
+											},
+											"font": "Arial;13;0",
+											"left": 253,
+											"top": 439,
+											"width": 173.60693359375,
+											"height": 13
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 248,
 									"top": 359,
 									"width": 183.60693359375,
-									"height": 83
+									"height": 98
 								}
 							],
 							"font": "Arial;13;0",
 							"left": 248,
 							"top": 336,
 							"width": 183.60693359375,
-							"height": 106,
+							"height": 121,
 							"nameLabel": {
 								"$ref": "AAAAAAFxqF8Bb13vaH8="
 							},
@@ -4713,6 +4728,16 @@
 							},
 							"name": "bodovi",
 							"type": "DOUBLE",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAFxrN92hU7Ho5s=",
+							"_parent": {
+								"$ref": "AAAAAAFxqF8Bb13sn/w="
+							},
+							"name": "idIspita",
+							"type": "INTEGER",
 							"length": 0
 						}
 					]

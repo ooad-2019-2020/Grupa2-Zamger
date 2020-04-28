@@ -5875,6 +5875,7 @@
 											"model": {
 												"$ref": "AAAAAAFxrKV9qmY6B14="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
 											"top": 275,
@@ -5892,9 +5893,10 @@
 											"model": {
 												"$ref": "AAAAAAFxrKWIaWZAD40="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 290,
+											"top": 275,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+getEmail(): String",
@@ -5909,6 +5911,7 @@
 											"model": {
 												"$ref": "AAAAAAFxrKWRMmZG+4w="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
 											"top": 305,
@@ -5926,9 +5929,10 @@
 											"model": {
 												"$ref": "AAAAAAFxrKWdUGZMTMQ="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 320,
+											"top": 305,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+getOutbox(): List<Poruka>",
@@ -5981,7 +5985,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 335,
+											"top": 275,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+setBrojIndeksa(brojIndeksa: int): void",
@@ -6034,7 +6038,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 350,
+											"top": 290,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+setOdsjek(odsjek: String): void",
@@ -6049,9 +6053,10 @@
 											"model": {
 												"$ref": "AAAAAAFxrKd2eGaAYug="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 365,
+											"top": 305,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+setUsername(username: String): void",
@@ -6066,9 +6071,10 @@
 											"model": {
 												"$ref": "AAAAAAFxrKeA+WaGdJY="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 380,
+											"top": 320,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+setEmail(email: String): void",
@@ -6083,6 +6089,7 @@
 											"model": {
 												"$ref": "AAAAAAFxrKhyB2aUmm8="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
 											"top": 395,
@@ -6100,9 +6107,10 @@
 											"model": {
 												"$ref": "AAAAAAFxrKh/mGaaqBs="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 410,
+											"top": 395,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+setOutbox(outbox: List<Poruka>): void",
@@ -6135,6 +6143,7 @@
 											"model": {
 												"$ref": "AAAAAAFxrKp9UGarYTU="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
 											"top": 425,
@@ -6152,9 +6161,10 @@
 											"model": {
 												"$ref": "AAAAAAFxrKrEUWayI+c="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 440,
+											"top": 425,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+dodajPorukuUOutbox(poruka: Poruka): void",
@@ -6171,7 +6181,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 455,
+											"top": 305,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+getProsjek(): double",
@@ -6332,7 +6342,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 470,
+											"top": 320,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+getPredmeti(): List<PredmetZaStudenta>",
@@ -6349,7 +6359,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 485,
+											"top": 335,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+setPredmeti(predmeti: List<PredmetZaStudenta>): void",
@@ -6366,7 +6376,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 500,
+											"top": 350,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+dodajPredmet(predmet: PredmetZaStudenta): void",
@@ -6383,7 +6393,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 515,
+											"top": 365,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+getGodinaStudija(): int",
@@ -6400,7 +6410,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 530,
+											"top": 380,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+setGodinaStudija(godina: int): void",
@@ -6415,9 +6425,10 @@
 											"model": {
 												"$ref": "AAAAAAFxsZfNQik0t9A="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 545,
+											"top": 395,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+izbaciPredmet(idPredmeta: int): void",
@@ -6432,9 +6443,10 @@
 											"model": {
 												"$ref": "AAAAAAFxsZkOAirZr0g="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 5,
-											"top": 560,
+											"top": 500,
 											"width": 1441.21630859375,
 											"height": 13,
 											"text": "+dajPorukeNaDatum(datum: Date): List<Poruka>",
@@ -6462,7 +6474,7 @@
 									"font": "Arial;13;0",
 									"top": 223,
 									"width": 1451.21630859375,
-									"height": 355
+									"height": 175
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -19796,13 +19808,64 @@
 											"height": 13,
 											"text": "+setInbox(inbox: List<Poruka>): void",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAFxwinw69cA5u8=",
+											"_parent": {
+												"$ref": "AAAAAAFxwRjiw3oe8rw="
+											},
+											"model": {
+												"$ref": "AAAAAAFxwinv1NbQL1o="
+											},
+											"font": "Arial;13;0",
+											"left": 2085,
+											"top": 2357,
+											"width": 929.58251953125,
+											"height": 13,
+											"text": "+dodajPorukuUInbox(poruka: Poruka): void",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAFxwiqxcugxJKk=",
+											"_parent": {
+												"$ref": "AAAAAAFxwRjiw3oe8rw="
+											},
+											"model": {
+												"$ref": "AAAAAAFxwiqwtugBJz0="
+											},
+											"font": "Arial;13;0",
+											"left": 2085,
+											"top": 2372,
+											"width": 929.58251953125,
+											"height": 13,
+											"text": "+dodajPorukuUOutbox(poruka: Poruka): void",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAFxwiwIdQATW00=",
+											"_parent": {
+												"$ref": "AAAAAAFxwRjiw3oe8rw="
+											},
+											"model": {
+												"$ref": "AAAAAAFxwiwHxP/jwRU="
+											},
+											"font": "Arial;13;0",
+											"left": 2085,
+											"top": 2387,
+											"width": 929.58251953125,
+											"height": 13,
+											"text": "+dajPorukeNaDatum(datum: Date): List<Poruka>",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 2080,
 									"top": 2097,
 									"width": 939.58251953125,
-									"height": 263
+									"height": 308
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -19842,7 +19905,7 @@
 							"left": 2080,
 							"top": 1944,
 							"width": 939.58251953125,
-							"height": 416,
+							"height": 461,
 							"nameCompartment": {
 								"$ref": "AAAAAAFxwRjiwnoYRpE="
 							},
@@ -32334,6 +32397,94 @@
 										"$ref": "AAAAAAFxwYndscuUHZs="
 									},
 									"type": "void",
+									"direction": "return"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAFxwinv1NbQL1o=",
+							"_parent": {
+								"$ref": "AAAAAAFxwRjiwXoVJRk="
+							},
+							"name": "dodajPorukuUInbox",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFxwiov2NjYU8o=",
+									"_parent": {
+										"$ref": "AAAAAAFxwinv1NbQL1o="
+									},
+									"name": "poruka",
+									"type": {
+										"$ref": "AAAAAAFxrgR0jvD4lRk="
+									}
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFxwiov2djZTLg=",
+									"_parent": {
+										"$ref": "AAAAAAFxwinv1NbQL1o="
+									},
+									"type": "void",
+									"direction": "return"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAFxwiqwtugBJz0=",
+							"_parent": {
+								"$ref": "AAAAAAFxwRjiwXoVJRk="
+							},
+							"name": "dodajPorukuUOutbox",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFxwisAb+oJ6AU=",
+									"_parent": {
+										"$ref": "AAAAAAFxwiqwtugBJz0="
+									},
+									"name": "poruka",
+									"type": {
+										"$ref": "AAAAAAFxrgR0jvD4lRk="
+									}
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFxwisAb+oKHr8=",
+									"_parent": {
+										"$ref": "AAAAAAFxwiqwtugBJz0="
+									},
+									"type": "void",
+									"direction": "return"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAFxwiwHxP/jwRU=",
+							"_parent": {
+								"$ref": "AAAAAAFxwRjiwXoVJRk="
+							},
+							"name": "dajPorukeNaDatum",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFxwiwXTwHrMfo=",
+									"_parent": {
+										"$ref": "AAAAAAFxwiwHxP/jwRU="
+									},
+									"name": "datum",
+									"type": "Date"
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFxwiwXUQHs0O0=",
+									"_parent": {
+										"$ref": "AAAAAAFxwiwHxP/jwRU="
+									},
+									"type": "List<Poruka>",
 									"direction": "return"
 								}
 							]

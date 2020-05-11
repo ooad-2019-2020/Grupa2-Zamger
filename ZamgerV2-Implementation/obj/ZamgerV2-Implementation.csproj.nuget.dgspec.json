@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj": {}
+    "F:\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj": {}
   },
   "projects": {
-    "G:\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj": {
+    "F:\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj",
+        "projectUniqueName": "F:\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj",
         "projectName": "ZamgerV2-Implementation",
-        "projectPath": "G:\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj",
+        "projectPath": "F:\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj",
         "packagesPath": "C:\\Users\\Huso\\.nuget\\packages\\",
-        "outputPath": "G:\\Grupa2-Zamger\\ZamgerV2-Implementation\\obj\\",
+        "outputPath": "F:\\Grupa2-Zamger\\ZamgerV2-Implementation\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -41,9 +41,17 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.3, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.2, )"
+            },
+            "jQuery": {
+              "target": "Package",
+              "version": "[3.5.1, )"
             }
           },
           "imports": [

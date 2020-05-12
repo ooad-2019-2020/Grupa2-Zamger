@@ -250,3 +250,11 @@ F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Sha
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\Dashboard.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\ZamgerV2-Implementation.csproj.CoreCompileInputs.cache
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\ZamgerV2-Implementation.MvcApplicationPartsAssemblyInfo.cache
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\studentskaAllStudents.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\AllStudents.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\kreirajStudentaLayout.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\KreirajStudenta.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\studentskaSvoNastavnoOsoblje.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\AllTeachers.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\studentskaKreirajNastavnoOsoblje.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\KreirajNastavnoOsoblje.cshtml.g.cs

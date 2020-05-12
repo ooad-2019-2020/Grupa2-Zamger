@@ -1,7 +1,7 @@
 ﻿
 @{
-    ViewData["Title"] = "AllStudents";
-    Layout = "~/Views/Shared/studentskaAllStudents.cshtml";
+    ViewData["Title"] = "Studentska - Svo osoblje - list";
+    Layout = "~/Views/Shared/svoOsobljeListLayout.cshtml";
 }
 <div class="main-wrapper">
     <div class="header">
@@ -132,7 +132,7 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span> Studenti</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="#">Svi studenti</a></li>
+                                <li><a href="/studentska/svi-studenti">Svi studenti</a></li>
                                 <li><a href="~/studentska/kreiraj-studenta">Kreiraj studenta</a></li>
                             </ul>
                         </li>
@@ -163,24 +163,25 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                        <h5 class="text-uppercase">Svi Studenti</h5>
+                        <h5 class="text-uppercase">Svo osoblje - list</h5>
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
-                            <li class="list-inline-item"><a href="~/studentska/dashboard">Početna</a></li>
-                            <li class="list-inline-item"> Svi Studenti</li>
+                            <li class="list-inline-item"><a href="/studentska/dashboard">Početna</a></li>
+                            <li class="list-inline-item"> Svo osoblje - list</li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-4 col-3">
+
                 </div>
                 <div class="col-sm-8 col-9 text-right m-b-20">
-                    <a href="~/studentska/svi-studenti/kreiraj-studenta" class="btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Kreiraj studenta</a>
+                    <a href="/studentska/kreiraj-nastavno-osoblje" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Kreiraj osobu</a>
                     <div class="view-icons">
-                        <a href="#" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
-                        <a href="/studentska/svi-studenti-list" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
+                        <a href="/studentska/svo-nastavno-osoblje" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
+                        <a href="#" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
                     </div>
                 </div>
             </div>
@@ -189,7 +190,7 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group custom-mt-form-group">
                             <input type="text">
-                            <label class="control-label">Broj indeksa</label><i class="bar"></i>
+                            <label class="control-label">ID osobe</label><i class="bar"></i>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
@@ -201,210 +202,73 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group custom-mt-form-group">
                             <select>
-                                <option>Izaberite odsjek</option>
-                                <option>Računarstvo i informatika</option>
-                                <option>Elektroenergetika</option>
-                                <option>Automatika i elektronika</option>
-                                <option>Telekomunikacije</option>
+                                <option>Izaberite predmet</option>
+                                <option>OOAD</option>
+                                <option>RPR</option>
+                                <option>DM</option>
+                                <option>MLTI</option>
                             </select>
-                            <label class="control-label">Odsjek</label><i class="bar"></i>
+                            <label class="control-label">Predmet</label><i class="bar"></i>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <a href="#" class="btn btn-success btn-block mt-4 mb-2"> Pretraži </a>
                     </div>
                 </div>
-                <div class="row staff-grid-row">
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                                <div class="col-sm-12">
+                                    <table class="table table-striped custom-table datatable dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                        <thead>
+                                            <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Ime i prezime </th><th style="min-width: 70px; width: 70px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Broj indeksa: activate to sort column ascending">ID osobe</th><th style="min-width: 20px; width: 50px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Class: activate to sort column ascending">Br. predmeta</th><th style="min-width: 50px; width: 100px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">Titula</th><th style="min-width: 50px; width: 86.8px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label=" Address: activate to sort column ascending"> Prebivalište</th><th style="min-width: 80px; width: 80.4px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date of Birth: activate to sort column ascending">Datum rođenja</th><th style="min-width: 50px; width: 126px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending">Email</th><th class="text-right sorting" style="min-width: 50px; width: 50px;" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Akcija</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1">
+                                                    <a href="#" class="avatar">ŽJ</a>
+                                                    <h2><a href="#">Željko Jurić<span></span></a></h2>
+                                                </td>
+                                                <td>10</td>
+                                                <td>3</td>
+                                                <td>Red. prof. dr</td>
+                                                <td>Somewhere in Sarajevo</td>
+                                                <td>16 avg 1966</td>
+                                                <td>zjuric@etf.unsa.ba</td>
+                                                <td class="text-right">
+                                                    <a href="#" class="btn btn-primary btn-sm mb-1">
+                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                    </a>
+                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr role="row" class="even">
+                                                <td class="sorting_1">
+                                                    <a href="#" class="avatar">SR</a>
+                                                    <h2><a href="#">Samir Ribić <span></span></a></h2>
+                                                </td>
+                                                <td>11</td>
+                                                <td>3</td>
+                                                <td>Red. prof. dr</td>
+                                                <td>Somewhere in Sarajevo</td>
+                                                <td>10 jul 1966</td>
+                                                <td>sribic@etf.unsa.ba</td>
+                                                <td class="text-right">
+                                                    <a href="#" class="btn btn-primary btn-sm mb-1">
+                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                    </a>
+                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="#" class="avatar">J</a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">John Smith</a></h4>
-                            <div class="small text-muted">1 std C</div>
                         </div>
                     </div>
                 </div>
@@ -626,13 +490,13 @@
         <div class="modal-dialog">
             <div class="modal-content modal-md">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Employee</h4>
+                    <h4 class="modal-title">Delete student</h4>
                 </div>
                 <form>
                     <div class="modal-body card-box">
                         <p>Are you sure want to delete this?</p>
                         <div class="m-t-20">
-                            <a href="https://dreamguys.co.in/preadmin/school/dark/all-students.html#" class="btn btn-white" data-dismiss="modal">Close</a>
+                            <a href="https://dreamguys.co.in/preadmin/school/dark/students-list.html#" class="btn btn-white" data-dismiss="modal">Close</a>
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </div>
                     </div>
@@ -641,6 +505,7 @@
         </div>
     </div>
 </div>
+
 <div class="sidebar-overlay" data-reff=""></div>
 <script type="text/javascript" src="~/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="~/js/popper.min.js"></script>
@@ -650,6 +515,4 @@
 <script type="text/javascript" src="~/js/moment.min.js"></script>
 <script type="text/javascript" src="~/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
-
-
 

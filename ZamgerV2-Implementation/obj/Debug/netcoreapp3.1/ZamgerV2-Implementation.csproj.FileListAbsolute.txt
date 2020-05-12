@@ -258,3 +258,7 @@ F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Sha
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\AllTeachers.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\studentskaKreirajNastavnoOsoblje.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\KreirajNastavnoOsoblje.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\sviStudentiListLayout.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\AllStudentsList.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\svoOsobljeListLayout.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\AllTeachersList.cshtml.g.cs

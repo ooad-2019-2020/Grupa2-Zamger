@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "KreirajNastavnoOsoblje";
+    ViewData["Title"] = "Studentska - Kreiraj nastavno osoblje";
     Layout = "~/Views/Shared/studentskaKreirajNastavnoOsoblje.cshtml";
 }
 <div class="main-wrapper">
@@ -185,21 +185,21 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form class="custom-mt-form" action="#" method="post">
+                                <form class="custom-mt-form" asp-antiforgery="false" asp-action="KreirajNastavnoOsoblje" method="post">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
 
                                             <div class="form-group custom-mt-form-group">
-                                                <input type="text">
+                                                <input type="text" name="ime">
                                                 <label class="control-label">Ime</label><i class="bar"></i>
                                             </div>
 
                                             <div class="form-group custom-mt-form-group">
-                                                <input class="datetimepicker" type="text">
+                                                <input class="datetimepicker" type="text" name="datumRodjenja">
                                                 <label class="control-label">Datum rođenja</label><i class="bar"></i>
                                             </div>
                                             <div class="form-group custom-mt-form-group">
-                                                <select>
+                                                <select name="odsjekOdabir">
                                                     <option>Računarstvo i informatika</option>
                                                     <option>Elektroenergetika</option>
                                                     <option>Automatika i elektronika</option>
@@ -208,7 +208,7 @@
                                                 <label class="control-label">Odsjek</label><i class="bar"></i>
                                             </div>
                                             <div class="form-group custom-mt-form-group">
-                                                <select>
+                                                <select name="prviPredmetOdabir">
                                                     <option>OOAD</option>
                                                     <option>RPR</option>
                                                     <option>TP</option>
@@ -223,15 +223,15 @@
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
 
                                             <div class="form-group custom-mt-form-group">
-                                                <input type="text">
+                                                <input type="text" name="prezime">
                                                 <label class="control-label">Prezime</label><i class="bar"></i>
                                             </div>
                                             <div class="form-group custom-mt-form-group">
-                                                <input type="text">
+                                                <input type="text" name="prebivaliste">
                                                 <label class="control-label">Mjesto prebivališta</label><i class="bar"></i>
                                             </div>
                                             <div class="form-group custom-mt-form-group">
-                                                <select>
+                                                <select name="titulaOdabir">
                                                     <option>Red. prof. dr</option>
                                                     <option>Doc. dr</option>
                                                     <option>Van. prof. dr</option>
@@ -241,7 +241,7 @@
                                                 <label class="control-label">Titula</label><i class="bar"></i>
                                             </div>
                                             <div class="form-group custom-mt-form-group">
-                                                <select>
+                                                <select name="drugiPredmetOdabir">
                                                     <option>OOAD</option>
                                                     <option>RPR</option>
                                                     <option>TP</option>
@@ -250,8 +250,6 @@
                                                 </select>
                                                 <label class="control-label">Predmet 2</label><i class="bar"></i>
                                             </div>
-
-
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-12">
 
@@ -261,6 +259,7 @@
                                             </div>
 
                                         </div>
+                                    </div>
                                 </form>
                             </div>
                             </div>
@@ -269,6 +268,7 @@
                 </div>
             </div>
         </div>
+
         <div class="notification-box">
             <div class="msg-sidebar notifications msg-noti">
                 <div class="topnav-dropdown-header">
@@ -480,7 +480,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>
 <div class="sidebar-overlay" data-reff=""></div>
 <script type="text/javascript" src="~/js/jquery-3.2.1.min.js"></script>

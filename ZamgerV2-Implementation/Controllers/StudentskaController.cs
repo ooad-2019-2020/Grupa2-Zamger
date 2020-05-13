@@ -35,11 +35,12 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpPost]
         public IActionResult KreirajStudenta(IFormCollection forma)
         {
+            
             foreach (String kljuc in forma.Keys)
             {
                 Response.WriteAsync("kljuc: " + kljuc + "  -   vrijednost:   " + forma[kljuc] + " --- ");
             }
-            return View();
+            return null;
         }
 
         [Route("/studentska/svo-nastavno-osoblje")]

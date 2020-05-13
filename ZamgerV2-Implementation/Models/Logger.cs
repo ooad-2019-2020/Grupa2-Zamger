@@ -80,7 +80,7 @@ namespace ZamgerV2_Implementation.Models
             }
             else
             {
-
+                throw new Exception("greška prilikom generisanja korisničih podataka");
             }
         }
         
@@ -97,8 +97,6 @@ namespace ZamgerV2_Implementation.Models
             userTipParam.Value = 1;
 
             string sqlKveri2 = "INSERT INTO STUDENTI VALUES(@userID, @ime, @prezime, @spol, @datumRodjenja, @mjestoPrebivalista, @odsjek, @email, 1, 0, NULL)";
-
-
 
             var userIDParam2 = new SqlParameter("userID", System.Data.SqlDbType.Int);
             userIDParam2.Value = noviKorisnik.BrojIndeksa;
@@ -117,13 +115,21 @@ namespace ZamgerV2_Implementation.Models
             odsjekParam.Value = noviKorisnik.Odsjek;
             var emailParam = new SqlParameter("email", System.Data.SqlDbType.NVarChar);
             emailParam.Value = noviKorisnik.Email;
-
-
+            SqlParameter prosjekParam = null;
             SqlCommand command = new SqlCommand(sqlKveri, conn);
             command.Parameters.Add(userParam);
             command.Parameters.Add(passParam);
             command.Parameters.Add(userIDParam);
             command.Parameters.Add(userTipParam);
+
+
+            if (noviKorisnik is MasterStudent)
+             {
+                    MasterStudent tempKorisnik = (MasterStudent)noviKorisnik;
+                    prosjekParam = new SqlParameter("prosjek", System.Data.SqlDbType.Real);
+                    prosjekParam.Value = tempKorisnik.ProsjekNaBSC;
+                    sqlKveri2 = "INSERT INTO STUDENTI VALUES(@userID, @ime, @prezime, @spol, @datumRodjenja, @mjestoPrebivalista, @odsjek, @email, 4, 1, @prosjek)";
+             }
 
             SqlCommand command2 = new SqlCommand(sqlKveri2, conn);
             command2.Parameters.Add(userIDParam2);
@@ -134,20 +140,27 @@ namespace ZamgerV2_Implementation.Models
             command2.Parameters.Add(prebivalisteParam);
             command2.Parameters.Add(odsjekParam);
             command2.Parameters.Add(emailParam);
+            if(noviKorisnik is MasterStudent)
+            {
+                command2.Parameters.Add(prosjekParam);
+            }
+
 
             try
-            {
-                command.ExecuteNonQuery();
+                {
+                    command.ExecuteNonQuery();
 
-                Thread.Sleep(100);
+                    Thread.Sleep(100);
 
-                command2.ExecuteNonQuery();
+                    command2.ExecuteNonQuery();
 
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Greška prilikom ubacivanja studenta u bazu");
-            }
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("nesto nije u redu");
+                    throw new Exception("Greška prilikom ubacivanja studenta u bazu");
+                }
+            
 
         }
 

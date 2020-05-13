@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using ZamgerV2_Implementation.Models;
 
 namespace ZamgerV2_Implementation.Controllers
 {
@@ -35,12 +38,39 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpPost]
         public IActionResult KreirajStudenta(IFormCollection forma)
         {
-            
-            foreach (String kljuc in forma.Keys)
+            Logger logg = Logger.GetInstance();
+            if (forma["BScInfo"].Equals("3")) //ako osoba nije završila BSc tada se upisuje kao običan a ne MasterStudent -> nema potrebe za ekvivalentiranjem
             {
-                Response.WriteAsync("kljuc: " + kljuc + "  -   vrijednost:   " + forma[kljuc] + " --- ");
+                if (!forma["izabraniSmjer"].Equals("Izaberite smjer")) 
+                { 
+                    Student noviStudent = new Student(forma["ime"], forma["prezime"], forma["datumRodjenja"], forma["prebivaliste"], null, null, forma["izabraniSpol"], forma["izabraniSmjer"], null);
+                    if (validirajStudenta(noviStudent))
+                    {
+                        logg.generišiKorisničkePodatke(noviStudent);
+                        Response.WriteAsync("Sve je OK");
+                    }
+                    else
+                    {
+                        Response.WriteAsync("Nije OK - student -> ima nepravilne podatke");
+                    }
+                }
+                else
+                {
+                    Response.WriteAsync("Nije OK - taj smjer ne postoji");
+                }
+            }
+            else
+            {
+                Response.WriteAsync("Nije OK");
             }
             return null;
+        }
+
+
+        private bool validirajStudenta(Student noviStudent)
+        {
+            if (noviStudent.Ime == null || noviStudent.Prezime == null || noviStudent.DatumRođenja == null || noviStudent.MjestoPrebivališta == null || noviStudent.Odsjek == null || noviStudent.Odsjek.Equals("Izaberite smjer")) return false;
+            return true;
         }
 
         [Route("/studentska/svo-nastavno-osoblje")]

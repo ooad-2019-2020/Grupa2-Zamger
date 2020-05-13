@@ -45,14 +45,14 @@ namespace ZamgerV2_Implementation.Controllers
             }
 
 
-            string sqlKveri = "SELECT * from korisnici where username = @user and password=@pass";
+            string sqlKveri = "SELECT * from korisnici where username like @user and password like @pass";
 
-           SqlConnection conn = new SqlConnection("server=DESKTOP-0G31M9N;database=zamgerDB;Trusted_Connection=true");
+           SqlConnection conn = new SqlConnection("server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true");
            SqlCommand command = new SqlCommand(sqlKveri, conn);
             
-                var userParam = new SqlParameter("user", System.Data.SqlDbType.VarChar);
+                var userParam = new SqlParameter("user", System.Data.SqlDbType.NVarChar);
                 userParam.Value = username;
-                 var passParam = new SqlParameter("pass", System.Data.SqlDbType.VarChar);
+                 var passParam = new SqlParameter("pass", System.Data.SqlDbType.NVarChar);
                  passParam.Value = password;
 
             command.Parameters.Add(userParam);

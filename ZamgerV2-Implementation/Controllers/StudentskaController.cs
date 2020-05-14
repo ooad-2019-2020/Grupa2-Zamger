@@ -9,10 +9,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using ZamgerV2_Implementation.Models;
 
+
+/*      
+ *      NAPOMENA ZA OSTALE ---
+ *      Ovi Response.WriteAsync služe samo za debugganje i pretežno su stavljani na mjesto gdje se očekuje odnosno gdje
+ *      se desila neka greška kako bi se to signaliziralo.
+ *      
+ *      Potrebno je sve ove ResponseAsync-e zamijeniti sa odgovarajućim Error stranicama, tipa napraviti custom error 404 page i slično
+ */
+
 namespace ZamgerV2_Implementation.Controllers
 {
     public class StudentskaController : Controller
     {
+        private Logger logg;
+        public StudentskaController()
+        {
+            logg = Logger.GetInstance();
+        }
+
         [Route("/studentska/dashboard")]
         public IActionResult Dashboard()
         {
@@ -41,7 +56,6 @@ namespace ZamgerV2_Implementation.Controllers
         {
             NumberFormatInfo format = new NumberFormatInfo();
             format.NumberDecimalSeparator = ".";
-            Logger logg = Logger.GetInstance();
             if (forma["BScInfo"].Equals("3")) //ako osoba nije završila BSc tada se upisuje kao običan a ne MasterStudent -> nema potrebe za ekvivalentiranjem
             {
                 if (!forma["izabraniSmjer"].Equals("Izaberite smjer")) 
@@ -50,8 +64,7 @@ namespace ZamgerV2_Implementation.Controllers
                     if (validirajStudenta(noviStudent))
                     {
                         logg.generišiKorisničkePodatke(noviStudent);
-                        Logger.removeInstance();
-                        Response.WriteAsync("Sve je OK");
+                        return RedirectToAction("UspješnoKreiranStudent", new { id = noviStudent.BrojIndeksa });
                     }
                     else
                     {
@@ -72,8 +85,7 @@ namespace ZamgerV2_Implementation.Controllers
                     if (validirajStudenta(noviStudent))
                     {
                         logg.generišiKorisničkePodatke(noviStudent);
-                        Logger.removeInstance();
-                        Response.WriteAsync("Sve je OK");
+                        return RedirectToAction("UspješnoKreiranStudent", new { id = noviStudent.BrojIndeksa });
                     }
                     else
                     {
@@ -82,9 +94,19 @@ namespace ZamgerV2_Implementation.Controllers
                 }
 
             }
-            else //osoba je završila BSc ali na nekom drugom fakultetu pa će ovdje trebati implementirati onaj adapter pattern --- ovo ranije sve radi!
+            else if(forma["BScInfo"].Equals("2")) //osoba je završila BSc ali na nekom drugom fakultetu pa će ovdje trebati implementirati onaj adapter pattern --- ovo ranije sve radi!
             {
-                Logger.removeInstance();
+                MasterStudentAdapter adapter = new MasterStudentAdapter();
+                MasterStudent noviStudent = new MasterStudent(forma["ime"], forma["prezime"], forma["datumRodjenja"], forma["prebivaliste"], null, null, forma["izabraniSpol"], forma["izabraniSmjer"], null, double.Parse(forma["prosjekBSC"], format));
+                if (validirajStudenta(noviStudent))
+                {
+                    logg.generišiKorisničkePodatke(adapter.ekvivalentirajStudenta(noviStudent, int.Parse(forma["drzavaBSC"])));
+                    return RedirectToAction("UspješnoKreiranStudent", new { id = noviStudent.BrojIndeksa });
+                }
+                else
+                {
+                    Response.WriteAsync("Nije OK - Master student -> ima nepravilne podatke");
+                }
                 Response.WriteAsync("Nije OK");
             }
             return null;
@@ -141,5 +163,20 @@ namespace ZamgerV2_Implementation.Controllers
         {
             return View();
         }
+
+
+        [Route("/studentska/student-uspjesno-kreiran/{id}")]
+        public IActionResult UspješnoKreiranStudent(int? id)
+        {
+            if(id!=null)
+            {
+                Student tempStudent = logg.dajStudentaPoID(id);
+                return View(tempStudent);
+            }
+            Response.WriteAsync("neka greška prilikom prikazivanja uspješnog logina");
+            return null;
+        }
+
+
     }
 }

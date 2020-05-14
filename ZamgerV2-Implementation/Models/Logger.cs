@@ -221,6 +221,45 @@ namespace ZamgerV2_Implementation.Models
             return null;
         }
 
+        public Student dajStudentaPoID(int? idStudenta)
+        {
+            Student s;
+            string sqlKveri = "select ime, prezime, datumRođenja, mjestoPrebivališta, username, email, spol, odsjek, brojIndeksa, prosjekNaBSC, godinaStudija, BSC from korisnici k, studenti s where s.brojIndeksa=k.idKorisnika and s.brojIndeksa=@userID";
+            var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
+            userIDParam.Value = idStudenta;
+            SqlCommand command = new SqlCommand(sqlKveri, conn);
+            command.Parameters.Add(userIDParam);
+
+            try
+            {
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                    result.Read();
+                    if(result.GetInt32(11) == 1) //ako mu je vrijednost BSC kolone 1, to znači da je završio BSC i da je to MasterStudent
+                    {
+                        Student tempS =  new MasterStudent(result.GetValue(0).ToString(), result.GetValue(1).ToString(), result.GetValue(2).ToString(), result.GetValue(3).ToString(), result.GetValue(4).ToString(), result.GetValue(5).ToString(), result.GetValue(6).ToString(), result.GetValue(7).ToString(), result.GetInt32(8), result.GetFloat(9));
+                        tempS.GodinaStudija = result.GetInt32(10);
+                        return tempS;
+                    }
+                    else
+                    {
+                        Student tempS = new Student(result.GetValue(0).ToString(), result.GetValue(1).ToString(), result.GetValue(2).ToString(), result.GetValue(3).ToString(), result.GetValue(4).ToString(), result.GetValue(5).ToString(), result.GetValue(6).ToString(), result.GetValue(7).ToString(), result.GetInt32(8));
+                        tempS.GodinaStudija = result.GetInt32(10);
+                        return tempS;
+                    }
+
+                }
+                return null;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom pretrage studenta po ID iz baze");
+            }
+
+
+        }
+
 
 
 

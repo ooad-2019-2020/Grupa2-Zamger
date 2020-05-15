@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -55,6 +56,7 @@ namespace ZamgerV2_Implementation.Models
             }
         }
 
+        
 
         public void generišiKorisničkePodatke(Student noviKorisnik)
         {
@@ -198,12 +200,29 @@ namespace ZamgerV2_Implementation.Models
             }
         }
 
+        public static int dajNoviPredmetId()
+        {
+            string sqlKveri = "SELECT max(idPredmeta)+1 from predmeti";
+            SqlCommand command = new SqlCommand(sqlKveri, conn);
+            try
+            {
+                int resultID = (int)command.ExecuteScalar();
+                return resultID;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.StackTrace + "error u generisanju ID");
+                return -1;
+            }
+        }
+
         public string generišiUsername(string ime, string prezime)
         {
             if (ime != null && prezime != null)
             {
                 String prvoSlovo = ime.Substring(0, 1);
                 String ostatak;
+                prezime = Regex.Replace(prezime, " ", "");
                 if (prezime.Length > 10)
                 {
                     ostatak = prezime.Substring(0, 10);
@@ -214,6 +233,7 @@ namespace ZamgerV2_Implementation.Models
                 }
 
                 String tempUsername = prvoSlovo + ostatak;
+                //tempUsername = Regex.Replace(tempUsername, " ", "");
                 return tempUsername.ToLower();
             }
             return null;
@@ -261,6 +281,47 @@ namespace ZamgerV2_Implementation.Models
 
         public bool unesiPredmetUBazu(String naziv, double brojECTSPoena, List<string> odsjeci, List<int> godine, int izborni)
         {
+            try
+            {
+
+                string sqlKveri = "INSERT INTO PREDMETI VALUES(@predmetID, @name, @ECTSpoints)";
+                var predmetIDParam = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
+                predmetIDParam.Value = dajNoviPredmetId();
+                var nameParam = new SqlParameter("name", System.Data.SqlDbType.NVarChar);
+                nameParam.Value = naziv;
+                var ECTSpointsParam = new SqlParameter("ECTSpoints", System.Data.SqlDbType.Float);
+                ECTSpointsParam.Value = brojECTSPoena;
+                SqlCommand command = new SqlCommand(sqlKveri, conn);
+                command.Parameters.Add(predmetIDParam);
+                command.Parameters.Add(nameParam);
+                command.Parameters.Add(ECTSpointsParam);
+                command.ExecuteNonQuery();
+                Thread.Sleep(100);
+
+                for (int i = 0; i < odsjeci.Count; i++)
+                {
+                    string odsjek = odsjeci[i];
+                    int godina = godine[i];
+                    string sqlKveri2 = "INSERT INTO DOSTUPNOST_PREDMETA VALUES(@predmetID, @course, @studyYear, @selective)";
+                    var courseParam = new SqlParameter("course", System.Data.SqlDbType.NVarChar);
+                    courseParam.Value = odsjek;
+                    var studyYearParam = new SqlParameter("studyYear", System.Data.SqlDbType.Int);
+                    studyYearParam.Value = godina;
+                    var selectiveParam = new SqlParameter("selective", System.Data.SqlDbType.Int);
+                    selectiveParam.Value = izborni;
+                    SqlCommand command2 = new SqlCommand(sqlKveri2, conn);
+                    command2.Parameters.Add(predmetIDParam);
+                    command2.Parameters.Add(courseParam);
+                    command2.Parameters.Add(studyYearParam);
+                    command2.Parameters.Add(selectiveParam);
+                    command2.ExecuteNonQuery();
+                    Thread.Sleep(100);
+                }
+            }catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("nesto nije u redu");
+                throw new Exception("Greška prilikom ubacivanja studenta u bazu");
+            }
 
             return true;
             /* sad ovdje treba prvo dobiti valjan ID za predmet, onaj fazon sa Max()+1 al za tabelu PREDMETI

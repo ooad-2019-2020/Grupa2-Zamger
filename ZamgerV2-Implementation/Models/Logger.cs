@@ -15,7 +15,7 @@ namespace ZamgerV2_Implementation.Models
         private static Logger instance = null;
         private Logger()
         {
-            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true";
+            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);
@@ -186,7 +186,7 @@ namespace ZamgerV2_Implementation.Models
 
         public int dajNoviKorisničkiId()
         {
-            string sqlKveri = "SELECT max(idKorisnika)+1 from korisnici";
+            string sqlKveri = "SELECT isnull(max(idKorisnika),0)+1 from korisnici";
             SqlCommand command = new SqlCommand(sqlKveri, conn);
             try
             {
@@ -202,7 +202,7 @@ namespace ZamgerV2_Implementation.Models
 
         public static int dajNoviPredmetId()
         {
-            string sqlKveri = "SELECT max(idPredmeta)+1 from predmeti";
+            string sqlKveri = "SELECT isnull(max(idPredmeta),0)+1 from predmeti";
             SqlCommand command = new SqlCommand(sqlKveri, conn);
             try
             {
@@ -233,7 +233,6 @@ namespace ZamgerV2_Implementation.Models
                 }
 
                 String tempUsername = prvoSlovo + ostatak;
-                //tempUsername = Regex.Replace(tempUsername, " ", "");
                 return tempUsername.ToLower();
             }
             return null;
@@ -279,17 +278,18 @@ namespace ZamgerV2_Implementation.Models
         }
 
 
-        public bool unesiPredmetUBazu(String naziv, double brojECTSPoena, List<string> odsjeci, List<int> godine, int izborni)
+        public int unesiPredmetUBazu(String naziv, double brojECTSPoena, List<string> odsjeci, List<int> godine, int izborni)
         {
             try
             {
 
                 string sqlKveri = "INSERT INTO PREDMETI VALUES(@predmetID, @name, @ECTSpoints)";
                 var predmetIDParam = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
-                predmetIDParam.Value = dajNoviPredmetId();
+                int pomocni = dajNoviPredmetId();
+                predmetIDParam.Value = pomocni;
                 var nameParam = new SqlParameter("name", System.Data.SqlDbType.NVarChar);
                 nameParam.Value = naziv;
-                var ECTSpointsParam = new SqlParameter("ECTSpoints", System.Data.SqlDbType.Float);
+                var ECTSpointsParam = new SqlParameter("ECTSpoints", System.Data.SqlDbType.Real);
                 ECTSpointsParam.Value = brojECTSPoena;
                 SqlCommand command = new SqlCommand(sqlKveri, conn);
                 command.Parameters.Add(predmetIDParam);
@@ -301,29 +301,34 @@ namespace ZamgerV2_Implementation.Models
                 for (int i = 0; i < odsjeci.Count; i++)
                 {
                     string odsjek = odsjeci[i];
-                    int godina = godine[i];
-                    string sqlKveri2 = "INSERT INTO DOSTUPNOST_PREDMETA VALUES(@predmetID, @course, @studyYear, @selective)";
-                    var courseParam = new SqlParameter("course", System.Data.SqlDbType.NVarChar);
-                    courseParam.Value = odsjek;
-                    var studyYearParam = new SqlParameter("studyYear", System.Data.SqlDbType.Int);
-                    studyYearParam.Value = godina;
-                    var selectiveParam = new SqlParameter("selective", System.Data.SqlDbType.Int);
-                    selectiveParam.Value = izborni;
-                    SqlCommand command2 = new SqlCommand(sqlKveri2, conn);
-                    command2.Parameters.Add(predmetIDParam);
-                    command2.Parameters.Add(courseParam);
-                    command2.Parameters.Add(studyYearParam);
-                    command2.Parameters.Add(selectiveParam);
-                    command2.ExecuteNonQuery();
-                    Thread.Sleep(100);
+                    for (int j = 0; j < godine.Count; j++)
+                    {
+                        int godina = godine[j];
+                        var predmetID2 = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
+                        predmetID2.Value = pomocni;
+                        string sqlKveri2 = "INSERT INTO DOSTUPNOST_PREDMETA VALUES(@predmetID, @course, @studyYear, @selective)";
+                        var courseParam = new SqlParameter("course", System.Data.SqlDbType.NVarChar);
+                        courseParam.Value = odsjek;
+                        var studyYearParam = new SqlParameter("studyYear", System.Data.SqlDbType.Int);
+                        studyYearParam.Value = godina;
+                        var selectiveParam = new SqlParameter("selective", System.Data.SqlDbType.Int);
+                        selectiveParam.Value = izborni;
+                        SqlCommand command2 = new SqlCommand(sqlKveri2, conn);
+                        command2.Parameters.Add(predmetID2);
+                        command2.Parameters.Add(courseParam);
+                        command2.Parameters.Add(studyYearParam);
+                        command2.Parameters.Add(selectiveParam);
+                        command2.ExecuteNonQuery();
+                    }
+                    Thread.Sleep(50);
                 }
+                return pomocni;
             }catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("nesto nije u redu");
+                return -1;
                 throw new Exception("Greška prilikom ubacivanja studenta u bazu");
             }
-
-            return true;
             /* sad ovdje treba prvo dobiti valjan ID za predmet, onaj fazon sa Max()+1 al za tabelu PREDMETI
                nakon toga treba napraviti unos u tabelu PREDMETI
                kada se predmet unese u tabelu PREDMETI i to sve prođe kako treba
@@ -337,6 +342,82 @@ namespace ZamgerV2_Implementation.Models
                 koji je studentu dostupan na prvoj godini u zavisnosti od smjera na koji se upisuje
                 analogno je i za MasterStudenta 
              */
+
+        }
+
+
+
+        public KreiranPredmetViewModel dajKreiranPredmetPoID(int id)
+        {
+            KreiranPredmetViewModel model;
+            List<int> godineDostupnosti = new List<int>();
+            List<string> odsjeciDostupnosti = new List<string>();
+            string sqlKveri = "select distinct p.naziv, p.ectsPoeni, dp.izborni from predmeti p, dostupnost_predmeta dp where p.idPredmeta = @predmetID and p.idPredmeta=dp.idPredmeta";
+            var predmetIDParam = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
+            predmetIDParam.Value = id;
+
+            SqlCommand command = new SqlCommand(sqlKveri, conn);
+            command.Parameters.Add(predmetIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                    result.Read();
+                    model = new KreiranPredmetViewModel(result.GetValue(0).ToString(), result.GetFloat(1), null, null, result.GetInt32(2));
+                    string sqlKveri2 = "select godinaStudija from DOSTUPNOST_PREDMETA where idPredmeta=@idPredmeta group by godinaStudija";
+                    var predmetIDParam2 = new SqlParameter("idPredmeta", System.Data.SqlDbType.Int);
+                    predmetIDParam2.Value = id;
+
+                    SqlCommand command2 = new SqlCommand(sqlKveri2, conn);
+                    command2.Parameters.Add(predmetIDParam2);
+                    var result2 = command2.ExecuteReader();
+                    if(result2.HasRows)
+                    {
+                        while(result2.Read())
+                        {
+                            godineDostupnosti.Add(result2.GetInt32(0));
+                        }
+
+                        string sqlKveri3 = "select odsjek from DOSTUPNOST_PREDMETA where idPredmeta=@idPredmeta group by odsjek";
+                        var predmetIDParam3 = new SqlParameter("idPredmeta", System.Data.SqlDbType.Int);
+                        predmetIDParam3.Value = id;
+
+                        SqlCommand command3 = new SqlCommand(sqlKveri3, conn);
+                        command3.Parameters.Add(predmetIDParam3);
+                        var result3 = command3.ExecuteReader();
+
+                        if(result3.HasRows)
+                        {
+                            while(result3.Read())
+                            {
+                                odsjeciDostupnosti.Add(result3.GetValue(0).ToString());
+                            }
+
+                            model.GodineDostupnosti = godineDostupnosti;
+                            model.OdsjeciDostupnosti = odsjeciDostupnosti;
+                            return model;
+                        }
+                        else
+                        {
+                            throw new Exception("neuspješno dohvaćanje odsjeka predmeta");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("neuspješno dohvaćanje godina dostupnosti");
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.StackTrace + "nije dobro dobvaljanje predmeta po ID");
+                return null;
+            }
 
         }
 

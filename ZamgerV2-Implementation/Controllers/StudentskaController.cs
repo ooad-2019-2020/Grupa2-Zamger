@@ -232,10 +232,14 @@ namespace ZamgerV2_Implementation.Controllers
                 String tEcts = forma["ectsPoeni"];
                 if(tNaziv!=null && tEcts!=null)
                 {
-                    if (logg.unesiPredmetUBazu(tNaziv, double.Parse(forma["ectsPoeni"], format), listaOdsjeciZaDodati, listaGodineZaDodati, izborni))
+                    int idPredmeta = logg.unesiPredmetUBazu(tNaziv, double.Parse(forma["ectsPoeni"], format), listaOdsjeciZaDodati, listaGodineZaDodati, izborni);
+                    if (idPredmeta!=-1)
                     {
-                        Response.WriteAsync("Sve je Ok");
-                        //Sad ovdje treba redirectto na uspjesno kreiran predmet na sistemu View(taj view treba napraviti)
+                        return RedirectToAction("UspješnoKreiranPredmet", new { id = idPredmeta });
+                    }
+                    else
+                    {
+                        Response.WriteAsync("Nije uredu unos predmeta u bazu");
                     }
                 }
             }
@@ -258,6 +262,13 @@ namespace ZamgerV2_Implementation.Controllers
             }
             Response.WriteAsync("neka greška prilikom prikazivanja uspješnog logina");
             return null;
+        }
+
+        [Route("/studentska/predmet-uspjesno-kreiran/{id}")]
+        public IActionResult UspješnoKreiranPredmet(int id)
+        {
+            KreiranPredmetViewModel predmet = logg.dajKreiranPredmetPoID(id);
+            return View(predmet);
         }
 
 

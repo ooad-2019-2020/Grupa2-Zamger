@@ -144,8 +144,6 @@ namespace ZamgerV2_Implementation.Models
             {
                 command2.Parameters.Add(prosjekParam);
             }
-
-
             try
                 {
                     command.ExecuteNonQuery();
@@ -257,6 +255,27 @@ namespace ZamgerV2_Implementation.Models
                 throw new Exception(e.StackTrace + "greška prilikom pretrage studenta po ID iz baze");
             }
 
+
+        }
+
+
+        public bool unesiPredmetUBazu(String naziv, double brojECTSPoena, List<string> odsjeci, List<int> godine, int izborni)
+        {
+
+            return true;
+            /* sad ovdje treba prvo dobiti valjan ID za predmet, onaj fazon sa Max()+1 al za tabelu PREDMETI
+               nakon toga treba napraviti unos u tabelu PREDMETI
+               kada se predmet unese u tabelu PREDMETI i to sve prođe kako treba
+               onda je potrebno petljom proći kroz listu odsjeci i listu godine i respektivno to 
+               dodavati u međutabelu DOSTUPNOST_PREDMETA
+
+                Kad sve ovo prođe kako treba, predmet je registrovan u sistemu te prilikom kreiranja
+                nastavnog osoblja, a i studenata moramo im u startu dodati npr da student koji upisuje BSc
+                mu se po defaultu u međutabelu OCJENE ubace ti predmeti analogno na koji su se smjer upisali
+                znaci pravit ce se upit u tabelu predmeti i dostupnost predmeta kako bi se dobio id predmeta
+                koji je studentu dostupan na prvoj godini u zavisnosti od smjera na koji se upisuje
+                analogno je i za MasterStudenta 
+             */
 
         }
 

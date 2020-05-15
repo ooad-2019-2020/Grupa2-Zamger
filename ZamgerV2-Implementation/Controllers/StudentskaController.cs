@@ -165,6 +165,89 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
 
+        [Route("/studentska/kreiraj-predmet")]
+        [HttpGet]
+        public IActionResult KreirajPredmet()
+        {
+            return View();
+        }
+
+
+        [Route("/studentska/kreiraj-predmet")]
+        [HttpPost]
+        public IActionResult KreirajPredmet(IFormCollection forma)
+        {
+            NumberFormatInfo format = new NumberFormatInfo();
+            format.NumberDecimalSeparator = ".";
+            List<string> listaOdsjeciZaDodati = new List<string>();
+            List<int> listaGodineZaDodati = new List<int>();
+
+            var mapOdsjeci = new Dictionary<string, string>()
+            {
+                {"checkboxRI", "Računarstvo i informatika"},
+                { "checkboxAiE", "Automatika i elektronika"},
+                { "checkboxTK", "Telekomunikacije" },
+                {"checkboxEE", "Elektroenergetika" }
+            };
+
+            var mapGodine = new Dictionary<string, int>()
+            {
+                {"checkboxPrva", 1},
+                {"checkboxDruga", 2},
+                {"checkboxTreca", 3},
+                {"checkboxCetvrta", 4 },
+                {"checkboxPeta", 5 }
+            };
+
+
+            foreach (KeyValuePair<string, string> entry in mapOdsjeci)
+            {
+                String tempst = forma[entry.Key];
+                if (tempst != null)
+                {
+                    listaOdsjeciZaDodati.Add(entry.Value);
+                }
+            }
+
+            foreach (KeyValuePair<string, int> entry in mapGodine)
+            {
+                String temps = forma[entry.Key];
+                if (temps != null)
+                {
+                    listaGodineZaDodati.Add(entry.Value);
+                }
+            }
+
+            int izborni = 0;
+            String temp = forma["checkboxIzborni"];
+            if(temp != null)
+            {
+                izborni = 1;
+            }
+
+            //Ove validacije nadam se da kontaš Paša, provjerava ispravnost forme, da neko nije nešto prazno ostavio i tako
+            if(listaOdsjeciZaDodati.Any() && listaGodineZaDodati.Any()) //validacija u slucaju da neko nije pritisnuo nijedan checkbox
+            {
+                String tNaziv = forma["nazivPredmeta"];
+                String tEcts = forma["ectsPoeni"];
+                if(tNaziv!=null && tEcts!=null)
+                {
+                    if (logg.unesiPredmetUBazu(tNaziv, double.Parse(forma["ectsPoeni"], format), listaOdsjeciZaDodati, listaGodineZaDodati, izborni))
+                    {
+                        Response.WriteAsync("Sve je Ok");
+                        //Sad ovdje treba redirectto na uspjesno kreiran predmet na sistemu View(taj view treba napraviti)
+                    }
+                }
+            }
+            else
+            {
+                Response.WriteAsync("Nešto nije uredu, checkboxovi najvjerovatnije prazni");
+            }
+
+            return View();
+        }
+
+
         [Route("/studentska/student-uspjesno-kreiran/{id}")]
         public IActionResult UspješnoKreiranStudent(int? id)
         {

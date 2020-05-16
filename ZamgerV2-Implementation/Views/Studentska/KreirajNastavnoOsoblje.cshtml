@@ -1,6 +1,5 @@
 ﻿
 @{
-    ViewData["Title"] = "Studentska - Kreiraj nastavno osoblje";
     Layout = "~/Views/Shared/studentskaKreirajNastavnoOsoblje.cshtml";
 }
 <div class="main-wrapper">
@@ -172,13 +171,21 @@
                                             </div>
                                             <div class="form-group custom-mt-form-group">
                                                 <select name="prviPredmetOdabir">
-                                                    <option>OOAD</option>
-                                                    <option>RPR</option>
-                                                    <option>TP</option>
-                                                    <option>MLTI</option>
-                                                    <option>DM</option>
+                                                    <option value="-1">Izaberite</option>
+                                                    @foreach (KeyValuePair<string, int> entry in ViewBag.Predmeti)
+                                                    {
+                                                        <option value="@entry.Value">@entry.Key</option>
+                                                    }
                                                 </select>
                                                 <label class="control-label">Predmet 1</label><i class="bar"></i>
+                                            </div>
+
+                                            <div class="form-group custom-mt-form-group">
+                                                <select name="spol">
+                                                    <option>M</option>
+                                                    <option>Ž</option>
+                                                </select>
+                                                <label class="control-label">Spol</label><i class="bar"></i>
                                             </div>
 
 
@@ -205,11 +212,11 @@
                                             </div>
                                             <div class="form-group custom-mt-form-group">
                                                 <select name="drugiPredmetOdabir">
-                                                    <option>OOAD</option>
-                                                    <option>RPR</option>
-                                                    <option>TP</option>
-                                                    <option>MLTI</option>
-                                                    <option>DM</option>
+                                                    <option value="-1">Izaberite</option>
+                                                    @foreach (KeyValuePair<string, int> entry in ViewBag.Predmeti)
+                                                    {
+                                                        <option value="@entry.Value">@entry.Key</option>
+                                                    }
                                                 </select>
                                                 <label class="control-label">Predmet 2</label><i class="bar"></i>
                                             </div>

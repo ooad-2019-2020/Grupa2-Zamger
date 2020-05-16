@@ -16,6 +16,10 @@ using ZamgerV2_Implementation.Models;
  *      se desila neka greška kako bi se to signaliziralo.
  *      
  *      Potrebno je sve ove ResponseAsync-e zamijeniti sa odgovarajućim Error stranicama, tipa napraviti custom error 404 page i slično
+ *      
+ *      
+ *      Nova napomena: ove polja forma["ime"] to će trebat sve ono ko u Javi .trim jer može neko u ime unijeti Huso+++ gdje je + whitespace i eto belaja
+ *      analogno je i za prezime itd(mjesto prebivalista ne treba provjeravat na to al et
  */
 
 namespace ZamgerV2_Implementation.Controllers
@@ -138,7 +142,16 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpGet]
         public IActionResult KreirajNastavnoOsoblje()
         {
-            return View();
+            //ovdje moram dostaviti sve moguće predmete iz baze na koje se taj profesor može zadužiti, bez nekih ograničenja tipa da ne može biti 5 profesora na predmetu
+            var mapaPredmetiImenaID = logg.dajSvePredmeteImenaID();
+            if(mapaPredmetiImenaID!=null)
+            {
+                ViewBag.Predmeti = mapaPredmetiImenaID;
+                return View();
+            }
+            Response.WriteAsync("Greška u kreiranju nastavnog osoblja --- Nije OK");
+            return null;
+
         }
 
         [Route("/studentska/svo-nastavno-osoblje/kreiraj-nastavno-osoblje")]
@@ -146,8 +159,15 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpPost]
         public IActionResult KreirajNastavnoOsoblje(IFormCollection forma)
         {
-            foreach(String kljuc in forma.Keys){
-                Response.WriteAsync("kljuc: " + kljuc + "  -   vrijednost:   " + forma[kljuc]+" --- ");
+            if(forma!=null)
+            {
+                if(forma["titulaOdabir"].Equals("Red. prof. dr") || forma["titulaOdabir"].Equals("Doc. dr") || forma["titulaOdabir"].Equals("Van. prof. dr"))
+                {
+                    Profesor tempOsoba = new Profesor(forma["ime"], forma["prezime"], forma["datumRodjenja"], forma["prebivaliste"], null, null, forma["spol"], forma["titulaOdabir"], null);
+                    int userID = logg.generišiKorisničkePodatke(tempOsoba);
+                    logg.zadužiKreiranogNaPredmetima(userID, Int32.Parse(forma["prviPredmetOdabir"]), Int32.Parse(forma["drugiPredmetOdabir"]));
+                    Response.WriteAsync("Sve je OK");
+                }
             }
             return View();
         }

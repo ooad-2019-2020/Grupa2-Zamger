@@ -1,7 +1,6 @@
-﻿
+﻿@model KreiranoNastavnoOsobljeViewModel
 @{
-    ViewData["Title"] = "Studentska - Kreiraj studenta";
-    Layout = "~/Views/Shared/kreirajStudentaLayout.cshtml";
+    Layout = "~/Views/Shared/uspjesnoKreiranoNastavnoOsobljeLayout.cshtml";
 }
 <div class="main-wrapper">
     <div class="header">
@@ -13,7 +12,7 @@
             </a>
         </div>
         <div class="page-title-box float-left">
-            <h3 class="text-uppercase">Preschool</h3>
+            <h3 class="text-uppercase">Zamger-v2</h3>
         </div>
         <a id="mobile_btn" class="mobile_btn float-left" href="https://dreamguys.co.in/preadmin/school/dark/index.html#sidebar"><i class="fa fa-bars" aria-hidden="true"></i></a>
         <ul class="nav user-menu float-right">
@@ -89,7 +88,7 @@
                             <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span> Studenti</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="~/studentska/svi-studenti">Svi studenti</a></li>
-                                <li><a href="#">Kreiraj studenta</a></li>
+                                <li><a href="~/studentska/kreiraj-studenta">Kreiraj studenta</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
@@ -126,123 +125,132 @@
     </div>
 
 
+
+
+
+
     <div class="page-wrapper" style="min-height: 723px;">
         <!-- content -->
-        <form asp-antiforgery="false" asp-action="KreirajStudenta" method="post">
-            <div class="content container-fluid">
-                <div class="page-header">
-                    <div class="row">
-                        <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                            <h5 class="text-uppercase">Kreiraj studenta</h5>
-                        </div>
-                        <div class="col-lg-5 col-md-12 col-sm-12 col-12">
-                            <ul class="list-inline breadcrumb float-right">
-                                <li class="list-inline-item"><a href="~/studentska/dashboard">Početna</a></li>
-
-                                <li class="list-inline-item"> Kreiraj studenta</li>
-                            </ul>
-                        </div>
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-12 col-sm-12 col-12">
+                        <h5 class="text-uppercase"><a href="~/studentska/dashboard">Nastavno osoblje uspješno kreirano - nazad na početnu</a></h5>
+                    </div>
+                    <div class="col-lg-5 col-md-12 col-sm-12 col-12">
+                        <ul class="list-inline breadcrumb float-right">
+                            <li class="list-inline-item"><a href="~/studentska/dashboard">Početna</a></li>
+                            <li class="list-inline-item"> Uspješno kreirana osoba</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="page-content">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="card">
-                                <div class="page-title">
-                                    <div class="row">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="Page-title">Podaci studenta</div>
+            </div>
+            <div class="content-page">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="aboutprofile-sidebar">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-12 col-sm-12 col-12">
+                                    <div class="aboutprofile">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                                        <div class="aboutprofile-pic">
+                                                            <img class="card-img-top" src="~/images/user.jpg" alt="Card image">
+                                                        </div>
+                                                        <div class="aboutprofile-name">
+                                                            <h5 class="text-center mt-2">@Model.Nastavno.Ime @Model.Nastavno.Prezime</h5>
+                                                            <p class="text-center">@Model.Nastavno.Titula</p>
+                                                        </div>
+                                                        <ul class="list-group list-group-flush">
+                                                            <li class="list-group-item"><b>Spol:</b><a href="#" class="float-right">@Model.Nastavno.Spol</a></li>
+                                                            <li class="list-group-item"><b>Broj predmeta na kojim predaje:</b><a href="#" class="float-right">@Model.ImenaPredmeta.Count</a></li>
+                                                            <li class="list-group-item"><b>Predmeti na kojim predaje:</b><a href="#" class="float-right">
+                                                                @foreach (string p in Model.ImenaPredmeta)
+                                                                {
+                                                                     <a href="#" class="float-right">@p, </a>
+                                                                }
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="aboutprofile-address mt-4">
+                                        <div class="card">
+                                            <div class="page-title">
+                                                <h4>Mjesto prebivališta</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <address class="text-center">
+                                                    @Model.Nastavno.MjestoPrebivališta<br />
+                                                    Bosna i Hercegovina
+                                                </address>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-lg-9 col-md-12 col-sm-12 col-12">
+                                    <div class="profile-content">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card">
+                                                    <!-- Nav tabs -->
+                                                    <ul class="nav customtab">
+                                                        <li class="nav-item"><a href="#" class="nav-link active show">Ovaj korisnik je uspješno dodan u nastavni ansambl</a></li>
+                                                    </ul>
 
-                                <div class="card-body">
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane active show">
+                                                            <div id="biography" class="biography">
+                                                                <div class="row">
+                                                                    <div class="col-md-3 col-6">
+                                                                        <strong>Ime i prezime</strong>
+                                                                        <br>
+                                                                        <p class="text-muted">@Model.Nastavno.Ime @Model.Nastavno.Prezime</p>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-6">
+                                                                        <strong>Datum rođenja</strong>
+                                                                        <br>
+                                                                        <p class="text-muted">@Convert.ToDateTime(Model.Nastavno.DatumRođenja).Date.ToString("d")</p>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-6">
+                                                                        <strong>Email</strong>
+                                                                        <br>
+                                                                        <p class="text-muted">@Model.Nastavno.Email</p>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-6">
+                                                                        <strong>Titula</strong>
+                                                                        <br>
+                                                                        <p class="text-muted">@Model.Nastavno.Titula</p>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <p>
 
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-
-                                            <div class="form-group custom-mt-form-group">
-                                                <input type="text" name="ime" required>
-                                                <label class="control-label">Ime</label><i class="bar"></i>
+                                                                </p>
+                                                                <p>
+                                                                    Trenutno kreirana osoba je postao/la dio nastavnog ansambla Elektrotehničkog fakulteta Univerziteta u Sarajevu.
+                                                                </p>
+                                                                <br />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-
-                                            <div class="form-group custom-mt-form-group">
-                                                <input class="datetimepicker" type="text" name="datumRodjenja" required>
-                                                <label class="control-label">Datum rođenja</label><i class="bar"></i>
-                                            </div>
-                                            <div class="form-group custom-mt-form-group">
-                                                <select name="izabraniSmjer" required>
-                                                    <option>Izaberite smjer</option>
-                                                    <option>Računarstvo i informatika</option>
-                                                    <option>Elektroenergetika</option>
-                                                    <option>Automatika i elektronika</option>
-                                                    <option>Telekomunikacije</option>
-                                                </select>
-                                                <label class="control-label">Odsjek</label><i class="bar"></i>
-                                            </div>
-                                            <div class="form-group custom-mt-form-group">
-                                                <select name="izabraniSpol" required>
-                                                    <option>M</option>
-                                                    <option>Ž</option>
-                                                </select>
-                                                <label class="control-label">Spol</label><i class="bar"></i>
-                                            </div>
-
-                                            <div class="form-group custom-mt-form-group" id="prosjekBScInput" hidden>
-                                                <input type="number" step=0.01 min=0.00 name="prosjekBSC" id="BSCinput" max=10.00>
-                                                <label class="control-label" id="prosjekBSClabela">*Prosjek na BSc*</label><i class="bar"></i>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-
-                                            <div class="form-group custom-mt-form-group">
-                                                <input type="text" name="prezime" required>
-                                                <label class="control-label">Prezime</label><i class="bar"></i>
-                                            </div>
-                                            <div class="form-group custom-mt-form-group">
-                                                <input type="text" name="prebivaliste" required>
-                                                <label class="control-label">Mjesto prebivališta</label><i class="bar"></i>
-                                            </div>
-                                            <div class="form-group custom-mt-form-group">
-                                                <select name="BScInfo" id="ddlModels" onchange="EnableDisableTextBox(this)">
-                                                    <option value="0">Izaberite</option>
-                                                    <option value="1">Da - na ovom fakultetu</option>
-                                                    <option value="2">Da - na nekom drugom fakultetu</option>
-                                                    <option value="3">Ne</option>
-                                                </select>
-                                                <label class="control-label">Završio BSc studij</label><i class="bar"></i>
-                                            </div>
-
-                                            <div class="form-group custom-mt-form-group" id="državaBSc" hidden>
-                                                <select name="drzavaBSC">
-                                                    <option value="0">Izaberite</option>
-                                                    <option value="1">Njemačka</option>
-                                                    <option value="2">Velika Britanija</option>
-                                                    <option value="3">Sjedinjene Američke Države</option>
-                                                </select>
-                                                <label class="control-label">*Država u kojoj je završen BSc studij*</label><i class="bar"></i>
-                                            </div>
-
-
-                                        </div>
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-
-                                            <div class="form-group text-center custom-mt-form-group">
-                                                <button class="btn btn-primary mr-2" type="submit">Kreiraj</button>
-                                                <button class="btn btn-secondary" type="reset">Odustani</button>
-                                            </div>
-
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
         <div class="notification-box">
             <div class="msg-sidebar notifications msg-noti">
                 <div class="topnav-dropdown-header">
@@ -260,6 +268,21 @@
                                         <div class="list-body">
                                             <span class="message-author">Richard Miles </span>
                                             <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
+                                    <div class="list-item new-message">
+                                        <div class="list-left">
+                                            <span class="avatar">J</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Ruth C. Gault</span>
+                                            <span class="message-time">1 Aug</span>
                                             <div class="clearfix"></div>
                                             <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
                                         </div>
@@ -285,27 +308,5 @@
 <script type="text/javascript" src="~/js/moment.min.js"></script>
 <script type="text/javascript" src="~/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
-<script type="text/javascript">
-    function EnableDisableTextBox(ddlModels) {
-        var selectedValue = ddlModels.options[ddlModels.selectedIndex].value;
-        var txtOther = document.getElementById("prosjekBScInput");
-        var txtRe = document.getElementById("BSCinput")
-        var txtOtherDrzava = document.getElementById("državaBSc");
-        if (selectedValue == 2 || selectedValue == 1) {
-            txtOther.hidden = false;
-            txtRe.setAttribute("required", "");
-            if (!txtOther.disabled) {
-                txtOther.focus();
-            }
-            if (selectedValue == 2) {
-                txtOtherDrzava.hidden = false;
-            }
-        }
-        else {
-            txtOther.hidden = true;
-            txtRe.removeAttribute("required");
-            txtOtherDrzava.hidden = true;
-        }
-    }
-</script>
+
 

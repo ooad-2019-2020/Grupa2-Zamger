@@ -3,10 +3,12 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace ZamgerV2_Implementation.Models
 {
@@ -71,22 +73,24 @@ namespace ZamgerV2_Implementation.Models
                 {
                     noviKorisnik.Username = username + brojLjudiSaIstimUsernameom;
                     noviKorisnik.Email = noviKorisnik.Username + "@etf.unsa.ba";
-                    if(noviKorisnik is Student)
+                    if(noviKorisnik.GetType() == typeof(Student))
                     {
                         Student tempStd = (Student)noviKorisnik;
                         tempStd.BrojIndeksa = userID;
                         password = noviKorisnik.Username + "-pass";
                         spremiStudentaUBazu(tempStd, password);
+                        registrujDefaultOcjene(tempStd, tempStd.BrojIndeksa);
                     }
-                    else if(noviKorisnik is MasterStudent)
+                    else if(noviKorisnik.GetType() == typeof(MasterStudent))
                     {
                         MasterStudent tempMaster = (MasterStudent)noviKorisnik;
                         tempMaster.BrojIndeksa = userID;
                         password = tempMaster.Username + "-pass";
                         spremiStudentaUBazu(tempMaster, password);
+                        registrujDefaultOcjene(tempMaster, tempMaster.BrojIndeksa);
 
                     }
-                    else if(noviKorisnik is Profesor) //ovdje se desi weird bug npr ovo bude tačno ako je i noviKorisnik tipa NastavnoOsoblje, pa npr Jurke završi ko asistent umjesto ko profesor, moramo skontat što
+                    else if(noviKorisnik.GetType() == typeof(Profesor)) //ovdje se desi weird bug npr ovo bude tačno ako je i noviKorisnik tipa NastavnoOsoblje, pa npr Jurke završi ko asistent umjesto ko profesor, moramo skontat što
                     {
                         Profesor tempProf = (Profesor)noviKorisnik;
                         tempProf.IdOsobe = userID;
@@ -125,7 +129,7 @@ namespace ZamgerV2_Implementation.Models
             userIDParam.Value = tempNastavno.IdOsobe;
             var userTipParam = new SqlParameter("userTip", System.Data.SqlDbType.Int);
 
-            if (tempNastavno is NastavnoOsoblje) userTipParam.Value = 2; //nastavno osoblje nivo pristupa je 2 (WEIRD BUG NAVEDEN RANIJE, ne kontam što jer za masterstudent i student radi perfektno)
+            if (tempNastavno.GetType() == typeof(NastavnoOsoblje)) userTipParam.Value = 2; //nastavno osoblje nivo pristupa je 2 (WEIRD BUG NAVEDEN RANIJE, ne kontam što jer za masterstudent i student radi perfektno)
             else userTipParam.Value = 4; //profesor ima nivo pristupa 4
 
             string sqlKveri2 = "INSERT INTO NASTAVNO_OSOBLJE VALUES(@userID, @ime, @prezime, @datumRodjenja, @mjestoPrebivalista, @email, @spol, @titula)";
@@ -218,7 +222,7 @@ namespace ZamgerV2_Implementation.Models
             command.Parameters.Add(userTipParam);
 
 
-            if (noviKorisnik is MasterStudent)
+            if (noviKorisnik.GetType() == typeof(MasterStudent))
              {
                     MasterStudent tempKorisnik = (MasterStudent)noviKorisnik;
                     prosjekParam = new SqlParameter("prosjek", System.Data.SqlDbType.Real);
@@ -255,7 +259,67 @@ namespace ZamgerV2_Implementation.Models
                 }
         }
 
-        internal void zadužiKreiranogNaPredmetima(int userID, int idPrvogPredmeta = -1, int idDrugogPredmeta = -1)
+        private void registrujDefaultOcjene(Korisnik noviKorisnik, int? userID)
+        {
+            string kveri;
+            SqlCommand command = null;
+            var odsjekParam = new SqlParameter("odsjek", System.Data.SqlDbType.NVarChar);
+
+            if (noviKorisnik.GetType() == typeof(Student))
+            {
+                Student noviStd = (Student)noviKorisnik;
+                kveri = "select idPredmeta from DOSTUPNOST_PREDMETA where godinaStudija=1 and odsjek like @odsjek";
+                odsjekParam.Value = noviStd.Odsjek;
+                command = new SqlCommand(kveri, conn);
+                command.Parameters.Add(odsjekParam);
+            }
+            else
+            {
+                MasterStudent masterStd = (MasterStudent)noviKorisnik;
+                kveri = "select idPredmeta from DOSTUPNOST_PREDMETA where godinaStudija=4 and odsjek like @odsjek";
+                odsjekParam.Value = masterStd.Odsjek;
+                command = new SqlCommand(kveri, conn);
+                command.Parameters.Add(odsjekParam);
+            }
+            List<int> ideviPredmeta = new List<int>();
+            try
+            {
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        ideviPredmeta.Add(result.GetInt32(0));
+                    }
+                    StringBuilder sb = new StringBuilder("insert into ocjene values");
+                    for(int i = 0; i<ideviPredmeta.Count; i++)
+                    {
+                        if (i < ideviPredmeta.Count-1)
+                        {
+                            sb.Append("(").Append(userID).Append(",").Append(ideviPredmeta[i]).Append(", 5, 0,").Append(DateTime.Now.Year.ToString()).Append("), ");
+                        }
+                        else
+                        {
+                            sb.Append("(").Append(userID).Append(",").Append(ideviPredmeta[i]).Append(", 5, 0,").Append(DateTime.Now.Year.ToString()).Append(")");
+                        }
+                    }
+
+                    SqlCommand command2 = new SqlCommand(sb.ToString(), conn);
+                    command2.ExecuteNonQuery();
+                }
+                else
+                {
+                    throw new Exception("Ili nisu još dodani predmeti na toj godini il nešto drugo ne valja (mozda insert u ocjene nije uspio)");
+                }
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+
+        }
+
+        public void zadužiKreiranogNaPredmetima(int userID, int idPrvogPredmeta = -1, int idDrugogPredmeta = -1)
         {
             var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
             userIDParam.Value = userID;
@@ -418,7 +482,6 @@ namespace ZamgerV2_Implementation.Models
 
         }
 
-
         public int unesiPredmetUBazu(String naziv, double brojECTSPoena, List<string> odsjeci, List<int> godine, int izborni)
         {
             try
@@ -470,23 +533,7 @@ namespace ZamgerV2_Implementation.Models
                 return -1;
                 throw new Exception("Greška prilikom ubacivanja studenta u bazu");
             }
-            /* sad ovdje treba prvo dobiti valjan ID za predmet, onaj fazon sa Max()+1 al za tabelu PREDMETI
-               nakon toga treba napraviti unos u tabelu PREDMETI
-               kada se predmet unese u tabelu PREDMETI i to sve prođe kako treba
-               onda je potrebno petljom proći kroz listu odsjeci i listu godine i respektivno to 
-               dodavati u međutabelu DOSTUPNOST_PREDMETA
-
-                Kad sve ovo prođe kako treba, predmet je registrovan u sistemu te prilikom kreiranja
-                nastavnog osoblja, a i studenata moramo im u startu dodati npr da student koji upisuje BSc
-                mu se po defaultu u međutabelu OCJENE ubace ti predmeti analogno na koji su se smjer upisali
-                znaci pravit ce se upit u tabelu predmeti i dostupnost predmeta kako bi se dobio id predmeta
-                koji je studentu dostupan na prvoj godini u zavisnosti od smjera na koji se upisuje
-                analogno je i za MasterStudenta 
-             */
-
         }
-
-
 
         public KreiranPredmetViewModel dajKreiranPredmetPoID(int id)
         {
@@ -574,7 +621,7 @@ namespace ZamgerV2_Implementation.Models
                 {
                     while(result.Read())
                     {
-                        returnMapa.Add(result.GetValue(0).ToString(), result.GetInt32(1));
+                        returnMapa.Add(result.GetString(0), result.GetInt32(1));
                     }
                     return returnMapa;
                 }
@@ -591,7 +638,136 @@ namespace ZamgerV2_Implementation.Models
         }
 
 
+        public NastavnoOsoblje dajKreiranoNastavnoOsobljePoID(int id)
+        {
+            string kveri = "select no.ime, no.prezime, no.datumRođenja, no.mjestoPrebivališta, k.username, no.email, no.spol, titula from nastavno_osoblje no, korisnici k where no.idOsobe=k.idKorisnika and no.idOsobe=@userID";
+            var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
+            userIDParam.Value = id;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(userIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                   result.Read();
+                   return new NastavnoOsoblje(result.GetValue(0).ToString(), result.GetValue(1).ToString(), result.GetValue(2).ToString(), result.GetValue(3).ToString(), result.GetValue(4).ToString(), result.GetValue(5).ToString(), result.GetValue(6).ToString(), result.GetValue(7).ToString());
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Greška prilikom dohvaćanja nastavnog osoblja po ID iz baze");
+            }
+        }
+
+        public List<string> dajNazivePredmetaNaKojimPredajePoID(int id)
+        {
+            List<string> povratnaLista = new List<string>();
+            string kveri = "select naziv from predmeti p, ansambl a where a.idNastavnogOsoblja=@userID and a.idPredmeta=p.idPredmeta";
+            var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
+            userIDParam.Value = id;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(userIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        povratnaLista.Add(result.GetValue(0).ToString());
+                    }
+                    return povratnaLista;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Greška prilikom dohvaćanja nastavnog osoblja po ID iz baze");
+            }
+
+        }
 
 
+        public double dajProsjekStudentaPoID(int? id)
+        {
+
+            if(id!=null)
+            {
+                string kveri = "select avg(Cast(ocjena as float)) from ocjene where idStudenta=@userID";
+                var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
+                userIDParam.Value = id;
+                SqlCommand command = new SqlCommand(kveri, conn);
+                command.Parameters.Add(userIDParam);
+                try
+                {
+                    return (double)command.ExecuteScalar();
+                }
+                catch(Exception e)
+                {
+                    throw e;
+                }
+            }
+            else
+            {
+                throw new Exception("Korisnik nema niti jednu ocjenu u sistemu");
+            }
+
+        }
+
+        public int dajBrojPredmetaPoID(int? id)
+        {
+            if (id != null)
+            {
+                string kveri = "select count(ocjena) from ocjene where idStudenta=@userID";
+                var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
+                userIDParam.Value = id;
+                SqlCommand command = new SqlCommand(kveri, conn);
+                command.Parameters.Add(userIDParam);
+                try
+                {
+                    return (int)command.ExecuteScalar();
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+            else
+            {
+                throw new Exception("Korisnik nema niti jedan predmet u sistemu");
+            }
+
+        }
+
+        public void kreirajObavještenje(String naslov, String sadržaj)
+        {
+            string kveri = "insert into obavještenja values(@naslov, @sadržaj, @vrijeme)";
+            var naslovParam = new SqlParameter("naslov", System.Data.SqlDbType.NVarChar);
+            naslovParam.Value = naslov;
+            var sadržajParam = new SqlParameter("sadržaj", System.Data.SqlDbType.NVarChar);
+            sadržajParam.Value = sadržaj;
+            var vrijemeParam = new SqlParameter("vrijeme", System.Data.SqlDbType.DateTime);
+            vrijemeParam.Value = DateTime.Now;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(naslovParam);
+            command.Parameters.Add(sadržajParam);
+            command.Parameters.Add(vrijemeParam);
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw new Exception("neuspješan unos obavještenja u bazu");
+            }
+        }
     }
 }

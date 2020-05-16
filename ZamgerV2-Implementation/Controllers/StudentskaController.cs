@@ -163,10 +163,17 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 if(forma["titulaOdabir"].Equals("Red. prof. dr") || forma["titulaOdabir"].Equals("Doc. dr") || forma["titulaOdabir"].Equals("Van. prof. dr"))
                 {
-                    Profesor tempOsoba = new Profesor(forma["ime"], forma["prezime"], forma["datumRodjenja"], forma["prebivaliste"], null, null, forma["spol"], forma["titulaOdabir"], null);
+                    Profesor tempOsoba = new Profesor(forma["ime"], forma["prezime"], forma["datumRodjenja"], forma["prebivaliste"], null, null, forma["spol"], forma["titulaOdabir"]);
                     int userID = logg.generišiKorisničkePodatke(tempOsoba);
                     logg.zadužiKreiranogNaPredmetima(userID, Int32.Parse(forma["prviPredmetOdabir"]), Int32.Parse(forma["drugiPredmetOdabir"]));
-                    Response.WriteAsync("Sve je OK");
+                    return RedirectToAction("UspješnoKreiranoNastavnoOsoblje", new { id = userID });
+                }
+                else
+                {
+                    NastavnoOsoblje tempOsoba = new NastavnoOsoblje(forma["ime"], forma["prezime"], forma["datumRodjenja"], forma["prebivaliste"], null, null, forma["spol"], forma["titulaOdabir"]);
+                    int userID = logg.generišiKorisničkePodatke(tempOsoba);
+                    logg.zadužiKreiranogNaPredmetima(userID, Int32.Parse(forma["prviPredmetOdabir"]), Int32.Parse(forma["drugiPredmetOdabir"]));
+                    return RedirectToAction("UspješnoKreiranoNastavnoOsoblje", new { id = userID });
                 }
             }
             return View();
@@ -278,6 +285,8 @@ namespace ZamgerV2_Implementation.Controllers
             if(id!=null)
             {
                 Student tempStudent = logg.dajStudentaPoID(id);
+                ViewBag.prosjek = logg.dajProsjekStudentaPoID(id);
+                ViewBag.brojPredmeta = logg.dajBrojPredmetaPoID(id);
                 return View(tempStudent);
             }
             Response.WriteAsync("neka greška prilikom prikazivanja uspješnog logina");
@@ -292,5 +301,48 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
 
+        [Route("/studentska/nastavno-osoblje-uspjesno-kreirano/{id}")]
+        public IActionResult UspješnoKreiranoNastavnoOsoblje(int id)
+        {
+            NastavnoOsoblje osoba = logg.dajKreiranoNastavnoOsobljePoID(id);
+            List<string> lista = logg.dajNazivePredmetaNaKojimPredajePoID(id);
+            KreiranoNastavnoOsobljeViewModel model;
+            if(lista!=null && osoba!=null)
+            {
+                model = new KreiranoNastavnoOsobljeViewModel(osoba, lista);
+                return View(model);
+            }
+            else
+            {
+                Response.WriteAsync("Nešto nije uredu prilikom dodavanja nastavnog osoblja u sistem");
+                return null;
+            }
+        }
+
+        [Route("/studentska/kreiraj-obavjestenje")]
+        [HttpGet]
+        public IActionResult KreirajObavjestenje()
+        {
+            return View();
+        }
+
+        [Route("/studentska/kreiraj-obavjestenje")]
+        [HttpPost]
+        public IActionResult KreirajObavjestenje(IFormCollection forma)
+        {
+            if(forma!=null)
+            {
+                logg.kreirajObavještenje(forma["naslovObavještenja"], forma["sadržajObavještenja"]);
+                return RedirectToAction("UspješnoKreiranoObavještenje");
+            }
+            return View();
+        }
+
+
+        [Route("/studentska/uspješno-kreirano-obavjestenje")]
+        public IActionResult UspješnoKreiranoObavještenje()
+        {
+            return View();
+        }
     }
 }

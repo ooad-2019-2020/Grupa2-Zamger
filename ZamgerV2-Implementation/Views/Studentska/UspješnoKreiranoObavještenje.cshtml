@@ -1,7 +1,7 @@
-﻿@model KreiranPredmetViewModel
+﻿
 @{
-    ViewData["Title"] = "UspješnoKreiranPredmet";
-    Layout = "~/Views/Shared/uspjesnoKreiranPredmetLayout.cshtml";
+    ViewData["Title"] = "UspješnoKreiranoObavještenje";
+    Layout = "~/Views/Shared/uspješnoKreiranoObavještenjeLayout.cshtml";
 }
 <div class="main-wrapper">
     <div class="header">
@@ -132,12 +132,12 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                        <h5 class="text-uppercase">PREDMET USPJEŠNO DODAN U SISTEM</h5>
+                        <h5 class="text-uppercase">OBAVJEŠTENJE USPJEŠNO OBJAVLJENO</h5>
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
                             <li class="list-inline-item"><a href="~/studentska/dashboard">Početna</a></li>
-                            <li class="list-inline-item"> Predmet uspješno kreiran</li>
+                            <li class="list-inline-item"> Obavještenje uspješno kreirano</li>
                         </ul>
                     </div>
                 </div>
@@ -148,96 +148,80 @@
                         <div class="profile-view">
                             <div class="profile-img-wrap">
                                 <div class="profile-img">
-                                    <a href="#"><img class="avatar" src="~/images/book.png" alt=""></a>
+                                    <a href="#"><img class="avatar" src="~/images/zelenatacnica.jpg" alt=""></a>
                                 </div>
                             </div>
-                            <div class="profile-basic">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <div class="profile-info-left">
-                                            <h3 class="user-name m-t-0">@Model.Naziv</h3>
-                                            <h5 class="company-role m-t-0 m-b-0">ECTS poeni: @String.Format("{0:0.00}", Model.EctsPoeni)</h5>
-                                            @if (@Model.Izborni)
-                                            {
-                                                <h5 class="company-role m-t-0 m-b-0">Predmet je izboran</h5>
-                                            }
-                                            else
-                                            {
-                                                <h5 class="company-role m-t-0 m-b-0">Predmet je obavezan</h5>
-                                            }
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <ul class="personal-info">
-                                            <li>
-                                                <span class="title">Dostupan na godinama:</span>
-                                                <span class="text">
-                                                    @foreach (int godina in Model.GodineDostupnosti)
-                                                    {
-                                                        @godina.ToString()
-                                                    }
-                                                </span>
-                                            </li>
-                                            <li>
-                                                <span class="title">Dostupan na odsjecima:</span>
-                                                <span class="text">----------></span>
-                                            </li>
-
-                                            @foreach (string odsjek in Model.OdsjeciDostupnosti)
-                                            {
-                                                <li>
-                                                    <span class="title">Odsjek: </span>
-                                                    <span class="text">@odsjek</span>
-                                                </li>
-                                            }
-                                            <li>
-                                                <span class="title">    </span>
-                                                <span class="text">     </span>
-                                            </li>
-                                            <li>
-                                                <span class="title">    </span>
-                                                <span class="text">     </span>
-                                            </li>
-                                            <li>
-                                                <span class="title">    </span>
-                                                <span class="text">     </span>
-                                            </li>
-                                            <li>
-                                                <span class="title">    </span>
-                                                <span class="text">     </span>
-                                            </li>
-                                            <li>
-                                                <span class="title">    </span>
-                                                <span class="text">     </span>
-                                            </li>
-                                            <li>
-                                                <span class="title">    </span>
-                                                <span class="text">     </span>
-                                            </li>
-                                            <li>
-                                                <span class="title">    </span>
-                                                <span class="text">     </span>
-                                            </li>
-                                            <li>
-                                                <span class="title">    </span>
-                                                <span class="text">     </span>
-                                            </li>
-                                            <li>
-                                                <span class="title">    </span>
-                                                <span class="text">     </span>
-                                            </li>
-                                            <li>
-                                                <span class="title">    </span>
-                                                <span class="text">     </span>
-                                            </li>
-                                            <li>
-                                                <span class="title">    </span>
-                                                <span class="text">     </span>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="profile-basic">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <ul class="personal-info">
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">    </span>
+                                        <span class="text">     </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

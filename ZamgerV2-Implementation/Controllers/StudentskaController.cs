@@ -192,6 +192,14 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
 
+        [Route("/studentska/sva-obavještenja-list")]
+        public IActionResult AllAnnouncementsList()
+        {
+            return View();
+        }
+
+
+
         [Route("/studentska/kreiraj-predmet")]
         [HttpGet]
         public IActionResult KreirajPredmet()

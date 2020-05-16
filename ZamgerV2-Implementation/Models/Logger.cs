@@ -769,5 +769,34 @@ namespace ZamgerV2_Implementation.Models
                 throw new Exception("neuspješan unos obavještenja u bazu");
             }
         }
+
+        public List<Obavještenje> dajObavještenja()
+        {
+            List<Obavještenje> obavještenja = new List<Obavještenje>();
+            string kveri = "select * from obavještenja";
+            SqlCommand command = new SqlCommand(kveri, conn);
+            try
+            {
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        string ime = result.GetString(0);
+                        string sadrzaj = result.GetString(1);
+                        DateTime datum = Convert.ToDateTime(result.GetString(2));
+                        obavještenja.Add(new Obavještenje(ime, sadrzaj, datum));
+                    }
+                }
+                else return null;
+            }catch(Exception e)
+            {
+                throw e;
+            }
+
+
+
+            return obavještenja;
+        }
     }
 }

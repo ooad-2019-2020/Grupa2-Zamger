@@ -888,9 +888,102 @@ namespace ZamgerV2_Implementation.Models
         public List<Student> pretražiStudenta(int brojIndeksa,string ime, string prezime, string odsjek)
         {
             List<Student> studenti = new List<Student>();
+            int brojac = 0;
+            string where = "";
+            string kveri = "select * from studenti ";
+            string indeksKveri = "@index = brojIndeksa ";
+            string imeKveri = "@name = ime";
+            string prezimeKveri = "@lastName = prezime ";
+            string odsjekKveri = "@course = odsjek ";
+            //if (brojIndeksa != -1 || ime != null || prezime != null || odsjek != null) where ="where ";
+            bool provjeraIndeks = false;
+            bool provjeraIme = false;
+            bool provjeraPrezime = false;
+            bool provjeraOdsjek = false;
+            if (brojIndeksa != -1) provjeraIndeks = true;
+            if (ime != null) provjeraIme = true;
+            if (prezime != null) provjeraPrezime = true;
+            if (odsjek != null) provjeraOdsjek = true;
+            var indexParam = new SqlParameter("index", System.Data.SqlDbType.Int);
+            var nameParam = new SqlParameter("name", System.Data.SqlDbType.NVarChar);
+            var lastNameParam = new SqlParameter("lastName", System.Data.SqlDbType.NVarChar);
+            var courseParam = new SqlParameter("course", System.Data.SqlDbType.NVarChar);
+            if (provjeraIme || provjeraPrezime || provjeraOdsjek || provjeraIndeks) kveri = kveri + "where ";
+            bool prethodni = false;
+            if (provjeraIndeks)
+            {
+                indexParam.Value = brojIndeksa;
+                kveri = kveri + indeksKveri;
+                prethodni = true;
+            }
 
+            if (provjeraIme)
+            {
+                if (prethodni) kveri += "and ";
+                nameParam.Value = ime;
+                kveri += imeKveri;
+                prethodni = true;
+            }
+            if (provjeraPrezime)
+            {
+                if (prethodni) kveri += "and ";
+                lastNameParam.Value = prezime;
+                kveri += prezimeKveri;
+                prethodni = true;
+            }
 
+            if(provjeraOdsjek)
+            {
+                if (prethodni) kveri += "and ";
+                courseParam.Value = odsjek;
+                kveri += odsjekKveri;
+                //prethodni = true;
+            }
 
+            try
+            {
+
+                SqlCommand command = new SqlCommand(kveri, conn);
+                if (provjeraIndeks) command.Parameters.Add(indexParam);
+                if (provjeraIme) command.Parameters.Add(nameParam);
+                if (provjeraPrezime) command.Parameters.Add(lastNameParam);
+                if (provjeraOdsjek) command.Parameters.Add(courseParam);
+
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        //studenti.Add(new Student())
+                        string tIme = result.GetString(0);
+                        string tPrezime = result.GetString(1);
+                        int tBrojIndeksa = result.GetInt32(2);
+                        string tDatumRođenja = result.GetString(3);
+                        //DateTime tDate = Convert.ToDateTime(tDateString);
+                        string tMjestoPrebivališta = result.GetString(4);
+                        string tOdsjek = result.GetString(5);
+                        string tEmail = result.GetString(6);
+                        bool bsc = result.GetBoolean(7);
+                        string tSpol = result.GetString(8);
+                        if (bsc)
+                        {
+                            studenti.Add(new Student(tIme, tPrezime, tDatumRođenja, tMjestoPrebivališta, generišiUsername(tIme, tPrezime), tEmail, tSpol, tOdsjek, tBrojIndeksa));
+                            
+                        }else
+                        {
+                            studenti.Add(new MasterStudent(tIme, tPrezime, tDatumRođenja, tMjestoPrebivališta, generišiUsername(tIme, tPrezime), tEmail, tSpol, tOdsjek, tBrojIndeksa, 6));
+                            
+                        }
+                    }
+
+                }
+                else return null;
+
+            }catch(Exception e)
+            {
+
+            }
+                
             return studenti;
 
         }

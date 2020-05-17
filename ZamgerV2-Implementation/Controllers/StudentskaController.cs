@@ -377,6 +377,14 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
 
+        [Route("/studentska/izbrisi-obavjestenje/{id}")]
+        public IActionResult IzbrišiObavještenje(int id)
+        {
+            logg.izbrisiObavjestenje(id);
+            return RedirectToAction("AllAnnouncementsList");
+        }
+
+
         /* 
          Analogno napraviti i tipa /studentska/izbrisi-obavjestenje/{id}, to je lakše, samo izbrišeš ga i vratiš opet na ovo AllAnnouncments
          */

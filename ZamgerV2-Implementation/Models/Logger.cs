@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ZamgerV2_Implementation.Models
 {
@@ -862,6 +863,23 @@ namespace ZamgerV2_Implementation.Models
             catch(Exception e)
             {
                 throw new Exception("greška prilikom uređivanja predmeta po ID-u");
+            }
+        }
+
+        public void izbrisiObavjestenje(int id)
+        {
+            string kveri = "delete from obavještenja where idObavjestenja = @id";
+            var idParam = new SqlParameter("id", System.Data.SqlDbType.Int);
+            idParam.Value = id;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(idParam);
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw new Exception("greška prilikom brisanja ograničenja iz baze");
             }
         }
 

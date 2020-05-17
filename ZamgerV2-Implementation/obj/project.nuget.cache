@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WBICLjvhiKdW3+OfhEMuBUMvTEOgj8EZBiwEEiph3pzA3qPB3KSwWTksIeWMucpdwacPeMeqgpsoD/8zIVwLPQ==",
+  "dgSpecHash": "vVxLqN+3QK8s1qU0Pq/CcfpvGrk4hZ7qn2SuxtRGEpmIGZZOOrhV2/vKR1VJ2/SSASKnTXK/cJNxe55kMhLsbg==",
   "success": true,
   "projectFilePath": "F:\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj",
   "expectedPackageFiles": [
@@ -11,7 +11,7 @@
     "C:\\Users\\Huso\\.nuget\\packages\\microsoft.aspnetcore.razor.runtime\\2.2.0\\microsoft.aspnetcore.razor.runtime.2.2.0.nupkg.sha512",
     "C:\\Users\\Huso\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.0\\microsoft.bcl.asyncinterfaces.1.1.0.nupkg.sha512",
     "C:\\Users\\Huso\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",
-    "C:\\Users\\Huso\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\2.9.4\\microsoft.codeanalysis.analyzers.2.9.4.nupkg.sha512",
+    "C:\\Users\\Huso\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.0.0\\microsoft.codeanalysis.analyzers.3.0.0.nupkg.sha512",
     "C:\\Users\\Huso\\.nuget\\packages\\microsoft.codeanalysis.common\\3.3.1\\microsoft.codeanalysis.common.3.3.1.nupkg.sha512",
     "C:\\Users\\Huso\\.nuget\\packages\\microsoft.codeanalysis.csharp\\3.3.1\\microsoft.codeanalysis.csharp.3.3.1.nupkg.sha512",
     "C:\\Users\\Huso\\.nuget\\packages\\microsoft.codeanalysis.csharp.workspaces\\3.3.1\\microsoft.codeanalysis.csharp.workspaces.3.3.1.nupkg.sha512",

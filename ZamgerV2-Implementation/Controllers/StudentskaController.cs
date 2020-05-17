@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using ZamgerV2_Implementation.Models;
 
 
@@ -195,6 +192,7 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/sva-obavještenja-list")]
         public IActionResult AllAnnouncementsList()
         {
+            ViewBag.listaObavjestenja = logg.dajObavještenja();
             return View();
         }
 
@@ -352,5 +350,35 @@ namespace ZamgerV2_Implementation.Controllers
         {
             return View();
         }
+
+        [Route("/studentska/uredi-obavjestenje/{id}")]
+        [HttpGet]
+        public IActionResult UrediObavještenje(int id)
+        {
+            Obavještenje o = logg.dajObavještenjePoId(id);
+            return View(o);
+        }
+
+        [Route("/studentska/uredi-obavjestenje/{id}")]
+        [HttpPost]
+        public IActionResult UrediObavještenje(int id, IFormCollection forma)
+        {
+            if(forma!=null)
+            {
+                Obavještenje o = new Obavještenje(forma["naslovObavještenja"], forma["sadržajObavještenja"], DateTime.Now, id);
+                logg.editujObavještenje(o);
+                return RedirectToAction("AllAnnouncementsList");
+            }
+            else
+            {
+                Response.WriteAsync("Nešto ne valja prilikom uređivanja obavještenja po ID-u");
+                return null;
+            }
+        }
+
+
+        /* 
+         Analogno napraviti i tipa /studentska/izbrisi-obavjestenje/{id}, to je lakše, samo izbrišeš ga i vratiš opet na ovo AllAnnouncments
+         */
     }
 }

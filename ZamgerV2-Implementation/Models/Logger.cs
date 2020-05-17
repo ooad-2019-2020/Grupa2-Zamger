@@ -486,7 +486,6 @@ namespace ZamgerV2_Implementation.Models
         {
             try
             {
-
                 string sqlKveri = "INSERT INTO PREDMETI VALUES(@predmetID, @name, @ECTSpoints)";
                 var predmetIDParam = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
                 int pomocni = dajNoviPredmetId();
@@ -695,7 +694,6 @@ namespace ZamgerV2_Implementation.Models
 
         }
 
-
         public double dajProsjekStudentaPoID(int? id)
         {
 
@@ -749,17 +747,20 @@ namespace ZamgerV2_Implementation.Models
 
         public void kreirajObavještenje(String naslov, String sadržaj)
         {
-            string kveri = "insert into obavještenja values(@naslov, @sadržaj, @vrijeme)";
+            string kveri = "insert into obavještenja values(@naslov, @sadržaj, @vrijeme, @idObavještenja)";
             var naslovParam = new SqlParameter("naslov", System.Data.SqlDbType.NVarChar);
             naslovParam.Value = naslov;
             var sadržajParam = new SqlParameter("sadržaj", System.Data.SqlDbType.NVarChar);
             sadržajParam.Value = sadržaj;
             var vrijemeParam = new SqlParameter("vrijeme", System.Data.SqlDbType.DateTime);
             vrijemeParam.Value = DateTime.Now;
+            var idParam = new SqlParameter("idObavještenja", System.Data.SqlDbType.Int);
+            idParam.Value = dajIdObavještenja();
             SqlCommand command = new SqlCommand(kveri, conn);
             command.Parameters.Add(naslovParam);
             command.Parameters.Add(sadržajParam);
             command.Parameters.Add(vrijemeParam);
+            command.Parameters.Add(idParam);
             try
             {
                 command.ExecuteNonQuery();
@@ -767,6 +768,22 @@ namespace ZamgerV2_Implementation.Models
             catch(Exception e)
             {
                 throw new Exception("neuspješan unos obavještenja u bazu");
+            }
+        }
+
+        public int dajIdObavještenja()
+        {
+            string sqlKveri = "SELECT isnull(max(idObavjestenja),0)+1 from OBAVJEŠTENJA";
+            SqlCommand command = new SqlCommand(sqlKveri, conn);
+            try
+            {
+                int resultID = (int)command.ExecuteScalar();
+                return resultID;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.StackTrace + "error u generisanju ID obavještenja");
+                return -1;
             }
         }
 
@@ -784,8 +801,9 @@ namespace ZamgerV2_Implementation.Models
                     {
                         string ime = result.GetString(0);
                         string sadrzaj = result.GetString(1);
-                        DateTime datum = Convert.ToDateTime(result.GetString(2));
-                        obavještenja.Add(new Obavještenje(ime, sadrzaj, datum));
+                        DateTime datum = Convert.ToDateTime(result.GetValue(2).ToString());
+                        int idObavjestenja = result.GetInt32(3);
+                        obavještenja.Add(new Obavještenje(ime, sadrzaj, datum, idObavjestenja));
                     }
                 }
                 else return null;
@@ -793,10 +811,62 @@ namespace ZamgerV2_Implementation.Models
             {
                 throw e;
             }
-
-
-
             return obavještenja;
         }
+        public Obavještenje dajObavještenjePoId(int id)
+        {
+            string kveri = "select naslov, sadržaj, vrijemeObavještenja from obavještenja where idObavjestenja = @id";
+            var idParam = new SqlParameter("id", System.Data.SqlDbType.Int);
+            idParam.Value = id;
+            try
+            {
+                SqlCommand command = new SqlCommand(kveri, conn);
+                command.Parameters.Add(idParam);
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                    result.Read();
+                    return new Obavještenje(result.GetString(0), result.GetString(1), Convert.ToDateTime(result.GetValue(2).ToString()), id);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Nešto nije u redu prilikom dohvaćanja obavještenja po ID");
+            }
+        }
+
+        public void editujObavještenje(Obavještenje o)
+        {
+            string kveri = "UPDATE obavještenja SET naslov = @naslov, sadržaj = @sadrzaj, vrijemeObavještenja=@vrijeme WHERE idObavjestenja=@id";
+            var naslovParam = new SqlParameter("naslov", System.Data.SqlDbType.NVarChar);
+            naslovParam.Value = o.Naslov;
+            var sadrzajParam = new SqlParameter("sadrzaj", System.Data.SqlDbType.NVarChar);
+            sadrzajParam.Value = o.Sadržaj;
+            var vrijemeParam = new SqlParameter("vrijeme", System.Data.SqlDbType.DateTime);
+            vrijemeParam.Value = o.dateTime;
+            var idParam = new SqlParameter("id", System.Data.SqlDbType.Int);
+            idParam.Value = o.IdObavještenja;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(naslovParam);
+            command.Parameters.Add(sadrzajParam);
+            command.Parameters.Add(vrijemeParam);
+            command.Parameters.Add(idParam);
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw new Exception("greška prilikom uređivanja predmeta po ID-u");
+            }
+        }
+
+
     }
+
+
 }

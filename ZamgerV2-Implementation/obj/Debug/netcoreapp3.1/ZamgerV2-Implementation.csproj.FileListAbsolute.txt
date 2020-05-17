@@ -340,7 +340,6 @@ C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netc
 C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\UspješnoKreiranPredmet.cshtml.g.cs
 C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\svaObavještenjaListLayout.cshtml.g.cs
 C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\AllAnnouncementsList.cshtml.g.cs
-C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\AllAnnouncements.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\svaObavještenjaListLayout.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\AllAnnouncementsList.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Razor.Language.dll
@@ -453,3 +452,5 @@ F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\ZamgerV2-Implem
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\ZamgerV2-Implementation.MvcApplicationPartsAssemblyInfo.cache
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\urediObavjestenjeLayout.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\UrediObavještenje.cshtml.g.cs
+C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\urediObavjestenjeLayout.cshtml.g.cs
+C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\UrediObavještenje.cshtml.g.cs

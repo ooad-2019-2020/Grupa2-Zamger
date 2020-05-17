@@ -8267,23 +8267,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Huso\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Pasha\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj",
+      "projectUniqueName": "C:\\Users\\Pasha\\Desktop\\OOAD\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj",
       "projectName": "ZamgerV2-Implementation",
-      "projectPath": "F:\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj",
-      "packagesPath": "C:\\Users\\Huso\\.nuget\\packages\\",
-      "outputPath": "F:\\Grupa2-Zamger\\ZamgerV2-Implementation\\obj\\",
+      "projectPath": "C:\\Users\\Pasha\\Desktop\\OOAD\\Grupa2-Zamger\\ZamgerV2-Implementation\\ZamgerV2-Implementation.csproj",
+      "packagesPath": "C:\\Users\\Pasha\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Pasha\\Desktop\\OOAD\\Grupa2-Zamger\\ZamgerV2-Implementation\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Huso\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Pasha\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8348,7 +8344,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

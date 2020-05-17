@@ -792,9 +792,10 @@ namespace ZamgerV2_Implementation.Models
         {
             List<Obavještenje> obavještenja = new List<Obavještenje>();
             string kveri = "select * from obavještenja";
+            try { 
             SqlCommand command = new SqlCommand(kveri, conn);
-            try
-            {
+            
+            
                 var result = command.ExecuteReader();
                 if (result.HasRows)
                 {
@@ -808,9 +809,10 @@ namespace ZamgerV2_Implementation.Models
                     }
                 }
                 else return null;
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
-                throw e;
+                //throw new Exception("belaj neki nemam pojma");
             }
             return obavještenja;
         }
@@ -881,6 +883,16 @@ namespace ZamgerV2_Implementation.Models
             {
                 throw new Exception("greška prilikom brisanja ograničenja iz baze");
             }
+        }
+
+        public List<Student> pretražiStudenta(int brojIndeksa,string ime, string prezime, string odsjek)
+        {
+            List<Student> studenti = new List<Student>();
+
+
+
+            return studenti;
+
         }
 
 

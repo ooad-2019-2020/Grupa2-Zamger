@@ -385,8 +385,46 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
 
-        /* 
-         Analogno napraviti i tipa /studentska/izbrisi-obavjestenje/{id}, to je lakše, samo izbrišeš ga i vratiš opet na ovo AllAnnouncments
-         */
+        [Route("/studentska/svi-studenti/pretraga")]
+        [HttpPost]
+        public IActionResult PretražiStudente(IFormCollection forma)
+        {
+            int? brIndeksa;
+            if (String.IsNullOrEmpty(forma["brojIndeksa"].ToString())) brIndeksa = null;
+            else
+            {
+                brIndeksa = int.Parse(forma["brojIndeksa"].ToString());
+            }
+       
+            List<Student> studenti = logg.pretražiStudenta(brIndeksa, forma["ime"], forma["Prezime"], forma["odsjek"]);
+            if (studenti != null)
+            {
+                return View(studenti);
+            }
+            Response.WriteAsync("Prazna pretraga studenata ili nešto nije uredu");
+            return null;
+        }
+
+        [Route("/studentska/svi-studenti/pretraga-list")]
+        [HttpPost]
+        public IActionResult PretražiStudenteList(IFormCollection forma)
+        {
+            int? brIndeksa;
+            if (String.IsNullOrEmpty(forma["brojIndeksa"].ToString())) brIndeksa = null;
+            else
+            {
+                brIndeksa = int.Parse(forma["brojIndeksa"].ToString());
+            }
+
+            List<Student> studenti = logg.pretražiStudenta(brIndeksa, forma["ime"], forma["Prezime"], forma["odsjek"]);
+            if (studenti != null)
+            {
+                return View(studenti);
+            }
+            Response.WriteAsync("Prazna pretraga studenata ili nešto nije uredu");
+            return null;
+        }
+
+
     }
 }

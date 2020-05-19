@@ -1,7 +1,12 @@
-﻿
+﻿@model List<Student>
 @{
-    ViewData["Title"] = "Studentska - Lista svih studenata";
-    Layout = "~/Views/Shared/sviStudentiListLayout.cshtml";
+    ViewData["Title"] = "PretražiStudente";
+    Layout = "~/Views/Shared/studentiPretragaLayout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "AllStudents";
+    Layout = "~/Views/Shared/studentskaAllStudents.cshtml";
 }
 <div class="main-wrapper">
     <div class="header">
@@ -133,31 +138,29 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                        <h5 class="text-uppercase">Svi studenti - list</h5>
+                        <h5 class="text-uppercase">Svi Studenti</h5>
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
-                            <li class="list-inline-item"><a href="/studentska/dashboard">Početna</a></li>
-                            <li class="list-inline-item"> Svi studenti - list</li>
+                            <li class="list-inline-item"><a href="~/studentska/dashboard">Početna</a></li>
+                            <li class="list-inline-item"> Svi Studenti</li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-4 col-3">
-
                 </div>
                 <div class="col-sm-8 col-9 text-right m-b-20">
-                    <a href="/studentska/kreiraj-studenta" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Kreiraj studenta</a>
+                    <a href="~/studentska/svi-studenti/kreiraj-studenta" class="btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Kreiraj studenta</a>
                     <div class="view-icons">
-                        <a href="/studentska/svi-studenti" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
-                        <a href="#" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
+                        <a href="#" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
+                        <a href="/studentska/svi-studenti-list" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
                     </div>
                 </div>
             </div>
             <div class="content-page">
-
-                <form asp-antiforgery="false" asp-action="PretražiStudenteList" method="post">
+                <form asp-antiforgery="false" asp-action="PretražiStudente" method="post">
                     <div class="row filter-row">
                         <div class="col-sm-6 col-md-3">
                             <div class="form-group custom-mt-form-group">
@@ -195,23 +198,33 @@
                 </form>
 
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="table-responsive">
-                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
-                                <div class="col-sm-12">
-                                    <table class="table table-striped custom-table datatable dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
-                                        <thead>
-                                            <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Ime i prezime </th><th style="min-width: 70px; width: 70px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Broj indeksa: activate to sort column ascending">Br. indeksa</th><th style="min-width: 20px; width: 50px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Class: activate to sort column ascending">Godina studija</th><th style="min-width: 50px; width: 100px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">Odsjek</th><th style="min-width: 50px; width: 86.8px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label=" Address: activate to sort column ascending"> Prebivalište</th><th style="min-width: 80px; width: 80.4px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date of Birth: activate to sort column ascending">Datum rođenja</th><th style="min-width: 50px; width: 126px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending">Email</th><th class="text-right sorting" style="min-width: 50px; width: 50px;" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Akcija</th></tr>
-                                        </thead>
-                                        <tbody>
-                                           
-                                        </tbody>
-                                    </table>
+
+                <div class="row staff-grid-row">
+
+                    @foreach (Student s in Model)
+                    {
+                        <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+                            <div class="profile-widget">
+                                <div class="profile-img">
+                                    <a href="#" class="avatar">@s.Ime[0]@s.Prezime[0]</a>
                                 </div>
+                                <div class="dropdown profile-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
+                                    </div>
+                                </div>
+                                <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">@s.Ime @s.Prezime</a></h4>
+                                <div class="small text-muted">@s.Odsjek</div>
+                                <div class="small text-muted">@s.GodinaStudija . godina</div>
                             </div>
                         </div>
-                    </div>
+                    }
+
+
+
+
                 </div>
             </div>
         </div>
@@ -220,13 +233,13 @@
         <div class="modal-dialog">
             <div class="modal-content modal-md">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete student</h4>
+                    <h4 class="modal-title">Delete Employee</h4>
                 </div>
                 <form>
                     <div class="modal-body card-box">
                         <p>Are you sure want to delete this?</p>
                         <div class="m-t-20">
-                            <a href="https://dreamguys.co.in/preadmin/school/dark/students-list.html#" class="btn btn-white" data-dismiss="modal">Close</a>
+                            <a href="https://dreamguys.co.in/preadmin/school/dark/all-students.html#" class="btn btn-white" data-dismiss="modal">Close</a>
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </div>
                     </div>
@@ -235,7 +248,6 @@
         </div>
     </div>
 </div>
-
 <div class="sidebar-overlay" data-reff=""></div>
 <script type="text/javascript" src="~/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="~/js/popper.min.js"></script>
@@ -245,6 +257,8 @@
 <script type="text/javascript" src="~/js/moment.min.js"></script>
 <script type="text/javascript" src="~/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
+
+
 
 
 

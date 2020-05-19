@@ -31,7 +31,6 @@ namespace ZamgerV2_Implementation.Models
                 conn.Close();
             }
         }
-
         public static Logger GetInstance()
         {
             if (instance == null)
@@ -885,11 +884,9 @@ namespace ZamgerV2_Implementation.Models
             }
         }
 
-        public List<Student> pretražiStudenta(int brojIndeksa,string ime, string prezime, string odsjek)
+        public List<Student> pretražiStudenta(int? brojIndeksa,string ime, string prezime, string odsjek)
         {
             List<Student> studenti = new List<Student>();
-            int brojac = 0;
-            string where = "";
             string kveri = "select * from studenti ";
             string indeksKveri = "@index = brojIndeksa ";
             string imeKveri = "@name = ime";
@@ -900,10 +897,10 @@ namespace ZamgerV2_Implementation.Models
             bool provjeraIme = false;
             bool provjeraPrezime = false;
             bool provjeraOdsjek = false;
-            if (brojIndeksa != -1) provjeraIndeks = true;
-            if (ime != null) provjeraIme = true;
-            if (prezime != null) provjeraPrezime = true;
-            if (odsjek != null) provjeraOdsjek = true;
+            if (brojIndeksa != null) provjeraIndeks = true;
+            if (!String.IsNullOrEmpty(ime)) provjeraIme = true;
+            if (!String.IsNullOrEmpty(prezime)) provjeraPrezime = true;
+            if (!String.IsNullOrEmpty(odsjek)) provjeraOdsjek = true;
             var indexParam = new SqlParameter("index", System.Data.SqlDbType.Int);
             var nameParam = new SqlParameter("name", System.Data.SqlDbType.NVarChar);
             var lastNameParam = new SqlParameter("lastName", System.Data.SqlDbType.NVarChar);
@@ -919,14 +916,14 @@ namespace ZamgerV2_Implementation.Models
 
             if (provjeraIme)
             {
-                if (prethodni) kveri += "and ";
+                if (prethodni) kveri += " and ";
                 nameParam.Value = ime;
                 kveri += imeKveri;
                 prethodni = true;
             }
             if (provjeraPrezime)
             {
-                if (prethodni) kveri += "and ";
+                if (prethodni) kveri += " and ";
                 lastNameParam.Value = prezime;
                 kveri += prezimeKveri;
                 prethodni = true;
@@ -934,7 +931,7 @@ namespace ZamgerV2_Implementation.Models
 
             if(provjeraOdsjek)
             {
-                if (prethodni) kveri += "and ";
+                if (prethodni) kveri += " and ";
                 courseParam.Value = odsjek;
                 kveri += odsjekKveri;
                 //prethodni = true;
@@ -955,24 +952,29 @@ namespace ZamgerV2_Implementation.Models
                     while (result.Read())
                     {
                         //studenti.Add(new Student())
-                        string tIme = result.GetString(0);
-                        string tPrezime = result.GetString(1);
-                        int tBrojIndeksa = result.GetInt32(2);
-                        string tDatumRođenja = result.GetString(3);
+                        string tIme = result.GetString(1);
+                        string tPrezime = result.GetString(2);
+                        int tBrojIndeksa = result.GetInt32(0);
+                        string tDatumRođenja = result.GetDateTime(4).ToString();
                         //DateTime tDate = Convert.ToDateTime(tDateString);
-                        string tMjestoPrebivališta = result.GetString(4);
-                        string tOdsjek = result.GetString(5);
-                        string tEmail = result.GetString(6);
-                        bool bsc = result.GetBoolean(7);
-                        string tSpol = result.GetString(8);
-                        if (bsc)
+                        string tMjestoPrebivališta = result.GetString(5);
+                        string tOdsjek = result.GetString(6);
+                        string tEmail = result.GetString(7);
+                        string tUsername = tEmail.Substring(0, tEmail.IndexOf('@'));
+                        int bsc = result.GetInt32(9);
+                        string tSpol = result.GetString(3);
+                        int tGodinaStudija = result.GetInt32(8);
+                        if (bsc==0)
                         {
-                            studenti.Add(new Student(tIme, tPrezime, tDatumRođenja, tMjestoPrebivališta, generišiUsername(tIme, tPrezime), tEmail, tSpol, tOdsjek, tBrojIndeksa));
+                            Student tempS = new Student(tIme, tPrezime, tDatumRođenja, tMjestoPrebivališta, tUsername, tEmail, tSpol, tOdsjek, tBrojIndeksa);
+                            tempS.GodinaStudija = tGodinaStudija;
+                            studenti.Add(tempS);
                             
                         }else
                         {
-                            studenti.Add(new MasterStudent(tIme, tPrezime, tDatumRođenja, tMjestoPrebivališta, generišiUsername(tIme, tPrezime), tEmail, tSpol, tOdsjek, tBrojIndeksa, 6));
-                            
+                            MasterStudent mastS = new MasterStudent(tIme, tPrezime, tDatumRođenja, tMjestoPrebivališta, tUsername, tEmail, tSpol, tOdsjek, tBrojIndeksa, result.GetFloat(10));
+                            mastS.GodinaStudija = tGodinaStudija;
+                            studenti.Add(mastS);
                         }
                     }
 
@@ -981,11 +983,9 @@ namespace ZamgerV2_Implementation.Models
 
             }catch(Exception e)
             {
-
-            }
-                
+                throw new Exception("Greška prilikom pretrage studenta");
+            } 
             return studenti;
-
         }
 
 

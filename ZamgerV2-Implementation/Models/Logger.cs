@@ -988,6 +988,54 @@ namespace ZamgerV2_Implementation.Models
             return studenti;
         }
 
+        public int dajUkupanBrojOsobaNaSistemu()
+        {
+            string kveri = "select ISNULL(Count(idKorisnika),0) from korisnici where idKorisnika!=1";
+            SqlCommand command = new SqlCommand(kveri, conn);
+            try
+            {
+                return (int)command.ExecuteScalar();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom dobijanja svih korisnika na sistemu");
+            }
+
+        }
+
+        public int dajUkupanBrojStudenataNaSistemu()
+        {
+            string kveri = "select ISNULL(Count(idKorisnika),0) from korisnici where tipKorisnika=1";
+            SqlCommand command = new SqlCommand(kveri, conn);
+            try
+            {
+                return (int)command.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom dobijanja svih studenata na sistemu");
+            }
+        }
+
+        public int dajUkupanBrojNastavnogOsobljaNaSistemu()
+        {
+            string kveri = "select ISNULL(Count(idKorisnika),0) from korisnici where tipKorisnika=2 or tipKorisnika=4";
+            SqlCommand command = new SqlCommand(kveri, conn);
+            try
+            {
+                return (int)command.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom dobijanja svih nastavnika na sistemu");
+            }
+
+        }
+
+
+
+
+
 
     }
 

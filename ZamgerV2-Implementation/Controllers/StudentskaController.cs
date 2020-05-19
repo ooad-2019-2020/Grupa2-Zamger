@@ -32,6 +32,9 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/dashboard")]
         public IActionResult Dashboard()
         {
+            ViewBag.ukupanBrojOsoba = logg.dajUkupanBrojOsobaNaSistemu();
+            ViewBag.ukupanBrojStudenata = logg.dajUkupanBrojStudenataNaSistemu();
+            ViewBag.ukupanBrojNastavnogOsoblja = logg.dajUkupanBrojNastavnogOsobljaNaSistemu();
             return View();
         }
 
@@ -425,6 +428,16 @@ namespace ZamgerV2_Implementation.Controllers
             return null;
         }
 
+
+
+        //trebat ce editovat ovu metodu kad se dodaju i predmeti svi i sve, ocjene i to da se sve prikaže o studentu ovdje!
+        [Route("/studentska/uredi-studenta/{id}")]
+        [HttpGet]
+        public IActionResult UrediStudenta(int id)
+        {
+            Student tempStudent = logg.dajStudentaPoID(id);
+            return View(tempStudent); //napravio sam ja i view al i njega će trebati urediti, treba još informacija o studentu ovdje
+        }
 
     }
 }

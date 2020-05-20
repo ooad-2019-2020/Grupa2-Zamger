@@ -21,13 +21,17 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/student/{id}/dashboard")]
         public IActionResult Dashboard(int id)
         {
-            trenutniKorisnik = zmgr.dajStudentaPoID(id);
-            trenutniKorisnik.Predmeti = zmgr.formirajPredmeteZaStudentaPoId(id);
-            foreach (PredmetZaStudenta prdmt in trenutniKorisnik.Predmeti)
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(id);
+            if(tempK.GetType() == typeof(Student))
             {
-                prdmt.Aktivnosti = zmgr.dajAktivnostiZaStudentovPredmet(prdmt.IdPredmeta, prdmt.IdStudenta);
+                trenutniKorisnik = (Student)tempK;
             }
-            Response.WriteAsync("STUDENT USPJEŠNO LOGOVAN: "+trenutniKorisnik.Ime+" "+trenutniKorisnik.Prezime+" "+trenutniKorisnik.Predmeti.Count);
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+            Response.WriteAsync("STUDENT USPJEŠNO LOGOVAN: "+trenutniKorisnik.Ime+" "+trenutniKorisnik.Prezime+" "+trenutniKorisnik.Predmeti.Count+" i tipa je --"+trenutniKorisnik.GetType().ToString());
             return View(); //View ovaj nije napravljen potrebno je sada fino izdijanirati UI, odnosno studentske viewe na sistem!
         }
     }

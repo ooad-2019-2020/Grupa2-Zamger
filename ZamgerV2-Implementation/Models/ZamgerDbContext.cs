@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography;
@@ -181,7 +183,256 @@ namespace ZamgerV2_Implementation.Models
         }
 
 
+        public NastavnoOsoblje dajNastavnoOsobljePoId(int id)
+        {
+            NastavnoOsoblje no;
+            int tipKorisnika = this.dajTipKorisnikaPoId(id);
+                string kveri = "select no.ime, no.prezime, no.datumRođenja, no.mjestoPrebivališta, k.username, no.email, no.spol, no.titula from NASTAVNO_OSOBLJE no, KORISNICI k where k.idKorisnika=no.idOsobe and no.idOsobe=@userID";
+                var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
+                userIDParam.Value = id;
+                SqlCommand command = new SqlCommand(kveri, conn);
+                command.Parameters.Add(userIDParam);
+                try
+                {
+                    var result = command.ExecuteReader();
+                    if(result.HasRows)
+                    {
+                        result.Read();
+                        if (tipKorisnika == 2)
+                        {
+                            return new NastavnoOsoblje(result.GetString(0), result.GetString(1), result.GetDateTime(2).ToString(), result.GetString(3), result.GetString(4), result.GetString(5), result.GetString(6), result.GetString(7));
+                        }
+                        else if(tipKorisnika==4)
+                        {
+                            return new Profesor(result.GetString(0), result.GetString(1), result.GetDateTime(2).ToString(), result.GetString(3), result.GetString(4), result.GetString(5), result.GetString(6), result.GetString(7));
+                        }
+                        else
+                        {
+                            return null; //nešto ne valja, pozvala se ova metoda a osoba nije nit profesor nit nastavnik
+                        }
+                    }
+                    else
+                    {
+                    throw new Exception("greška prilikom dobavljanja podataka o nastavnom osoblju");
+                    }
+                }
+                catch(Exception e)
+                {
+                    throw new Exception(e.StackTrace);
+                }
+        }
 
+
+        public int dajTipKorisnikaPoId(int id)
+        {
+            string kveri = "select tipKorisnika from korisnici where idKorisnika = @userID";
+            var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
+            userIDParam.Value = id;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(userIDParam);
+            try
+            {
+                return (int)command.ExecuteScalar(); //možda će trebat executeReader ako šta bude bacalo
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom dobavljanja tipa korisnika iz baze");
+            }
+        }
+
+        public List<PredmetZaNastavnoOsoblje> formirajPredmeteZaNastavnoOsobljePoId(int id)
+        {
+            List<PredmetZaNastavnoOsoblje> lista = new List<PredmetZaNastavnoOsoblje>();
+            string kveri = "select p.naziv, p.idPredmeta, p.ectsPoeni from predmeti p, ANSAMBL a, NASTAVNO_OSOBLJE no where a.idNastavnogOsoblja=no.idOsobe and a.idPredmeta=p.idPredmeta and no.idOsobe=@userID";
+            var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
+            userIDParam.Value = id;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(userIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        lista.Add(new PredmetZaNastavnoOsoblje(result.GetString(0), result.GetInt32(1), result.GetFloat(2), null, null));
+                    }
+                    return lista;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "nešto nije uredu prilikom formiranja predmeta za nastavno osoblje");
+            }
+        }
+
+        public List<int> dajIdeveStudenataNaPredmetu(int id)
+        {
+            List<int> idevi = new List<int>();
+            string kveri = "select idStudenta from ocjene where idPredmeta = @predmetID group by idStudenta";
+            var predmetIDParam = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
+            predmetIDParam.Value = id;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(predmetIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        idevi.Add(result.GetInt32(0));
+                    }
+                    return idevi;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom dobavljana ideva studenata za predmet");
+            }
+        }
+
+        public List<Student> formirajStudenteNaPredmetuPoId(int id)
+        {
+            List<Student> studenti = new List<Student>();
+            var idevi = this.dajIdeveStudenataNaPredmetu(id);
+            try
+            {
+                foreach (int studentID in idevi)
+                {
+                    Student tempStudent = this.dajStudentaPoID(studentID);
+                    tempStudent.Predmeti = this.formirajPredmeteZaStudentaPoId(studentID);
+                    foreach (PredmetZaStudenta prdmt in tempStudent.Predmeti)
+                    {
+                        prdmt.Aktivnosti = this.dajAktivnostiZaStudentovPredmet(prdmt.IdPredmeta, prdmt.IdStudenta);
+                    }
+                    studenti.Add(tempStudent);
+                }
+                return studenti;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom formiranja studenata na predmetu");
+            }
+        }
+
+        public List<Aktivnost> formirajAktivnostiZaNastavnoOsobljePoIdOsobe(int id)
+        {
+            List<Aktivnost> aktivnosti = new List<Aktivnost>();
+            string kveri = "select a.idAktivnosti , a.idPredmeta, a.naziv, a.rok, a.vrsta from AKTIVNOSTI a, PREDMETI p, ANSAMBL an, NASTAVNO_OSOBLJE no where a.idPredmeta=p.idPredmeta and p.idPredmeta=an.idPredmeta and an.idNastavnogOsoblja=no.idOsobe and no.idOsobe=@userID";
+            var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
+            userIDParam.Value = id;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(userIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        if(result.GetString(4).Equals("Ispit"))
+                        {
+                            aktivnosti.Add(new Ispit(-1,result.GetInt32(1), result.GetString(2), result.GetDateTime(3),0,result.GetInt32(0), 0,0));
+                        }
+                        else
+                        {
+                            aktivnosti.Add(new Zadaća(result.GetInt32(0), -1, result.GetInt32(1), result.GetString(2), 0, result.GetDateTime(3), null, 0, null));
+                        }
+                    }
+                    return aktivnosti;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom dobijanja svih aktivnosti za nastavno osoblje po id");
+            }
+        }
+
+        public List<OdgovorNaAnketu> dajOdgovoreNaAnketuPoIdAnkete(int id)
+        {
+            List<OdgovorNaAnketu> odgovori = new List<OdgovorNaAnketu>();
+            string kveri = "select idAnkete, idStudenta, odgovor1, odgovor2, odgovor3, odgovor4, odgovor5, komentarStudenta, ocjenaPredmeta from ODGOVORI_NA_ANKETU where idAnkete = @anketaID";
+            var anketaIDParam = new SqlParameter("anketaID", System.Data.SqlDbType.Int);
+            anketaIDParam.Value = id;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(anketaIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        OdgovorNaAnketu tempOdg = new OdgovorNaAnketu(result.GetInt32(0), result.GetInt32(1), null, result.GetString(7), result.GetInt32(8));
+                        tempOdg.Odgovori = new List<string>();
+                        for(int i = 2; i<7; i++)
+                        {
+                            tempOdg.Odgovori.Add(result.GetString(i));
+                        }
+                        odgovori.Add(tempOdg);
+                    }
+                    return odgovori;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom dobijanja odgovora na neku anketu");
+            }
+        }
+
+        public List<Anketa> dajAnketeZaPredmetPoId(int id)
+        {
+            List<Anketa> ankete = new List<Anketa>();
+            string kveri = "select naziv, datum, pitanje1, pitanje2, pitanje3, pitanje4, pitanje5, idAnkete from ANKETE_NA_PREDMETIMA where idPredmeta = @predmetID";
+            var predmetIDParam = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
+            predmetIDParam.Value = id;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(predmetIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        Anketa tempAnketa = new Anketa(result.GetString(0), result.GetDateTime(1), null, result.GetInt32(7), null);
+                        tempAnketa.Pitanja = new List<string>();
+                        for (int i = 2; i < 7; i++)
+                        {
+                            tempAnketa.Pitanja.Add(result.GetString(i));
+                        }
+                        tempAnketa.Odgovori = this.dajOdgovoreNaAnketuPoIdAnkete(tempAnketa.IdAnkete);
+                        ankete.Add(tempAnketa);
+                    }
+                    return ankete;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom učitavanja svih anketa za pojedini predmet");
+            }
+        }
 
     }
 }

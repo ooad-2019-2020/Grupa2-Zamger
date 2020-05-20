@@ -82,11 +82,9 @@ namespace ZamgerV2_Implementation.Controllers
                     }
                     else
                     {
-
+                       return RedirectToAction("Dashboard", new RouteValueDictionary(
+                       new { controller = "NastavnoOsoblje", action = "Dashboard", id=idKorisnika}));
                     }
-                    
-                    return RedirectToAction("Dashboard", new RouteValueDictionary(
-                    new { controller = "NastavnoOsoblje", action = "Dashboard"}));
                 }
             }
             catch (Exception e)

@@ -523,7 +523,6 @@ namespace ZamgerV2_Implementation.Models
                         command2.Parameters.Add(selectiveParam);
                         command2.ExecuteNonQuery();
                     }
-                    Thread.Sleep(50);
                 }
                 return pomocni;
             }catch (Exception e)

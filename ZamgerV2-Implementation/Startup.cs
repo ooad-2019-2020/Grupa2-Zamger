@@ -26,7 +26,7 @@ namespace ZamgerV2_Implementation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<ZamgerDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ZamgerDBConnection")));
+            //services.AddDbContextPool<ZamgerDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ZamgerDBConnection")));
             services.AddControllersWithViews();
             services.AddMvc(option => option.EnableEndpointRouting = false);
         }

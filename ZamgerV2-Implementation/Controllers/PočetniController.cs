@@ -44,7 +44,7 @@ namespace ZamgerV2_Implementation.Controllers
             }
 
 
-            string sqlKveri = "SELECT * from korisnici where username like @user and password like @pass";
+            string sqlKveri = "SELECT idKorisnika, tipKorisnika from korisnici where username like @user and password like @pass";
 
            SqlConnection conn = new SqlConnection("server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true");
            SqlCommand command = new SqlCommand(sqlKveri, conn);
@@ -68,10 +68,25 @@ namespace ZamgerV2_Implementation.Controllers
                 else
                 {
                     result.Read();
-                    String tipKorisnika = result.GetValue(3).ToString();
-                    conn.Close();
+                    int idKorisnika = result.GetInt32(0);
+                    int tipKorisnika = result.GetInt32(1);
+                    if(tipKorisnika == 3)
+                    {
+                        return RedirectToAction("Dashboard", new RouteValueDictionary(
+                        new { controller = "Studentska", action = "Dashboard"}));
+                    }
+                    else if(tipKorisnika == 1)
+                    {
+                        return RedirectToAction("Dashboard", new RouteValueDictionary(
+                        new { controller = "Student", action = "Dashboard", id=idKorisnika}));
+                    }
+                    else
+                    {
+
+                    }
+                    
                     return RedirectToAction("Dashboard", new RouteValueDictionary(
-                    new { controller = "Studentska", action = "Dashboard"}));
+                    new { controller = "NastavnoOsoblje", action = "Dashboard"}));
                 }
             }
             catch (Exception e)
@@ -88,5 +103,7 @@ namespace ZamgerV2_Implementation.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        //ovdje treba dodati neki view za errore, koji će primati neki parametar npr tipErrora a mi ćemo shodno tome neki custom error view baciti
     }
 }

@@ -31,8 +31,8 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 trenutniKorisnik = (MasterStudent)tempK;
             }
-            Response.WriteAsync("STUDENT USPJEŠNO LOGOVAN: "+trenutniKorisnik.Ime+" "+trenutniKorisnik.Prezime+" "+trenutniKorisnik.Predmeti.Count+" i tipa je --"+trenutniKorisnik.GetType().ToString());
-            return View(); //View ovaj nije napravljen potrebno je sada fino izdijanirati UI, odnosno studentske viewe na sistem!
+            
+            return View(trenutniKorisnik); //View ovaj nije napravljen potrebno je sada fino izdijanirati UI, odnosno studentske viewe na sistem!
         }
     }
 }

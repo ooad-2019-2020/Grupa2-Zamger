@@ -19,7 +19,7 @@ namespace ZamgerV2_Implementation.Models
         private static Logger instance = null;
         private Logger()
         {
-            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);
@@ -206,7 +206,8 @@ namespace ZamgerV2_Implementation.Models
             var spolParam = new SqlParameter("spol", System.Data.SqlDbType.NVarChar);
             spolParam.Value = noviKorisnik.Spol;
             var rodjenjeParam = new SqlParameter("datumRodjenja", System.Data.SqlDbType.Date);
-            DateTime oDate = Convert.ToDateTime(noviKorisnik.DatumRođenja);
+            //DateTime oDate = Convert.ToDateTime(noviKorisnik.DatumRođenja);
+            DateTime oDate = DateTime.ParseExact(noviKorisnik.DatumRođenja, "dd/MM/yyyy", null);
             rodjenjeParam.Value = oDate.Date;
             var prebivalisteParam = new SqlParameter("mjestoPrebivalista", System.Data.SqlDbType.NVarChar);
             prebivalisteParam.Value = noviKorisnik.MjestoPrebivališta;

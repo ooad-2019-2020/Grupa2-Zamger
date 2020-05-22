@@ -17,7 +17,7 @@ namespace ZamgerV2_Implementation.Models
 
         private ZamgerDbContext()
         {
-            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);
@@ -431,6 +431,60 @@ namespace ZamgerV2_Implementation.Models
             catch(Exception e)
             {
                 throw new Exception(e.StackTrace + "greška prilikom učitavanja svih anketa za pojedini predmet");
+            }
+        }
+
+        public bool spremiZahtjev(Zahtjev z)
+        {
+            string kveri = "insert into zahtjevi values(@userID, @vrsta, @datum, 0)";
+            var userIDParam = new SqlParameter("userID", SqlDbType.Int);
+            userIDParam.Value = z.IdStudenta;
+            var vrstaIDParam = new SqlParameter("vrsta", SqlDbType.NVarChar);
+            vrstaIDParam.Value = z.Vrsta;
+            var datumIDParam = new SqlParameter("datum", SqlDbType.DateTime);
+            datumIDParam.Value = z.Datum;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(userIDParam);
+            command.Parameters.Add(vrstaIDParam);
+            command.Parameters.Add(datumIDParam);
+            try
+            {
+                command.ExecuteNonQuery();
+                return true;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "nešto nije u redu prilikom kreiranja novog zahtjeva");
+            }
+        }
+
+        public List<Zahtjev> dajZahtjeveZaStudenta(int id)
+        {
+            List<Zahtjev> zahtjevi = new List<Zahtjev>();
+            string kveri = "select idStudenta, vrsta, datum, odobren from ZAHTJEVI where idStudenta = @userID";
+            var userIDParam = new SqlParameter("userID", SqlDbType.Int);
+            userIDParam.Value = id;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(userIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        zahtjevi.Add(new Zahtjev(result.GetInt32(0), result.GetString(1), result.GetDateTime(2), result.GetInt32(3)));
+                    }
+                    return zahtjevi;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom dobavljanja zahtjeva za studenta");
             }
         }
 

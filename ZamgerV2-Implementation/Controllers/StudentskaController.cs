@@ -398,8 +398,10 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 brIndeksa = int.Parse(forma["brojIndeksa"].ToString());
             }
-       
-            List<Student> studenti = logg.pretražiStudenta(brIndeksa, forma["ime"], forma["Prezime"], forma["odsjek"]);
+            string pom = forma["odsjek"];
+            if (pom == "Svi odsjeci") pom = null;
+
+            List<Student> studenti = logg.pretražiStudenta(brIndeksa, forma["ime"], forma["Prezime"], pom);
             if (studenti != null)
             {
                 return View(studenti);
@@ -418,8 +420,9 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 brIndeksa = int.Parse(forma["brojIndeksa"].ToString());
             }
-
-            List<Student> studenti = logg.pretražiStudenta(brIndeksa, forma["ime"], forma["Prezime"], forma["odsjek"]);
+            string pom = forma["odsjek"];
+            if (pom == "Svi odsjeci") pom = null;
+            List<Student> studenti = logg.pretražiStudenta(brIndeksa, forma["ime"], forma["Prezime"], pom);
             if (studenti != null)
             {
                 return View(studenti);

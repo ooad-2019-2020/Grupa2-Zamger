@@ -18,30 +18,46 @@
         <a id="mobile_btn" class="mobile_btn float-left" href="https://dreamguys.co.in/preadmin/school/dark/index.html#sidebar"><i class="fa fa-bars" aria-hidden="true"></i></a>
         <ul class="nav user-menu float-right">
             <li class="nav-item dropdown d-none d-sm-block">
-                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell"></i> <span class="badge badge-pill bg-primary float-right">1</span></a>
+                @if (ViewBag.zahtjevi != null)
+                {
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell"></i> <span class="badge badge-pill bg-primary float-right">@ViewBag.zahtjevi.Count</span></a>
+                }
+                else
+                {
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell"></i></a>
+                }
                 <div class="dropdown-menu notifications">
+
+
                     <div class="topnav-dropdown-header">
                         <span>Zahtjevi</span>
                     </div>
                     <div class="drop-scroll">
                         <ul class="notification-list">
-                            <li class="notification-message">
-                                <a href="#">
-                                    <div class="media">
-                                        <span class="avatar">
-                                            <img alt="John Doe" src="~/images/user.jpg" class="img-fluid rounded-circle">
-                                        </span>
-                                        <div class="media-body">
-                                            <p class="noti-details"><span class="noti-title">Huso Hamzić</span> zahtjev za stipendiju </p>
-                                            <p class="noti-time"><span class="notification-time">15 mins ago</span></p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
+                            @if (ViewBag.zahtjevi != null)
+                            {
+                                foreach (Tuple<String, Zahtjev> tpl in ViewBag.zahtjevi)
+                                {
+                                    TimeSpan ts = DateTime.Now - tpl.Item2.Datum;
+                                    <li class="notification-message">
+                                        <a href="#">
+                                            <div class="media">
+                                                <span class="avatar">
+                                                    <img alt="John Doe" src="~/images/user.jpg" class="img-fluid rounded-circle">
+                                                </span>
+                                                <div class="media-body">
+                                                    <p class="noti-details"><span class="noti-title">@tpl.Item1 </span>@tpl.Item2.Vrsta</p>
+                                                    <p class="noti-time"><span class="notification-time">prije @ts.Minutes minuta</span></p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            }
                         </ul>
                     </div>
                     <div class="topnav-dropdown-footer">
-                        <a href="#">Vidi sve zahtjeve</a>
+                        <a href="/studentska/neobradjeni-zahtjevi">Vidi sve zahtjeve</a>
                     </div>
                 </div>
             </li>
@@ -158,16 +174,81 @@
 
                                 <div class="card-body">
 
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-md-2">Izaberite vrstu zahtjeva:</label>
-                                        <div class="col-md-10">
-                                            <select class="form-control" name="VrstaZahtjeva">
-                                                <option>Potvrda za regulisanja stipendije</option>
-                                                <option>Potvrda za regulisanje gradskog/javnog prevoza</option>
-                                                <option>Potvrda za regulisanje zdravstvenog osiguranja</option>
-                                                <option>Potvrda o studiranju</option>
-                                                <option></option>
-                                            </select>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                            <div class="form-group custom-mt-form-group">
+                                                <input type="text" name="ime" required>
+                                                <label class="control-label">Ime</label><i class="bar"></i>
+                                            </div>
+
+                                            <div class="form-group custom-mt-form-group">
+                                                <input class="datetimepicker" type="text" name="datumRodjenja" required>
+                                                <label class="control-label">Datum rođenja</label><i class="bar"></i>
+                                            </div>
+                                            <div class="form-group custom-mt-form-group">
+                                                <select name="izabraniSmjer" required>
+                                                    <option>Izaberite smjer</option>
+                                                    <option>Računarstvo i informatika</option>
+                                                    <option>Elektroenergetika</option>
+                                                    <option>Automatika i elektronika</option>
+                                                    <option>Telekomunikacije</option>
+                                                </select>
+                                                <label class="control-label">Odsjek</label><i class="bar"></i>
+                                            </div>
+                                            <div class="form-group custom-mt-form-group">
+                                                <select name="izabraniSpol" required>
+                                                    <option>M</option>
+                                                    <option>Ž</option>
+                                                </select>
+                                                <label class="control-label">Spol</label><i class="bar"></i>
+                                            </div>
+
+                                            <div class="form-group custom-mt-form-group" id="prosjekBScInput" hidden>
+                                                <input type="number" step=0.01 min=0.00 name="prosjekBSC" id="BSCinput" max=10.00>
+                                                <label class="control-label" id="prosjekBSClabela">*Prosjek na BSc*</label><i class="bar"></i>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                            <div class="form-group custom-mt-form-group">
+                                                <input type="text" name="prezime" required>
+                                                <label class="control-label">Prezime</label><i class="bar"></i>
+                                            </div>
+                                            <div class="form-group custom-mt-form-group">
+                                                <input type="text" name="prebivaliste" required>
+                                                <label class="control-label">Mjesto prebivališta</label><i class="bar"></i>
+                                            </div>
+                                            <div class="form-group custom-mt-form-group">
+                                                <select name="BScInfo" id="ddlModels" onchange="EnableDisableTextBox(this)">
+                                                    <option value="0">Izaberite</option>
+                                                    <option value="1">Da - na ovom fakultetu</option>
+                                                    <option value="2">Da - na nekom drugom fakultetu</option>
+                                                    <option value="3">Ne</option>
+                                                </select>
+                                                <label class="control-label">Završio BSc studij</label><i class="bar"></i>
+                                            </div>
+
+                                            <div class="form-group custom-mt-form-group" id="državaBSc" hidden>
+                                                <select name="drzavaBSC">
+                                                    <option value="0">Izaberite</option>
+                                                    <option value="1">Njemačka</option>
+                                                    <option value="2">Velika Britanija</option>
+                                                    <option value="3">Sjedinjene Američke Države</option>
+                                                </select>
+                                                <label class="control-label">*Država u kojoj je završen BSc studij*</label><i class="bar"></i>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                                            <div class="form-group text-center custom-mt-form-group">
+                                                <button class="btn btn-primary mr-2" type="submit">Kreiraj</button>
+                                                <button class="btn btn-secondary" type="reset">Odustani</button>
+                                            </div>
+
                                         </div>
                                     </div>
 

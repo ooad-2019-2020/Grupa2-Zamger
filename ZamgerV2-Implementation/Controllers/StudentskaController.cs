@@ -32,6 +32,7 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/dashboard")]
         public IActionResult Dashboard()
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             ViewBag.ukupanBrojOsoba = logg.dajUkupanBrojOsobaNaSistemu();
             ViewBag.ukupanBrojStudenata = logg.dajUkupanBrojStudenataNaSistemu();
             ViewBag.ukupanBrojNastavnogOsoblja = logg.dajUkupanBrojNastavnogOsobljaNaSistemu();
@@ -41,6 +42,7 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/svi-studenti")]
         public IActionResult AllStudents()
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             return View();
         }
 
@@ -49,6 +51,7 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpGet]
         public IActionResult KreirajStudenta()
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             return View();
         }
 
@@ -133,6 +136,7 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/svo-nastavno-osoblje")]
         public IActionResult AllTeachers()
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             return View();
 
         }
@@ -142,7 +146,7 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpGet]
         public IActionResult KreirajNastavnoOsoblje()
         {
-            //ovdje moram dostaviti sve moguće predmete iz baze na koje se taj profesor može zadužiti, bez nekih ograničenja tipa da ne može biti 5 profesora na predmetu
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             var mapaPredmetiImenaID = logg.dajSvePredmeteImenaID();
             if(mapaPredmetiImenaID!=null)
             {
@@ -182,12 +186,14 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/svi-studenti-list")]
         public IActionResult AllStudentsList()
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             return View();
         }
 
         [Route("/studentska/svo-nastavno-osoblje-list")]
         public IActionResult AllTeachersList()
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             return View();
         }
 
@@ -195,6 +201,7 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/sva-obavještenja-list")]
         public IActionResult AllAnnouncementsList()
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             ViewBag.listaObavjestenja = logg.dajObavještenja();
             return View();
         }
@@ -205,6 +212,7 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpGet]
         public IActionResult KreirajPredmet()
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             return View();
         }
 
@@ -293,6 +301,7 @@ namespace ZamgerV2_Implementation.Controllers
         {
             if(id!=null)
             {
+                ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
                 Student tempStudent = logg.dajStudentaPoID(id);
                 ViewBag.prosjek = logg.dajProsjekStudentaPoID(id);
                 ViewBag.brojPredmeta = logg.dajBrojPredmetaPoID(id);
@@ -305,6 +314,7 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/predmet-uspjesno-kreiran/{id}")]
         public IActionResult UspješnoKreiranPredmet(int id)
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             KreiranPredmetViewModel predmet = logg.dajKreiranPredmetPoID(id);
             return View(predmet);
         }
@@ -313,6 +323,7 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/nastavno-osoblje-uspjesno-kreirano/{id}")]
         public IActionResult UspješnoKreiranoNastavnoOsoblje(int id)
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             NastavnoOsoblje osoba = logg.dajKreiranoNastavnoOsobljePoID(id);
             List<string> lista = logg.dajNazivePredmetaNaKojimPredajePoID(id);
             KreiranoNastavnoOsobljeViewModel model;
@@ -332,6 +343,7 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpGet]
         public IActionResult KreirajObavjestenje()
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             return View();
         }
 
@@ -351,6 +363,7 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/uspješno-kreirano-obavjestenje")]
         public IActionResult UspješnoKreiranoObavještenje()
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             return View();
         }
 
@@ -358,6 +371,7 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpGet]
         public IActionResult UrediObavještenje(int id)
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             Obavještenje o = logg.dajObavještenjePoId(id);
             return View(o);
         }
@@ -383,6 +397,7 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/izbrisi-obavjestenje/{id}")]
         public IActionResult IzbrišiObavještenje(int id)
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             logg.izbrisiObavjestenje(id);
             return RedirectToAction("AllAnnouncementsList");
         }
@@ -438,9 +453,21 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpGet]
         public IActionResult UrediStudenta(int id)
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             Student tempStudent = logg.dajStudentaPoID(id);
             return View(tempStudent); //napravio sam ja i view al i njega će trebati urediti, treba još informacija o studentu ovdje
         }
+
+
+
+        [Route("/studentska/neobradjeni-zahtjevi")]
+        public IActionResult NeobrađeniZahtjevi()
+        {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            return View();
+        }
+
+        //treba dodat sad /obradi-zahtjev/id kako bi studentksa mogla obradit zahtjeve
 
     }
 }

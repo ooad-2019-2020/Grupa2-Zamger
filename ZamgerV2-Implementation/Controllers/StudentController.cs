@@ -56,7 +56,8 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpPost]
         public IActionResult KreirajZahtjev(int id, IFormCollection forma)
         {
-            if(zmgr.spremiZahtjev(new Zahtjev(id, forma["VrstaZahtjeva"].ToString(), DateTime.Now, 0)))
+            int idZaht = zmgr.generišiIdZahtjeva();
+            if(zmgr.spremiZahtjev(new Zahtjev(id, forma["VrstaZahtjeva"].ToString(), DateTime.Now, 0, idZaht)))
             {
                 return RedirectToAction("UspješnoKreiranZahtjev", new { id = id });
             }

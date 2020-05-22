@@ -19,30 +19,46 @@
             <a id="mobile_btn" class="mobile_btn float-left" href="https://dreamguys.co.in/preadmin/school/dark/index.html#sidebar"><i class="fa fa-bars" aria-hidden="true"></i></a>
             <ul class="nav user-menu float-right">
                 <li class="nav-item dropdown d-none d-sm-block">
-                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell"></i> <span class="badge badge-pill bg-primary float-right">1</span></a>
+                    @if (ViewBag.zahtjevi != null)
+                    {
+                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell"></i> <span class="badge badge-pill bg-primary float-right">@ViewBag.zahtjevi.Count</span></a>
+                    }
+                    else
+                    {
+                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell"></i></a>
+                    }
                     <div class="dropdown-menu notifications">
+
+
                         <div class="topnav-dropdown-header">
                             <span>Zahtjevi</span>
                         </div>
                         <div class="drop-scroll">
                             <ul class="notification-list">
-                                <li class="notification-message">
-                                    <a href="#">
-                                        <div class="media">
-                                            <span class="avatar">
-                                                <img alt="John Doe" src="~/images/user.jpg" class="img-fluid rounded-circle">
-                                            </span>
-                                            <div class="media-body">
-                                                <p class="noti-details"><span class="noti-title">Huso Hamzić</span> zahtjev za stipendiju </p>
-                                                <p class="noti-time"><span class="notification-time">15 mins ago</span></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                                @if (ViewBag.zahtjevi != null)
+                                {
+                                    foreach (Tuple<String, Zahtjev> tpl in ViewBag.zahtjevi)
+                                    {
+                                        TimeSpan ts = DateTime.Now - tpl.Item2.Datum;
+                                        <li class="notification-message">
+                                            <a href="#">
+                                                <div class="media">
+                                                    <span class="avatar">
+                                                        <img alt="John Doe" src="~/images/user.jpg" class="img-fluid rounded-circle">
+                                                    </span>
+                                                    <div class="media-body">
+                                                        <p class="noti-details"><span class="noti-title">@tpl.Item1 </span>@tpl.Item2.Vrsta</p>
+                                                        <p class="noti-time"><span class="notification-time">prije @ts.Minutes minuta</span></p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                }
                             </ul>
                         </div>
                         <div class="topnav-dropdown-footer">
-                            <a href="#">Vidi sve zahtjeve</a>
+                            <a href="/studentska/neobradjeni-zahtjevi">Vidi sve zahtjeve</a>
                         </div>
                     </div>
                 </li>

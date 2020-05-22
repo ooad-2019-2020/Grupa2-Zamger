@@ -436,17 +436,20 @@ namespace ZamgerV2_Implementation.Models
 
         public bool spremiZahtjev(Zahtjev z)
         {
-            string kveri = "insert into zahtjevi values(@userID, @vrsta, @datum, 0)";
+            string kveri = "insert into zahtjevi values(@userID, @vrsta, @datum, 0, @zahtjevID)";
             var userIDParam = new SqlParameter("userID", SqlDbType.Int);
             userIDParam.Value = z.IdStudenta;
             var vrstaIDParam = new SqlParameter("vrsta", SqlDbType.NVarChar);
             vrstaIDParam.Value = z.Vrsta;
             var datumIDParam = new SqlParameter("datum", SqlDbType.DateTime);
             datumIDParam.Value = z.Datum;
+            var zahtjevIDParam = new SqlParameter("zahtjevID", SqlDbType.Int);
+            zahtjevIDParam.Value = z.IdZahtjeva;
             SqlCommand command = new SqlCommand(kveri, conn);
             command.Parameters.Add(userIDParam);
             command.Parameters.Add(vrstaIDParam);
             command.Parameters.Add(datumIDParam);
+            command.Parameters.Add(zahtjevIDParam);
             try
             {
                 command.ExecuteNonQuery();
@@ -461,7 +464,7 @@ namespace ZamgerV2_Implementation.Models
         public List<Zahtjev> dajZahtjeveZaStudenta(int id)
         {
             List<Zahtjev> zahtjevi = new List<Zahtjev>();
-            string kveri = "select idStudenta, vrsta, datum, odobren from ZAHTJEVI where idStudenta = @userID";
+            string kveri = "select idStudenta, vrsta, datum, odobren, idZahtjeva from ZAHTJEVI where idStudenta = @userID";
             var userIDParam = new SqlParameter("userID", SqlDbType.Int);
             userIDParam.Value = id;
             SqlCommand command = new SqlCommand(kveri, conn);
@@ -473,7 +476,7 @@ namespace ZamgerV2_Implementation.Models
                 {
                     while(result.Read())
                     {
-                        zahtjevi.Add(new Zahtjev(result.GetInt32(0), result.GetString(1), result.GetDateTime(2), result.GetInt32(3)));
+                        zahtjevi.Add(new Zahtjev(result.GetInt32(0), result.GetString(1), result.GetDateTime(2), result.GetInt32(3), result.GetInt32(4)));
                     }
                     return zahtjevi;
                 }
@@ -485,6 +488,20 @@ namespace ZamgerV2_Implementation.Models
             catch(Exception e)
             {
                 throw new Exception(e.StackTrace + "greška prilikom dobavljanja zahtjeva za studenta");
+            }
+        }
+
+        public int generišiIdZahtjeva()
+        {
+            string kveri = "select isnull(Count(idZahtjeva)+1,0) from ZAHTJEVI";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            try
+            {
+                return (int)cmd.ExecuteScalar();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom generisanja id za zahtjev");
             }
         }
 

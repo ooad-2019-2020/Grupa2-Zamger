@@ -1,10 +1,10 @@
-﻿@model Obavještenje
+﻿
 @{
-    ViewData["Title"] = "UrediObavještenje";
-    Layout = "~/Views/Shared/urediObavjestenjeLayout.cshtml";
+    ViewData["Title"] = "NeobrađeniZahtjevi";
+    Layout = "~/Views/Shared/studentskaNeobrađeniZahtjeviLayout.cshtml";
 }
 
-<<div class="main-wrapper">
+<div class="main-wrapper">
     <div class="header">
         <!-- Header start -->
         <div class="header-left">
@@ -14,7 +14,7 @@
             </a>
         </div>
         <div class="page-title-box float-left">
-            <h3 class="text-uppercase">Zamger-v2</h3>
+            <h3 class="text-uppercase">Preschool</h3>
         </div>
         <a id="mobile_btn" class="mobile_btn float-left" href="https://dreamguys.co.in/preadmin/school/dark/index.html#sidebar"><i class="fa fa-bars" aria-hidden="true"></i></a>
         <ul class="nav user-menu float-right">
@@ -78,7 +78,7 @@
         </ul>
         <div class="dropdown mobile-user-menu float-right">
             <!-- mobile menu -->
-            <a href="https://dreamguys.co.in/preadmin/school/dark/index.html#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
             <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" href="#">Moj Profil</a>
                 <a class="dropdown-item" href="~/">Odjavi se</a>
@@ -98,14 +98,14 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span> Nastavno osoblje</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="~/studentska/svo-nastavno-osoblje">Svo nastavno osoblje</a></li>
-                                <li><a href="~/studentska/kreiraj-nastavno-osoblje">Kreiraj osobu</a></li>
+                                <li><a href="/studentska/svo-nastavno-osoblje-list">Svo nastavno osoblje</a></li>
+                                <li><a href="/studentska/kreiraj-nastavno-osoblje">Kreiraj osobu</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span> Studenti</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="~/studentska/svi-studenti-list">Svi studenti</a></li>
+                                <li><a href="/studentska/svi-studenti">Svi studenti</a></li>
                                 <li><a href="~/studentska/kreiraj-studenta">Kreiraj studenta</a></li>
                             </ul>
                         </li>
@@ -113,7 +113,7 @@
                             <a href="#"><i class="fa fa-book" aria-hidden="true"></i><span> Predmeti </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="#">Svi predmeti</a></li>
-                                <li><a href="~/studentska/kreiraj-predmet">Kreiraj predmet</a></li>
+                                <li><a href="/studentska/kreiraj-predmet">Kreiraj predmet</a></li>
                             </ul>
                         </li>
                         <li>
@@ -126,7 +126,7 @@
                             <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="~/studentska/sva-obavještenja-list">Sva obavještenja</a></li>
-                                <li><a href="~/studentsla/kreiraj-obavjestenje">Dodaj obavještenja</a></li>
+                                <li><a href="/studentska/kreiraj-obavjestenje">Dodaj obavještenja</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
@@ -143,59 +143,76 @@
     </div>
 
 
+
     <div class="page-wrapper" style="min-height: 723px;">
         <!-- content -->
         <div class="content container-fluid">
             <div class="page-header">
                 <div class="row">
                     <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                        <h5 class="text-uppercase">Kreiraj obavještenje</h5>
+                        <h5 class="text-uppercase">Neobrađeni zahtjevi</h5>
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
-                            <li class="list-inline-item"><a href="~/studentska/dashboard">Početna</a></li>
-
-                            <li class="list-inline-item"> Kreiraj obavještenje</li>
+                            <li class="list-inline-item"><a href="/studentska/dashboard">Početna</a></li>
+                            <li class="list-inline-item"> Neobrađeni zahtjevi</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="page-content">
+            <div class="content-page">
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="page-title">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <div class="Page-title">Informacije</div>
-                                    </div>
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                                <div class="col-sm-12">
+                                    <table class="table table-striped custom-table datatable dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                        <thead>
+                                            <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Ime i prezime </th><th style="min-width: 50px; width: 200px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">Vrsta zahtjeva</th><th style="min-width: 80px; width: 80.4px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date of Birth: activate to sort column ascending">Vrijeme zahtjeva</th><th class="text-right sorting" style="min-width: 50px; width: 50px;" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Akcija</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (ViewBag.zahtjevi != null)
+                                            {
+                                                for (int i = 0; i < ViewBag.zahtjevi.Count; i++)
+                                                {
+                                                    if (i % 2 == 0)
+                                                    {
+                                                        <tr role="row" class="odd">
+                                                            <td>@ViewBag.zahtjevi[i].Item1</td>
+                                                            <td>@ViewBag.zahtjevi[i].Item2.Vrsta</td>
+                                                            <td>@ViewBag.zahtjevi[i].Item2.Datum</td>
+                                                            <td class="text-right">
+                                                                <a href="/studentska/obradi-zahtjev/@ViewBag.zahtjevi[i].Item2.IdZahtjeva" class="btn btn-primary btn-sm mb-1">
+                                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                </a>
+                                                                <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
+                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr role="row" class="even">
+                                                            <td>@ViewBag.zahtjevi[i].Item1</td>
+                                                            <td>@ViewBag.zahtjevi[i].Item2.Vrsta</td>
+                                                            <td>@ViewBag.zahtjevi[i].Item2.Datum</td>
+                                                            <td class="text-right">
+                                                                <a href="/studentska/obradi-zahtjev/@ViewBag.zahtjevi[i].Item2.IdZahtjeva" class="btn btn-primary btn-sm mb-1">
+                                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                </a>
+                                                                <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
+                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
-                            <div class="card-body">
-                                <form class="custom-mt-form" asp-antiforgery="false" asp-action ="UrediObavjestenje" method="post">
-                                    <div class="form-group row ">
-                                        <label class="col-form-label col-md-2" style="color:white;">Naslov obavještenja:</label>
-                                        <div class="col-md-10">
-                                            <input type="text" class="form-control" name="naslovObavještenja" required value="@Model.Naslov">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-md-2" style="color:white;">Sadržaj:</label>
-                                        <div class="col-md-10">
-                                            <input type="text" required class="form-control" placeholder="Sadržaj obavještenja" name="sadržajObavještenja" value="@Model.Sadržaj">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-
-                                        <div class="form-group text-center custom-mt-form-group">
-                                            <button class="btn btn-primary mr-2" type="submit">Objavi</button>
-                                            <button class="btn btn-secondary" type="reset">Odustani</button>
-                                        </div>
-
-                                    </div>
-
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -203,7 +220,26 @@
             </div>
         </div>
     </div>
+    <div id="delete_employee" class="modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content modal-md">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete student</h4>
+                </div>
+                <form>
+                    <div class="modal-body card-box">
+                        <p>Are you sure want to delete this?</p>
+                        <div class="m-t-20">
+                            <a href="https://dreamguys.co.in/preadmin/school/dark/students-list.html#" class="btn btn-white" data-dismiss="modal">Close</a>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
 <div class="sidebar-overlay" data-reff=""></div>
 <script type="text/javascript" src="~/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="~/js/popper.min.js"></script>
@@ -213,4 +249,6 @@
 <script type="text/javascript" src="~/js/moment.min.js"></script>
 <script type="text/javascript" src="~/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
+
+
 

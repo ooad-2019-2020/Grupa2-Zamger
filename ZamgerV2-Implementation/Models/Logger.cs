@@ -1033,6 +1033,33 @@ namespace ZamgerV2_Implementation.Models
         }
 
 
+        public List<Tuple<String,Zahtjev>> dajSveNeobrađeneZahtjeve()
+        {
+            List<Tuple<String, Zahtjev>> zahtjevi = new List<Tuple<String,Zahtjev>>();
+            string kveri = "select s.ime, s.prezime, idStudenta, vrsta, datum, odobren, idZahtjeva from ZAHTJEVI, STUDENTI s where odobren = 0 and s.brojIndeksa=idStudenta order by datum desc";
+            SqlCommand command = new SqlCommand(kveri, conn);
+            try
+            {
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        Tuple<string, Zahtjev> t = new Tuple<string, Zahtjev>(result.GetString(0)+" "+result.GetString(1), new Zahtjev(result.GetInt32(2), result.GetString(3), result.GetDateTime(4), result.GetInt32(5), result.GetInt32(6)));
+                        zahtjevi.Add(t);
+                    }
+                    return zahtjevi;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom dobavljanja zahtjeva za studenta");
+            }
+        }
 
 
 

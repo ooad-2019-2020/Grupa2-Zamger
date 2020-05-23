@@ -1,8 +1,9 @@
-﻿
+﻿@model List<Tuple<int, NastavnoOsoblje>>
 @{
-    ViewData["Title"] = "Studentska - Svo osoblje - list";
-    Layout = "~/Views/Shared/svoOsobljeListLayout.cshtml";
+    ViewData["Title"] = "PretražiNastavnoOsobljeList";
+    Layout = "~/Views/Shared/pretraziOsobljeListLayout.cshtml";
 }
+
 <div class="main-wrapper">
     <div class="header">
         <!-- Header start -->
@@ -194,9 +195,12 @@
                             <div class="form-group custom-mt-form-group">
                                 <select name="predmeti">
                                     <option>Izaberite</option>
-                                    @foreach (KeyValuePair<string, int> entry in ViewBag.Predmeti)
+                                    @if (ViewBag.Predmeti != null)
                                     {
+                                        foreach (KeyValuePair<string, int> entry in ViewBag.Predmeti)
+                                        {
                                         <option>@entry.Key</option>
+                                        }
                                     }
                                 </select>
                                 <label class="control-label">Predmeti</label><i class="bar"></i>
@@ -217,7 +221,59 @@
                                             <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Ime i prezime </th><th style="min-width: 70px; width: 70px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Broj indeksa: activate to sort column ascending">ID osobe</th><th style="min-width: 20px; width: 50px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Class: activate to sort column ascending">Br. predmeta</th><th style="min-width: 50px; width: 100px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">Titula</th><th style="min-width: 50px; width: 86.8px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label=" Address: activate to sort column ascending"> Prebivalište</th><th style="min-width: 80px; width: 80.4px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date of Birth: activate to sort column ascending">Datum rođenja</th><th style="min-width: 50px; width: 126px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending">Email</th><th class="text-right sorting" style="min-width: 50px; width: 50px;" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Akcija</th></tr>
                                         </thead>
                                         <tbody>
-                                           
+                                            @if(Model != null)
+                                            {
+
+                                                for (int i = 0; i < Model.Count; i++)
+                                                {
+                                                    if (i % 2 == 0)
+                                                    {
+                                                    <tr role="row" class="odd">
+                                                        <td class="sorting_1">
+                                                            <a href="#" class="avatar">@Model[i].Item2.Ime[0]@Model[i].Item2.Prezime[0]</a>
+                                                            <h2><a href="#">@Model[i].Item2.Ime @Model[i].Item2.Prezime<span></span></a></h2>
+                                                        </td>
+                                                        <td>@Model[i].Item2.IdOsobe</td>
+                                                        <td>@Model[i].Item1</td>
+                                                        <td>@Model[i].Item2.Titula</td>
+                                                        <td>@Model[i].Item2.MjestoPrebivališta</td>
+                                                        <td>@Convert.ToDateTime(Model[i].Item2.DatumRođenja).Date.ToString("d")</td>
+                                                        <td>@Model[i].Item2.Email</td>
+                                                        <td class="text-right">
+                                                            <a href="#" class="btn btn-primary btn-sm mb-1">
+                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                            </a>
+                                                            <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
+                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                    <tr role="row" class="even">
+                                                        <td class="sorting_1">
+                                                            <a href="#" class="avatar">@Model[i].Item2.Ime[0]@Model[i].Item2.Prezime[0]</a>
+                                                            <h2><a href="#">@Model[i].Item2.Ime @Model[i].Item2.Prezime<span></span></a></h2>
+                                                        </td>
+                                                        <td>@Model[i].Item2.IdOsobe</td>
+                                                        <td>@Model[i].Item1</td>
+                                                        <td>@Model[i].Item2.Titula</td>
+                                                        <td>@Model[i].Item2.MjestoPrebivališta</td>
+                                                        <td>@Convert.ToDateTime(Model[i].Item2.DatumRođenja).Date.ToString("d")</td>
+                                                        <td>@Model[i].Item2.Email</td>
+                                                        <td class="text-right">
+                                                            <a href="#" class="btn btn-primary btn-sm mb-1">
+                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                            </a>
+                                                            <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
+                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    }
+                                                }
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
@@ -226,7 +282,7 @@
                     </div>
                 </div>
             </div>
-           
+
         </div>
     </div>
     <div id="delete_employee" class="modal" role="dialog">
@@ -258,4 +314,5 @@
 <script type="text/javascript" src="~/js/moment.min.js"></script>
 <script type="text/javascript" src="~/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
+
 

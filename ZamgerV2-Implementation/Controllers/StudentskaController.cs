@@ -137,7 +137,13 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult AllTeachers()
         {
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
-            return View();
+            var mapaPredmetiImenaID = logg.dajSvePredmeteImenaID();
+            if (mapaPredmetiImenaID != null)
+            {
+                ViewBag.Predmeti = mapaPredmetiImenaID;
+                return View();
+            }
+            return null;
 
         }
 
@@ -194,7 +200,17 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult AllTeachersList()
         {
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
-            return View();
+            var mapaPredmetiImenaID = logg.dajSvePredmeteImenaID();
+            if (mapaPredmetiImenaID != null)
+            {
+                ViewBag.Predmeti = mapaPredmetiImenaID;
+                return View();
+            }
+            else
+            {
+                Response.WriteAsync("Ne postoji niti jedan predmet u bazi");
+                return null;
+            }
         }
 
 
@@ -446,6 +462,42 @@ namespace ZamgerV2_Implementation.Controllers
             return null;
         }
 
+
+        [Route("/studentska/svo-nastavno-osoblje/pretraga")]
+        [HttpPost]
+        public IActionResult PretražiNastavnoOsoblje(IFormCollection forma)
+        {
+            var mapaPredmetiImenaID = logg.dajSvePredmeteImenaID();
+            if (mapaPredmetiImenaID != null)
+            {
+                ViewBag.Predmeti = mapaPredmetiImenaID;
+                List<Tuple<int, NastavnoOsoblje>> ltpl = logg.pretražiNastavnoOsoblje(forma["imeOsobe"], forma["prezimeOsobe"], forma["predmeti"]);
+                return View(ltpl);  
+            }
+            else
+            {
+                Response.WriteAsync("nešto nije uredu sa pretragom osoblja");
+                return null;
+            }
+        }
+
+        [Route("/studentska/svo-nastavno-osoblje-list/pretraga")]
+        [HttpPost]
+        public IActionResult PretražiNastavnoOsobljeList(IFormCollection forma)
+        {
+            var mapaPredmetiImenaID = logg.dajSvePredmeteImenaID();
+            if (mapaPredmetiImenaID != null)
+            {
+                ViewBag.Predmeti = mapaPredmetiImenaID;
+                List<Tuple<int, NastavnoOsoblje>> ltpl = logg.pretražiNastavnoOsoblje(forma["imeOsobe"], forma["prezimeOsobe"], forma["predmeti"]);
+                return View(ltpl);
+            }
+            else
+            {
+                Response.WriteAsync("nešto nije uredu sa pretragom osoblja");
+                return null;
+            }
+        }
 
 
         //trebat ce editovat ovu metodu kad se dodaju i predmeti svi i sve, ocjene i to da se sve prikaže o studentu ovdje!

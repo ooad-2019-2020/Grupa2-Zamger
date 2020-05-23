@@ -988,6 +988,67 @@ namespace ZamgerV2_Implementation.Models
             return studenti;
         }
 
+        public List<Tuple<int,NastavnoOsoblje>> pretražiNastavnoOsoblje(string ime, string prezime, string predmet)
+        {
+            List<Tuple<int, NastavnoOsoblje>> lista = new List<Tuple<int, NastavnoOsoblje>>();
+            string kveri = "select distinct no.ime, no.prezime, no.datumRođenja, no.mjestoPrebivališta, k.username, no.email, no.spol, no.titula, no.idOsobe, (select ISNULL(Count(idNastavnogOsoblja), 0) from ansambl a1 where no.idOsobe = a1.idNastavnogOsoblja) from korisnici k, NASTAVNO_OSOBLJE no, ANSAMBL a, predmeti p where p.idPredmeta = a.idPredmeta and k.idKorisnika = no.idOsobe and no.idOsobe = a.idNastavnogOsoblja";
+            SqlParameter imeParametar = null;
+            SqlParameter prezimeParametar = null;
+            SqlParameter predmetParametar= null;
+            int indIme = 0, indPrezime = 0, indPredmet = 0;
+
+            if (!String.IsNullOrEmpty(ime))
+            {
+                kveri += " and no.ime = @imeOsobe ";
+                imeParametar = new SqlParameter("imeOsobe", System.Data.SqlDbType.NVarChar);
+                imeParametar.Value = ime;
+                indIme = 1;
+            }
+            if (!String.IsNullOrEmpty(prezime))
+            {
+                kveri += " and no.prezime = @prezimeOsobe";
+                prezimeParametar = new SqlParameter("prezimeOsobe", System.Data.SqlDbType.NVarChar);
+                prezimeParametar.Value = prezime;
+                indPrezime = 1;
+            }
+            if (!predmet.Equals("Izaberite"))
+            {
+                kveri += " and p.naziv = @nazivPredmeta";
+                predmetParametar = new SqlParameter("nazivPredmeta", System.Data.SqlDbType.NVarChar);
+                predmetParametar.Value = predmet;
+                indPredmet = 1;
+            }
+
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            if(indIme==1) cmd.Parameters.Add(imeParametar);
+            if(indPrezime==1) cmd.Parameters.Add(prezimeParametar);
+            if(indPredmet==1) cmd.Parameters.Add(predmetParametar);
+
+            try
+            {
+                var result = cmd.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        NastavnoOsoblje no = new NastavnoOsoblje(result.GetString(0), result.GetString(1), result.GetDateTime(2).ToString(), result.GetString(3), result.GetString(4), result.GetString(5), result.GetString(6), result.GetString(7));
+                        no.IdOsobe = result.GetInt32(8);
+                        lista.Add(new Tuple<int, NastavnoOsoblje>(result.GetInt32(9), no));
+                    }
+                    return lista;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "Nešto nije uredu prilikom pretrage nastavnog osoblja u bazi");
+            }
+
+        }
+
         public int dajUkupanBrojOsobaNaSistemu()
         {
             string kveri = "select ISNULL(Count(idKorisnika),0) from korisnici where idKorisnika!=1";

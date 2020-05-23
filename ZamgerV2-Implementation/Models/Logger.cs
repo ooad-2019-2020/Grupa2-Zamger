@@ -1061,9 +1061,49 @@ namespace ZamgerV2_Implementation.Models
             }
         }
 
+        public Tuple<string, Zahtjev> dajZahjtevPoId(int id)
+        {
+            string kveri = "select s.ime, s.prezime, z.idStudenta, z.vrsta, z.datum, z.odobren, z.idZahtjeva from STUDENTI s, ZAHTJEVI z where z.idStudenta=s.brojIndeksa and z.idZahtjeva=@zahtjevID";
+            var zahtjevIDParam = new SqlParameter("zahtjevID", System.Data.SqlDbType.Int);
+            zahtjevIDParam.Value = id;
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.Add(zahtjevIDParam);
+            try
+            {
+                var result = cmd.ExecuteReader();
+                if(result.HasRows)
+                {
+                    result.Read();
+                    return new Tuple<string, Zahtjev>(result.GetString(0) + " " + result.GetString(1), new Zahtjev(result.GetInt32(2), result.GetString(3), result.GetDateTime(4), result.GetInt32(5), result.GetInt32(6)));
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "neuspješno dobavljanje zahtjeva po ID iz baze");
+            }
+        }
 
-
-
+        public bool odobriZahtjev(int id)
+        {
+            string kveri = "UPDATE ZAHTJEVI SET odobren = 1 WHERE idZahtjeva = @zahtjevID";
+            var zahtjevIDParam = new SqlParameter("zahtjevID", System.Data.SqlDbType.Int);
+            zahtjevIDParam.Value = id;
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.Add(zahtjevIDParam);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom odobravanja zahtjeva");
+            }
+        }
     }
 
 

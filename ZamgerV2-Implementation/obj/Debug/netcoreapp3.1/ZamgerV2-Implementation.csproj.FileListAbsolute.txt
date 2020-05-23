@@ -188,3 +188,7 @@ F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\ZamgerV2-Implem
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\ZamgerV2-Implementation.genruntimeconfig.cache
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\studentskaNeobrađeniZahtjeviLayout.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\NeobrađeniZahtjevi.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\zahtjevStudentskaLayout.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\ObradiZahtjev.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\ZahtjevUspjenoObradjenLayout.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\ZahtjevUspješnoObrađen.cshtml.g.cs

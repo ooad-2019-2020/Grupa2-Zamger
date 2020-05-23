@@ -32,8 +32,6 @@
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell"></i></a>
                 }
                 <div class="dropdown-menu notifications">
-
-
                     <div class="topnav-dropdown-header">
                         <span>Zahtjevi</span>
                     </div>
@@ -45,14 +43,18 @@
                                 {
                                     TimeSpan ts = DateTime.Now - tpl.Item2.Datum;
                                     <li class="notification-message">
-                                        <a href="#">
+                                        <a href="/studentska/obradi-zahtjev/@tpl.Item2.IdZahtjeva">
                                             <div class="media">
                                                 <span class="avatar">
                                                     <img alt="John Doe" src="~/images/user.jpg" class="img-fluid rounded-circle">
                                                 </span>
                                                 <div class="media-body">
                                                     <p class="noti-details"><span class="noti-title">@tpl.Item1 </span>@tpl.Item2.Vrsta</p>
-                                                    <p class="noti-time"><span class="notification-time">prije @ts.Minutes minuta</span></p>
+                                                    <p class="noti-time">
+                                                        <span class="notification-time">
+                                                            @tpl.Item2.Datum
+                                                        </span>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </a>

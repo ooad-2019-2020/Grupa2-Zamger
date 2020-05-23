@@ -467,7 +467,37 @@ namespace ZamgerV2_Implementation.Controllers
             return View();
         }
 
-        //treba dodat sad /obradi-zahtjev/id kako bi studentksa mogla obradit zahtjeve
+
+        [Route("/studentska/obradi-zahtjev/{id}")]
+        [HttpGet]
+        public IActionResult ObradiZahtjev(int id)
+        {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            ViewBag.zahtjev = logg.dajZahjtevPoId(id);
+            return View(); // treba dodat view sad
+        }
+
+        [Route("/studentska/obradi-zahtjev/{id}")]
+        [HttpPost]
+        public IActionResult ObradiZahtjev(int id, IFormCollection forma)
+        {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            if (logg.odobriZahtjev(id))
+            {
+                return RedirectToAction("ZahtjevUspješnoObrađen");
+            }
+            Response.WriteAsync("Nešto nije uredu prilikom obrađivanja zahtjeva");
+            return null;
+        }
+
+        [Route("/studentska/zahtjev-uspjesno-obradjen")]
+        public IActionResult ZahtjevUspješnoObrađen()
+        {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            return View();
+        }
+
+
 
     }
 }

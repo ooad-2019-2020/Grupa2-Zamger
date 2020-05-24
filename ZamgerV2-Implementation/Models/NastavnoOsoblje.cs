@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ZamgerV2_Implementation.Models
 {
-    public class NastavnoOsoblje : Korisnik
+    public class NastavnoOsoblje : Korisnik, IPlataOsoblja
     {
 
 
@@ -23,5 +23,10 @@ namespace ZamgerV2_Implementation.Models
         public int? IdOsobe { get => idOsobe; set => idOsobe = value; }
         public List<PredmetZaNastavnoOsoblje> PredmetiNaKojimPredaje { get => predmetiNaKojimPredaje; set => predmetiNaKojimPredaje = value; }
         public List<Aktivnost> Aktivnosti { get => aktivnosti; set => aktivnosti = value; }
+
+        public double dajPlatu()
+        {
+            return 203.4;
+        }
     }
 }

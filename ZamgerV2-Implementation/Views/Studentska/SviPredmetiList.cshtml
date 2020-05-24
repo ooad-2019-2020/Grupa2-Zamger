@@ -1,7 +1,7 @@
-﻿@model List<Tuple<int, NastavnoOsoblje>>
+﻿
 @{
-    ViewData["Title"] = "PretražiNastavnoOsobljeList";
-    Layout = "~/Views/Shared/pretraziOsobljeListLayout.cshtml";
+    ViewData["Title"] = "SviPredmetiList";
+    Layout = "~/Views/Shared/studentskaSviPredmetiLayout.cshtml";
 }
 
 <div class="main-wrapper">
@@ -151,12 +151,12 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                        <h5 class="text-uppercase">Svo osoblje - list</h5>
+                        <h5 class="text-uppercase">Svi predmeti</h5>
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
                             <li class="list-inline-item"><a href="/studentska/dashboard">Početna</a></li>
-                            <li class="list-inline-item"> Svo osoblje - list</li>
+                            <li class="list-inline-item"> Svi predmeti</li>
                         </ul>
                     </div>
                 </div>
@@ -166,43 +166,37 @@
 
                 </div>
                 <div class="col-sm-8 col-9 text-right m-b-20">
-                    <a href="/studentska/kreiraj-nastavno-osoblje" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Kreiraj osobu</a>
+                    <a href="/studentska/kreiraj-predmet" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Kreiraj predmet</a>
                     <div class="view-icons">
-                        <a href="/studentska/svo-nastavno-osoblje" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
                         <a href="#" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
                     </div>
                 </div>
             </div>
             <div class="content-page">
-                <form asp-antiforgery="false" asp-action="PretražiNastavnoOsobljeList" method="post">
+                <form asp-antiforgery="false" asp-action="PretražiPredmet" method="post">
                     <div class="row filter-row">
                         <div class="col-sm-6 col-md-3">
                             <div class="form-group custom-mt-form-group">
-                                <input type="text" name="imeOsobe">
-                                <label class="control-label">Ime</label><i class="bar"></i>
+                                <input type="text" name="nazivPredmeta">
+                                <label class="control-label">Naziv predmeta</label><i class="bar"></i>
                             </div>
                         </div>
 
                         <div class="col-sm-6 col-md-3">
                             <div class="form-group custom-mt-form-group">
-                                <input type="text" name="prezimeOsobe">
-                                <label class="control-label">Prezime</label><i class="bar"></i>
+                                <input type="number" name="godinaStudija" min="1" max="5">
+                                <label class="control-label">Godina studija</label><i class="bar"></i>
                             </div>
                         </div>
 
                         <div class="col-sm-6 col-md-3">
                             <div class="form-group custom-mt-form-group">
-                                <select name="predmeti">
+                                <select name="izborni">
                                     <option>Izaberite</option>
-                                    @if (ViewBag.Predmeti != null)
-                                    {
-                                        foreach (KeyValuePair<string, int> entry in ViewBag.Predmeti)
-                                        {
-                                        <option>@entry.Key</option>
-                                        }
-                                    }
+                                    <option>Da</option>
+                                    <option>Ne</option>
                                 </select>
-                                <label class="control-label">Predmeti</label><i class="bar"></i>
+                                <label class="control-label">Da li je izborni?</label><i class="bar"></i>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3">
@@ -217,62 +211,10 @@
                                 <div class="col-sm-12">
                                     <table class="table table-striped custom-table datatable dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                                         <thead>
-                                            <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Ime i prezime </th><th style="min-width: 70px; width: 70px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Broj indeksa: activate to sort column ascending">ID osobe</th><th style="min-width: 20px; width: 50px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Class: activate to sort column ascending">Br. predmeta</th><th style="min-width: 50px; width: 100px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">Titula</th><th style="min-width: 50px; width: 86.8px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label=" Address: activate to sort column ascending"> Prebivalište</th><th style="min-width: 80px; width: 80.4px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date of Birth: activate to sort column ascending">Datum rođenja</th><th style="min-width: 50px; width: 126px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending">Email</th><th class="text-right sorting" style="min-width: 50px; width: 50px;" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Akcija</th></tr>
+                                            <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Naziv predmeta</th><th style="min-width: 70px; width: 70px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Broj indeksa: activate to sort column ascending">Broj ECTS poena</th><th style="min-width: 20px; width: 50px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Class: activate to sort column ascending">ID predmeta</th><th style="min-width: 50px; width: 100px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">Godina studija</th><th style="min-width: 50px; width: 86.8px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label=" Address: activate to sort column ascending">Izborni</th></th><th class="text-right sorting" style="min-width: 50px; width: 50px;" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Akcija</th></tr>
                                         </thead>
                                         <tbody>
-                                            @if(Model != null)
-                                            {
 
-                                                for (int i = 0; i < Model.Count; i++)
-                                                {
-                                                    if (i % 2 == 0)
-                                                    {
-                                                    <tr role="row" class="odd">
-                                                        <td class="sorting_1">
-                                                            <a href="#" class="avatar">@Model[i].Item2.Ime[0]@Model[i].Item2.Prezime[0]</a>
-                                                            <h2><a href="#">@Model[i].Item2.Ime @Model[i].Item2.Prezime<span></span></a></h2>
-                                                        </td>
-                                                        <td>@Model[i].Item2.IdOsobe</td>
-                                                        <td>@Model[i].Item1</td>
-                                                        <td>@Model[i].Item2.Titula</td>
-                                                        <td>@Model[i].Item2.MjestoPrebivališta</td>
-                                                        <td>@Convert.ToDateTime(Model[i].Item2.DatumRođenja).Date.ToString("d")</td>
-                                                        <td>@Model[i].Item2.Email</td>
-                                                        <td class="text-right">
-                                                            <a href="#" class="btn btn-primary btn-sm mb-1">
-                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                            </a>
-                                                            <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    }
-                                                    else
-                                                    {
-                                                    <tr role="row" class="even">
-                                                        <td class="sorting_1">
-                                                            <a href="#" class="avatar">@Model[i].Item2.Ime[0]@Model[i].Item2.Prezime[0]</a>
-                                                            <h2><a href="#">@Model[i].Item2.Ime @Model[i].Item2.Prezime<span></span></a></h2>
-                                                        </td>
-                                                        <td>@Model[i].Item2.IdOsobe</td>
-                                                        <td>@Model[i].Item1</td>
-                                                        <td>@Model[i].Item2.Titula</td>
-                                                        <td>@Model[i].Item2.MjestoPrebivališta</td>
-                                                        <td>@Convert.ToDateTime(Model[i].Item2.DatumRođenja).Date.ToString("d")</td>
-                                                        <td>@Model[i].Item2.Email</td>
-                                                        <td class="text-right">
-                                                            <a href="#" class="btn btn-primary btn-sm mb-1">
-                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                            </a>
-                                                            <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    }
-                                                }
-                                            }
                                         </tbody>
                                     </table>
                                 </div>

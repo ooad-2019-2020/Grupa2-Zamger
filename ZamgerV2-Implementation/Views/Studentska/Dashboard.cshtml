@@ -114,7 +114,7 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-book" aria-hidden="true"></i><span> Predmeti </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="#">Svi predmeti</a></li>
+                                <li><a href="/studentska/svi-predmeti-list">Svi predmeti</a></li>
                                 <li><a href="/studentska/kreiraj-predmet">Kreiraj predmet</a></li>
                             </ul>
                         </li>
@@ -134,8 +134,7 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-money" aria-hidden="true"></i><span> Plate osoblja </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="#"> Plata svih uposlenih</a></li>
-                                <li><a href="#"> Koeficijenti plata </a></li>
+                                <li><a href="/studentska/plate-svih-uposlenih"> Plata svih uposlenih</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -174,15 +173,47 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-success"><i class="fa fa-money" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            <h3>10000KM</h3>
-                            <span>Ukupni troškovi na plate</span>
+                @if (ViewBag.uposlenici != null)
+                {
+                    double ukupniTroskovi = 0;
+                    @foreach (var t in ViewBag.uposlenici)
+                    {
+                        BridgePlata br;
+                        if (t.Item2.GetType() == typeof(Profesor))
+                        {
+                            Profesor tempProf = (Profesor)t.Item2;
+                            br = new BridgePlata(tempProf);
+                        }
+                        else
+                        {
+                            br = new BridgePlata((NastavnoOsoblje)t.Item2);
+                        }
+
+                        ukupniTroskovi += br.dajPlatu();
+                    }
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="dash-widget dash-widget5">
+                            <span class="dash-widget-icon bg-success"><i class="fa fa-money" aria-hidden="true"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>@String.Format("{0:0.00}", ukupniTroskovi) KM</h3>
+                                <span>Ukupni troškovi na plate</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="dash-widget dash-widget5">
+                            <span class="dash-widget-icon bg-success"><i class="fa fa-money" aria-hidden="true"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>0KM</h3>
+                                <span>Ukupni troškovi na plate</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
             </div>
             <div class="row mt-4">
                 <div class="col-lg-6 col-md-12 col-12">
@@ -360,368 +391,53 @@
                                     Studentski zahtjevi
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table table-striped custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="min-width:50px;">Name </th>
-                                                <th style="min-width:74px;">Student ID</th>
-                                                <th style="min-width:50px;">Class</th>
-                                                <th style="min-width:50px;">Section</th>
-                                                <th style="min-width:98px;">Mobile</th>
-                                                <th style="min-width:90px;">Date of Birth</th>
-                                                <th class="text-right">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html" class="avatar text-white">P</a></h2>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html">Parker <span></span></a></h2>
-                                                </td>
-                                                <td>ST-0d001</td>
-                                                <td>1</td>
-                                                <td>A</td>
-                                                <td>973-584-58700</td>
-                                                <td>5th June</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-student.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html" class="avatar text-white">S</a></h2>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html">Smith <span></span></a></h2>
-                                                </td>
-                                                <td>ST-0d002</td>
-                                                <td>2</td>
-                                                <td>B</td>
-                                                <td>973-584-58700</td>
-                                                <td>6th April</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-student.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html" class="avatar text-white">H</a></h2>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html">Hensley<span></span></a></h2>
-                                                </td>
-                                                <td>ST-0d003</td>
-                                                <td>1</td>
-                                                <td>A</td>
-                                                <td>973-584-58700</td>
-                                                <td>5th Jan</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-student.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html" class="avatar text-white">F</a></h2>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html">Friesen<span></span></a></h2>
-                                                </td>
-                                                <td>ST-0d004</td>
-                                                <td>1</td>
-                                                <td>A</td>
-                                                <td>973-584-58700</td>
-                                                <td>2nd June</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-student.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html" class="avatar text-white">J</a></h2>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html">Jackson<span></span></a></h2>
-                                                </td>
-                                                <td>ST-0d005</td>
-                                                <td>1</td>
-                                                <td>A</td>
-                                                <td>973-584-58700</td>
-                                                <td>7th July</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-student.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html" class="avatar text-white">M</a></h2>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html">Mason<span></span></a></h2>
-                                                </td>
-                                                <td>ST-0d006</td>
-                                                <td>1</td>
-                                                <td>A</td>
-                                                <td>973-584-58700</td>
-                                                <td>5th June</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-student.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html" class="avatar text-white">G</a></h2>
-                                                    <h2><a href="https://dreamguys.co.in/preadmin/school/dark/profile.html">Garrett <span></span></a></h2>
-                                                </td>
-                                                <td>ST-0d007</td>
-                                                <td>1</td>
-                                                <td>A</td>
-                                                <td>973-584-58700</td>
-                                                <td>5th April</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-student.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                                        <div class="col-sm-12">
+                                            <table class="table table-striped custom-table datatable dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                                <thead>
+                                                    <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Ime i prezime </th><th style="min-width: 50px; width: 200px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">Vrsta zahtjeva</th><th style="min-width: 80px; width: 80.4px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date of Birth: activate to sort column ascending">Vrijeme zahtjeva</th><th class="text-right sorting" style="min-width: 50px; width: 50px;" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Akcija</th></tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (ViewBag.zahtjevi != null)
+                                                    {
+                                                        for (int i = 0; i < ViewBag.zahtjevi.Count; i++)
+                                                        {
+                                                            if (i % 2 == 0)
+                                                            {
+                                                                <tr role="row" class="odd">
+                                                                    <td>@ViewBag.zahtjevi[i].Item1</td>
+                                                                    <td>@ViewBag.zahtjevi[i].Item2.Vrsta</td>
+                                                                    <td>@ViewBag.zahtjevi[i].Item2.Datum</td>
+                                                                    <td class="text-right">
+                                                                        <a href="/studentska/obradi-zahtjev/@ViewBag.zahtjevi[i].Item2.IdZahtjeva" class="btn btn-primary btn-sm mb-1">
+                                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr role="row" class="even">
+                                                                    <td>@ViewBag.zahtjevi[i].Item1</td>
+                                                                    <td>@ViewBag.zahtjevi[i].Item2.Vrsta</td>
+                                                                    <td>@ViewBag.zahtjevi[i].Item2.Datum</td>
+                                                                    <td class="text-right">
+                                                                        <a href="/studentska/obradi-zahtjev/@ViewBag.zahtjevi[i].Item2.IdZahtjeva" class="btn btn-primary btn-sm mb-1">
+                                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="notification-box">
-                <div class="msg-sidebar notifications msg-noti">
-                    <div class="topnav-dropdown-header">
-                        <span>Messages</span>
-                    </div>
-                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 599px;">
-                        <div class="drop-scroll msg-list-scroll" style="overflow: hidden; width: auto; height: 599px;">
-                            <ul class="list-box">
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">R</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Richard Miles </span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item new-message">
-                                            <div class="list-left">
-                                                <span class="avatar">J</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Ruth C. Gault</span>
-                                                <span class="message-time">1 Aug</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">T</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author"> Tarah Shropshire </span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">M</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Mike Litorus</span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">C</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author"> Catherine Manseau </span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">D</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author"> Domenic Houston </span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">B</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author"> Buster Wigton </span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">R</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author"> Rolland Webber </span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">C</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author"> Claire Mapes </span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">M</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Melita Faucher</span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">J</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Jeffery Lalor</span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">L</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Loren Gatlin</span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">T</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Tarah Shropshire</span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div><div class="slimScrollBar" style="background: rgb(135, 135, 135); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 809px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-                    </div>
-                    <div class="topnav-dropdown-footer">
-                        <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">See all messages</a>
                     </div>
                 </div>
             </div>

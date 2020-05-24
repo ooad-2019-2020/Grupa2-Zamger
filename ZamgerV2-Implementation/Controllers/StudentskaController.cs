@@ -36,6 +36,8 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.ukupanBrojOsoba = logg.dajUkupanBrojOsobaNaSistemu();
             ViewBag.ukupanBrojStudenata = logg.dajUkupanBrojStudenataNaSistemu();
             ViewBag.ukupanBrojNastavnogOsoblja = logg.dajUkupanBrojNastavnogOsobljaNaSistemu();
+            ViewBag.uposlenici = logg.pretražiNastavnoOsoblje(null, null, "Izaberite");
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             return View();
         }
 
@@ -223,6 +225,15 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
 
+        [Route("/studentska/svi-predmeti-list")]
+        public IActionResult SviPredmetiList()
+        {
+            return View();
+        }
+
+
+
+
 
         [Route("/studentska/kreiraj-predmet")]
         [HttpGet]
@@ -231,6 +242,16 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             return View();
         }
+
+    
+        [Route("/studentska/svi-predmeti-list/pretraga")]
+        [HttpPost]
+        public IActionResult PretražiPredmet(IFormCollection forma)
+        {
+            var lista = logg.pretražiPredmeteBasic(forma["nazivPredmeta"], forma["godinaStudija"].ToString(), forma["izborni"]);
+            return View(lista);
+        }
+
 
 
         [Route("/studentska/kreiraj-predmet")]
@@ -546,6 +567,14 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult ZahtjevUspješnoObrađen()
         {
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            return View();
+        }
+
+
+        [Route("/studentska/plate-svih-uposlenih")]
+        public IActionResult PlateSvihUposlenih()
+        {
+            ViewBag.uposlenici = logg.pretražiNastavnoOsoblje(null, null, "Izaberite");
             return View();
         }
 

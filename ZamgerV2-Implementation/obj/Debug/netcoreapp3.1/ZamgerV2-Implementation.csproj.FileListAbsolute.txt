@@ -196,3 +196,9 @@ F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Sha
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\PretražiNastavnoOsoblje.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\pretraziOsobljeListLayout.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\PretražiNastavnoOsobljeList.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\plateSvihUposlenihListLayout.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\PlateSvihUposlenih.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\studentskaSviPredmetiLayout.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\SviPredmetiList.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\pretarziPredmeteLayout.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\PretražiPredmet.cshtml.g.cs

@@ -113,7 +113,7 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-book" aria-hidden="true"></i><span> Predmeti </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="#">Svi predmeti</a></li>
+                                <li><a href="/studentska/svi-predmeti-list">Svi predmeti</a></li>
                                 <li><a href="/studentska/kreiraj-predmet">Kreiraj predmet</a></li>
                             </ul>
                         </li>
@@ -133,8 +133,7 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-money" aria-hidden="true"></i><span> Plate osoblja </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="#"> Plata svih uposlenih</a></li>
-                                <li><a href="#"> Koeficijenti plata </a></li>
+                                <li><a href="/studentska/plate-svih-uposlenih"> Plata svih uposlenih</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -264,7 +263,7 @@
                                                         <td>@Convert.ToDateTime(Model[i].DatumRođenja).Date.ToString("d")</td>
                                                         <td>@Model[i].Email</td>
                                                         <td class="text-right">
-                                                            <a href="#" class="btn btn-primary btn-sm mb-1">
+                                                            <a href="/studentska/uredi-studenta/@Model[i].BrojIndeksa" class="btn btn-primary btn-sm mb-1">
                                                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                                                             </a>
                                                             <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">

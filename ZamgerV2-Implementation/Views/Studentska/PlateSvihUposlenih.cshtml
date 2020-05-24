@@ -1,9 +1,8 @@
 ﻿
 @{
-    ViewData["Title"] = "ObradiZahtjev";
-    Layout = "~/Views/Shared/zahtjevStudentskaLayout.cshtml";
+    ViewData["Title"] = "PlateSvihUposlenih";
+    Layout = "~/Views/Shared/plateSvihUposlenihListLayout.cshtml";
 }
-
 <div class="main-wrapper">
     <div class="header">
         <!-- Header start -->
@@ -80,7 +79,7 @@
         </ul>
         <div class="dropdown mobile-user-menu float-right">
             <!-- mobile menu -->
-            <a href="https://dreamguys.co.in/preadmin/school/dark/index.html#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
             <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" href="#">Moj Profil</a>
                 <a class="dropdown-item" href="~/">Odjavi se</a>
@@ -107,7 +106,7 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span> Studenti</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="~/studentska/svi-studenti-list">Svi studenti</a></li>
+                                <li><a href="/studentska/svi-studenti-list">Svi studenti</a></li>
                                 <li><a href="~/studentska/kreiraj-studenta">Kreiraj studenta</a></li>
                             </ul>
                         </li>
@@ -127,14 +126,14 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="~/studentska/sva-obavještenja-list">Sva obavještenja</a></li>
-                                <li><a href="~/studentska/kreiraj-obavjestenje">Dodaj obavještenja</a></li>
+                                <li><a href="/studentska/sva-obavještenja-list">Sva obavještenja</a></li>
+                                <li><a href="/studentska/kreiraj-obavjestenje">Dodaj obavještenja</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fa fa-money" aria-hidden="true"></i><span> Plate osoblja </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="/studentska/plate-svih-uposlenih"> Plata svih uposlenih</a></li>
+                                <li><a href="#"> Plata svih uposlenih</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -144,107 +143,67 @@
     </div>
 
 
+
     <div class="page-wrapper" style="min-height: 723px;">
         <!-- content -->
         <div class="content container-fluid">
             <div class="page-header">
                 <div class="row">
                     <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                        <h5 class="text-uppercase">Obradi zahtjev</h5>
+                        <h5 class="text-uppercase">Plate svih uposlenih</h5>
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
-                            <li class="list-inline-item"><a href="~/studentska/dashboard">Početna</a></li>
-                            <li class="list-inline-item"> Obradi zahtjev</li>
+                            <li class="list-inline-item"><a href="/studentska/dashboard">Početna</a></li>
+                            <li class="list-inline-item"> Plate svih uposlenih</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="page-content">
+            <div class="content-page">
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="page-title">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <div class="Page-title">Detalji zahtjeva</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <form class="custom-mt-form" asp-antiforgery="false" asp-action="ObradiZahtjev" method="post">
-                                   
-                                        <div class="form-group custom-mt-form-group">
-                                            <input type="text" value="@ViewBag.zahtjev.Item1" readonly="Readonly" style="color:white">
-                                            <label class="control-label">Ime i prezime studenta</label><i class="bar"></i>
-                                        </div>
-                                    
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped m-b-0">
+                                <thead>
+                                    <tr>
+                                        <th>Ime</th>
+                                        <th>Prezime</th>
+                                        <th>ID osobe</th>
+                                        <th>Mjesto prebivališta</th>
+                                        <th>Titula</th>
+                                        <th>Iznos plate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.uposlenici != null)
+                                    {
+                                        @foreach (var t in ViewBag.uposlenici)
+                                        {
+                                            BridgePlata br;
+                                            if(t.Item2.GetType() == typeof(Profesor))
+                                            {
+                                                Profesor tempProf = (Profesor)t.Item2;
+                                                br = new BridgePlata(tempProf);
+                                            }
+                                            else
+                                            {
+                                                br = new BridgePlata((NastavnoOsoblje)t.Item2);
+                                            }
 
-                                    
-                                        <div class="form-group custom-mt-form-group">
-                                            <input type="text" class="form-control" placeholder="@ViewBag.zahtjev.Item2.Vrsta" readonly style="color:white">
-                                            <label class="control-label">Vrsta zahtjeva</label><i class="bar"></i>
-                                        </div>
-                 
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-
-                                        <div class="form-group text-center custom-mt-form-group">
-                                            <button class="btn btn-primary mr-2" type="submit">Odobri zahtjev</button>
-                                            <button class="btn btn-secondary" type="reset">Odustani</button>
-                                        </div>
-                                    </div>
-
-                                </form>
-                            </div>
+                                                <tr>
+                                                    <td>@t.Item2.Ime</td>
+                                                    <td>@t.Item2.Prezime</td>
+                                                    <td>@t.Item2.IdOsobe</td>
+                                                    <td>@t.Item2.MjestoPrebivališta</td>
+                                                    <td>@t.Item2.Titula</td>
+                                                    <td>@String.Format("{0:0.00}", br.dajPlatu()) KM</td>
+                                                </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="notification-box">
-                <div class="msg-sidebar notifications msg-noti">
-                    <div class="topnav-dropdown-header">
-                        <span>Messages</span>
-                    </div>
-                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 599px;">
-                        <div class="drop-scroll msg-list-scroll" style="overflow: hidden; width: auto; height: 599px;">
-                            <ul class="list-box">
-                                <li>
-                                    <a href="chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">R</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Richard Miles </span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="chat.html">
-                                        <div class="list-item new-message">
-                                            <div class="list-left">
-                                                <span class="avatar">J</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Ruth C. Gault</span>
-                                                <span class="message-time">1 Aug</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div><div class="slimScrollBar" style="background: rgb(135, 135, 135); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 443.512px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-                    </div>
-                    <div class="topnav-dropdown-footer">
-                        <a href="chat.html">See all messages</a>
                     </div>
                 </div>
             </div>
@@ -252,6 +211,7 @@
         </div>
     </div>
 </div>
+
 <div class="sidebar-overlay" data-reff=""></div>
 <script type="text/javascript" src="~/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="~/js/popper.min.js"></script>
@@ -261,6 +221,5 @@
 <script type="text/javascript" src="~/js/moment.min.js"></script>
 <script type="text/javascript" src="~/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
-
 
 

@@ -1031,9 +1031,18 @@ namespace ZamgerV2_Implementation.Models
                 {
                     while(result.Read())
                     {
-                        NastavnoOsoblje no = new NastavnoOsoblje(result.GetString(0), result.GetString(1), result.GetDateTime(2).ToString(), result.GetString(3), result.GetString(4), result.GetString(5), result.GetString(6), result.GetString(7));
-                        no.IdOsobe = result.GetInt32(8);
-                        lista.Add(new Tuple<int, NastavnoOsoblje>(result.GetInt32(9), no));
+                        if(result.GetString(7).Contains("dr"))
+                        {
+                            Profesor pr = new Profesor(result.GetString(0), result.GetString(1), result.GetDateTime(2).ToString(), result.GetString(3), result.GetString(4), result.GetString(5), result.GetString(6), result.GetString(7));
+                            pr.IdOsobe = result.GetInt32(8);
+                            lista.Add(new Tuple<int, NastavnoOsoblje>(result.GetInt32(9), pr));
+                        }
+                        else
+                        {
+                            NastavnoOsoblje no = new NastavnoOsoblje(result.GetString(0), result.GetString(1), result.GetDateTime(2).ToString(), result.GetString(3), result.GetString(4), result.GetString(5), result.GetString(6), result.GetString(7));
+                            no.IdOsobe = result.GetInt32(8);
+                            lista.Add(new Tuple<int, NastavnoOsoblje>(result.GetInt32(9), no));
+                        }
                     }
                     return lista;
                 }
@@ -1165,6 +1174,60 @@ namespace ZamgerV2_Implementation.Models
                 throw new Exception(e.StackTrace + "greška prilikom odobravanja zahtjeva");
             }
         }
+
+        public List<Tuple<int, string, double, int, int>> pretražiPredmeteBasic(string naziv, string godina, string izborni)
+        {
+            string kveri = "SELECT distinct pre.idPredmeta, pre.naziv, pre.ectsPoeni, dp.godinaStudija, dp.izborni FROM PREDMETI pre, DOSTUPNOST_PREDMETA dp WHERE pre.idPredmeta=dp.idPredmeta";
+            List<Tuple<int, string, double, int, int>> lista = new List<Tuple<int, string, double, int, int>>();
+            SqlParameter nazivParametar = null;
+            SqlParameter godinaParametar = null;
+            int indNaziv = 0, indGodina = 0, indIzborni = 0;
+            if (!String.IsNullOrEmpty(naziv))
+            {
+                kveri += " and pre.naziv = @nazivPredmeta";
+                nazivParametar = new SqlParameter("nazivPredmeta", System.Data.SqlDbType.NVarChar);
+                nazivParametar.Value = naziv;
+                indNaziv = 1;
+            }
+            if (!String.IsNullOrEmpty(godina))
+            {
+                kveri += " and dp.godinaStudija = @godinaNaStudiju";
+                godinaParametar = new SqlParameter("godinaNaStudiju", System.Data.SqlDbType.Int);
+                godinaParametar.Value = godina;
+                indGodina = 1;
+            }
+            if (izborni.Equals("Da")) kveri += " and dp.izborni = 1";
+            else if (izborni.Equals("Ne")) kveri += " and dp.izborni = 0";
+                    
+            SqlCommand komanda = new SqlCommand(kveri, conn);
+            if (indNaziv == 1) komanda.Parameters.Add(nazivParametar);
+            if (indGodina == 1) komanda.Parameters.Add(godinaParametar);
+            try
+            {
+                var result = komanda.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        lista.Add(new Tuple<int, string, double, int, int>(result.GetInt32(0), result.GetString(1), result.GetFloat(2), result.GetInt32(3), result.GetInt32(4)));
+                    }
+                    return lista;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + "Nešto nije uredu prilikom pretrage predmeta u bazi");
+            }
+        }
+
+
+
+
+
     }
 
 

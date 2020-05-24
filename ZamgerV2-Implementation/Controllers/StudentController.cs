@@ -125,6 +125,18 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
 
+        [Route ("/student/obavještenje/{idObavještenja}/{id}")]
+        public IActionResult AnnouncementStudentInfo(int idObavještenja, int id)
+        {
+
+
+            return View();
+        }
+
+
+        
+
+
 
 
     }

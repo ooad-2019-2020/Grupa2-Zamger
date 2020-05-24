@@ -406,3 +406,5 @@ C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netc
 C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\ZamgerV2-Implementation.pdb
 C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\svaStudentObavještenjaListLayout.cshtml.g.cs
 C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Student\AllStudentAnnouncementsList.cshtml.g.cs
+C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\obavještenjeInfoLayout.cshtml.g.cs
+C:\Users\Pasha\Desktop\OOAD\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Student\AnnouncementStudentInfo.cshtml.g.cs

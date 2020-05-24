@@ -31,6 +31,9 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 trenutniKorisnik = (MasterStudent)tempK;
             }
+            ViewBag.polozeni = zmgr.dajBrojPoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
+            ViewBag.nepolozeni = zmgr.dajBrojNepoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
+            ViewBag.prosjek = zmgr.dajProsjekPoID(trenutniKorisnik.BrojIndeksa);
             
             return View(trenutniKorisnik); 
         }
@@ -102,6 +105,27 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.mojiZahtjevi = zmgr.dajZahtjeveZaStudenta(id);
             return View(trenutniKorisnik);
         }
+
+        [Route("/student/sva-obavještenja-list/{id}")]
+        public IActionResult AllStudentAnnouncementsList(int id)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(id);
+            if (tempK.GetType() == typeof(Student))
+            {
+                trenutniKorisnik = (Student)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+
+            ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
+            return View(trenutniKorisnik);
+        }
+
+
+
 
     }
 }

@@ -101,7 +101,7 @@
                     <div class="dash-widget dash-widget5">
                         <span class="dash-widget-icon bg-primary"><i class="fa fa-book" aria-hidden="true"></i></span>
                         <div class="dash-widget-info">
-                            <h3>10</h3>
+                            <h3>@ViewBag.polozeni</h3>
                             <span>Broj položenih predmeta</span>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                     <div class="dash-widget dash-widget5">
                         <span class="dash-widget-icon bg-info"><i class="fa fa-frown-o" aria-hidden="true"></i></span>
                         <div class="dash-widget-info">
-                            <h3>3</h3>
+                            <h3>@ViewBag.nepolozeni</h3>
                             <span>Broj nepoloženih predmeta</span>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
                     <div class="dash-widget dash-widget5">
                         <span class="dash-widget-icon bg-warning"><i class="fa fa-align-center" aria-hidden="true"></i></span>
                         <div class="dash-widget-info">
-                            <h3>9.98</h3>
+                            <h3>@String.Format("{0:0.00}", ViewBag.prosjek) </h3>
                             <span>Trenutni prosjek</span>
                         </div>
                     </div>

@@ -17,7 +17,7 @@ namespace ZamgerV2_Implementation.Models
 
         private ZamgerDbContext()
         {
-            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);
@@ -236,6 +236,7 @@ namespace ZamgerV2_Implementation.Models
             }
             catch(Exception e)
             {
+                
                 throw new Exception(e.StackTrace + "greška prilikom dobavljanja tipa korisnika iz baze");
             }
         }
@@ -503,6 +504,71 @@ namespace ZamgerV2_Implementation.Models
             {
                 throw new Exception(e.StackTrace + "greška prilikom generisanja id za zahtjev");
             }
+        }
+
+
+
+        public int dajBrojPoloženihPredmeta(int? indeks)
+        {
+            string kveri = "select Count(idPredmeta) from ocjene where ocjena>5 and idStudenta=@StudentID";
+            var studentIDParam = new SqlParameter("StudentID", SqlDbType.Int);
+            studentIDParam.Value = indeks;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(studentIDParam);
+            try
+            {
+                return (int)command.ExecuteScalar();
+            }
+            catch(Exception e)
+            {
+
+            }
+            return 0;
+        }
+
+        public int dajBrojNepoloženihPredmeta(int? indeks)
+        {
+            int brojPoloženih = dajBrojPoloženihPredmeta(indeks);
+
+            string kveri = "select Count(distinct idPredmeta) from ocjene where idStudenta=@StudentID";
+            var studentIDParam = new SqlParameter("StudentID", SqlDbType.Int);
+            studentIDParam.Value = indeks;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(studentIDParam);
+            try
+            {
+                int ukupnoPredmeta = (int) command.ExecuteScalar();
+                return ukupnoPredmeta - brojPoloženih;
+            }
+            catch(Exception e)
+            {
+
+            }
+            return 0;
+
+        }
+        public double dajProsjekPoID(int? indeks)
+        {
+            string kveri = "select isnull(avg(ocjena),5) from ocjene where ocjena>5 and idStudenta = @StudentID";
+            var studentIDParam = new SqlParameter("StudentID", SqlDbType.Int);
+            studentIDParam.Value = indeks;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(studentIDParam);
+            try
+            {
+                return (double)command.ExecuteScalar();
+            }catch(Exception e)
+            {
+                return 5;
+            }
+        }
+
+        public List<Obavještenje> dajSvaObavještenja()
+        {
+            Logger logg = Logger.GetInstance();
+            List<Obavještenje> obavještenja = logg.dajObavještenja();
+            Logger.removeInstance();
+            return obavještenja;
         }
 
     }

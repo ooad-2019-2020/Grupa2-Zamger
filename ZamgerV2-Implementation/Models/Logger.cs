@@ -19,7 +19,8 @@ namespace ZamgerV2_Implementation.Models
         private static Logger instance = null;
         private Logger()
         {
-            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            //ST6TE70 - PASHA
+            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);

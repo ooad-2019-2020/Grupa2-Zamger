@@ -164,8 +164,37 @@ namespace ZamgerV2_Implementation.Controllers
             return View(trenutniKorisnik);
         }
 
+        [Route ("/student/poruke/moj-inbox/{idStudenta}")]
+        public IActionResult mojInbox(int idStudenta)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(idStudenta);
+            if (tempK.GetType() == typeof(Student))
+            {
+                trenutniKorisnik = (Student)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+            return View(trenutniKorisnik);
+        }
+        [Route("/student/poruke/moj-outbox/{idStudenta}")]
+        public IActionResult mojOutbox(int idStudenta)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(idStudenta);
+            if (tempK.GetType() == typeof(Student))
+            {
+                trenutniKorisnik = (Student)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+            return View(trenutniKorisnik);
+        }
 
-        
 
 
 

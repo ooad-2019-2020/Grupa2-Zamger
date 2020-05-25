@@ -128,9 +128,18 @@ namespace ZamgerV2_Implementation.Controllers
         [Route ("/student/obavještenje/{idObavještenja}/{id}")]
         public IActionResult AnnouncementStudentInfo(int idObavještenja, int id)
         {
-
-
-            return View();
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(id);
+            if (tempK.GetType() == typeof(Student))
+            {
+                trenutniKorisnik = (Student)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+            ViewBag.obavještenje = zmgr.dajObavještenjePoId(idObavještenja);
+            return View(trenutniKorisnik);
         }
 
 

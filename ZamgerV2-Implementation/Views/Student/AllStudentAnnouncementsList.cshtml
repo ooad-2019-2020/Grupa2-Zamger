@@ -1,6 +1,6 @@
 ﻿@model Student
 @{
-    ViewData["Title"] = "AllStudentAnnouncementsList";
+    ViewData["Title"] = "Student - Sva obavještenja";
     Layout = "~/Views/Shared/svaStudentObavještenjaListLayout.cshtml";
 }
 
@@ -53,7 +53,7 @@
                         <ul>
                             <li class="menu-title">Glavni meni</li>
                             <li class="active">
-                                <a href="#"><i class="fa fa-tachometer" aria-hidden="true"></i> Početna</a>
+                                <a href="/student/dashboard/@Model.BrojIndeksa"><i class="fa fa-tachometer" aria-hidden="true"></i> Početna</a>
                             </li>
                             <li class="submenu">
                                 <a href="#"><i class="fa fa-book" aria-hidden="true"></i><span> Predmeti </span> <span class="menu-arrow"></span></a>
@@ -106,20 +106,9 @@
                         </div>
                         <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                             <ul class="list-inline breadcrumb float-right">
-                                <li class="list-inline-item"><a href="/studentska/dashboard">Početna</a></li>
+                                <li class="list-inline-item"><a href="/student/dashboard/@Model.BrojIndeksa">Početna</a></li>
                                 <li class="list-inline-item"> Sva obavještenja - list</li>
                             </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4 col-3">
-
-                    </div>
-                    <div class="col-sm-8 col-9 text-right m-b-20">
-                        <a href="/studentska/kreiraj-obavjestenje" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Kreiraj obavještenje</a>
-                        <div class="view-icons">
-                            <a href="#" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
                         </div>
                     </div>
                 </div>
@@ -140,7 +129,7 @@
                                                     {
                                                         <tr role="row" class="odd">
                                                             <td class="sorting_1">
-                                                                <h2><a href="#">@ViewBag.listaObavjestenja[i].Naslov</a></h2>
+                                                                <h2><a href="/student/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja/@Model.BrojIndeksa">@ViewBag.listaObavjestenja[i].Naslov</a></h2>
                                                             </td>
                                                             @{String kratakSadrzaj;}
                                                             @if (ViewBag.listaObavjestenja[i].Sadržaj.Length > 60)
@@ -161,7 +150,7 @@
                                                     {
                                                         <tr role="row" class="even">
                                                             <td class="sorting_1">
-                                                                <h2><a href="#">@ViewBag.listaObavjestenja[i].Naslov</a></h2>
+                                                                <h2><a href="/student/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja/@Model.BrojIndeksa">@ViewBag.listaObavjestenja[i].Naslov</a></h2>
                                                             </td>
                                                             @{String kratakSadrzaj;}
                                                             @if (ViewBag.listaObavjestenja[i].Sadržaj.Length > 60)

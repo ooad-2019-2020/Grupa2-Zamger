@@ -17,7 +17,7 @@ namespace ZamgerV2_Implementation.Models
 
         private ZamgerDbContext()
         {
-            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);
@@ -571,5 +571,35 @@ namespace ZamgerV2_Implementation.Models
             return obavještenja;
         }
 
+
+        public Obavještenje dajObavještenjePoId(int id)
+        {
+            string kveri = "select naslov, sadržaj, vrijemeObavještenja, idObavjestenja from OBAVJEŠTENJA where idObavjestenja = @obID";
+            var idParam = new SqlParameter("obID", SqlDbType.Int);
+            idParam.Value = id;
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.Add(idParam);
+            try
+            {
+                var result = cmd.ExecuteReader();
+                if(result.HasRows)
+                {
+                    result.Read();
+                    return new Obavještenje(result.GetString(0), result.GetString(1), result.GetDateTime(2), result.GetInt32(3));
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom dohvaćanja obavještenja po ID iz baze");
+            }
+
+        }
+
     }
+
+
 }

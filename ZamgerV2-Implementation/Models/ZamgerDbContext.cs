@@ -17,7 +17,7 @@ namespace ZamgerV2_Implementation.Models
 
         private ZamgerDbContext()
         {
-            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);
@@ -597,6 +597,157 @@ namespace ZamgerV2_Implementation.Models
                 throw new Exception(e.StackTrace + " greška prilikom dohvaćanja obavještenja po ID iz baze");
             }
 
+        }
+
+        public List<Tuple<string,int,int>> dajMojePredmete(int? indeks)
+        {
+            List<Tuple<string, int, int>> mojiPredmeti = new List<Tuple<string, int, int>>();
+
+            string kveri = "select p.naziv, p.idPredmeta, o.studijskaGodina from ocjene o, predmeti p where o.idStudenta = @StudentID and o.idPredmeta = p.idPredmeta order by o.studijskaGodina asc";
+            var studentIDParam = new SqlParameter("StudentID", SqlDbType.Int);
+            studentIDParam.Value = indeks;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(studentIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        mojiPredmeti.Add(new Tuple<string, int, int>(result.GetString(0), result.GetInt32(1), result.GetInt32(2)));
+                    }
+                    return mojiPredmeti;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom dohvaćanja informacija o predmetu iz baze");
+            }
+        }
+
+        public List<Zadaća> dajStudentoveZadaće(int indeks,int idPredmeta,int studijskaGodina)
+        {
+            List<Zadaća> zadaće = new List<Zadaća>();
+            string kveri = "select z.redniBroj, z.nazivZadaće, z.bodovi, z.rokIsteka, z.rješenjeZadaće, z.maxBrojBodova, z.putanjaDoZadaće from zadaće z,aktivnosti a where z.redniBroj = a.idAktivnosti and a.godinaStudija = @studyYear and z.idStudenta = @studentID and z.idPredmeta = @subjectID";
+            var studentIDParam = new SqlParameter("studentID", SqlDbType.Int);
+            studentIDParam.Value = indeks;
+            var subjectIDParam = new SqlParameter("subjectID", SqlDbType.Int);
+            subjectIDParam.Value = idPredmeta;
+            var studyYearParam = new SqlParameter("studyYear", SqlDbType.Int);
+            studyYearParam.Value = studijskaGodina;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(studentIDParam);
+            command.Parameters.Add(studyYearParam);
+            command.Parameters.Add(subjectIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        zadaće.Add(new Zadaća(result.GetInt32(0), result.GetInt32(1), result.GetInt32(2), result.GetString(3), result.GetFloat(4),
+                            result.GetDateTime(5), null, result.GetFloat(7), result.GetString(8)));
+                        //ne znam kako preuzet document iz baze, pa je za sad to null
+                    }
+                    return zadaće;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom dohvaćanja obavještenja po ID iz baze");
+            }
+
+        }
+
+        public List<Ispit> dajStudentoveIspite(int indeks, int idPredmeta, int studijskaGodina)
+        {
+            List<Ispit> ispiti = new List<Ispit>();
+            string kveri = "select i.naziv,i.datum,i.bodovi,i.idIspita,i.maxBrojBodova,i.brojBodovaZaProlaz from ispiti i, aktivnosti a where i.idIspita = a.idAktivnosti and a.godinaStudija = @studyYear and i.idStudenta = @studentID and i.idPredmeta = @subjectID";
+            var studentIDParam = new SqlParameter("studentID", SqlDbType.Int);
+            studentIDParam.Value = indeks;
+            var subjectIDParam = new SqlParameter("subjectID", SqlDbType.Int);
+            subjectIDParam.Value = idPredmeta;
+            var studyYearParam = new SqlParameter("studyYear", SqlDbType.Int);
+            studyYearParam.Value = studijskaGodina;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(studentIDParam);
+            command.Parameters.Add(studyYearParam);
+            command.Parameters.Add(subjectIDParam);
+
+            try
+            {
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        ispiti.Add(new Ispit(indeks, idPredmeta, result.GetString(0), result.GetDateTime(1), result.GetFloat(2),
+                            result.GetInt32(3), result.GetInt32(4), result.GetFloat(5)));
+                    }
+                    return ispiti;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom dohvaćanja obavještenja po ID iz baze");
+            }
+
+
+
+        }
+        
+        public PredmetZaStudenta dajPredmetZaStudentaPoID(int indeks, int idPredmeta, int studijskaGodina)
+        {
+            
+            List<Zadaća> zadaće = dajStudentoveZadaće(indeks, idPredmeta, studijskaGodina);
+            List<Ispit> ispiti = dajStudentoveIspite(indeks, idPredmeta, studijskaGodina);
+            List<Aktivnost> aktivnosti = new List<Aktivnost>();
+            if(zadaće != null) foreach (Zadaća zadaća in zadaće) aktivnosti.Add(zadaća);
+            if(ispiti != null) foreach (Ispit ispit in ispiti) aktivnosti.Add(ispit);
+            string kveri = "select p.naziv, p.ectsPoeni, o.bodovi, o.ocjena from ocjene o, predmeti p where idStudenta = @studentID and idPredmeta = @subjectID and studijskaGodina = @studyYear";
+            var studentIDParam = new SqlParameter("studentID", SqlDbType.Int);
+            studentIDParam.Value = indeks;
+            var subjectIDParam = new SqlParameter("subjectID", SqlDbType.Int);
+            subjectIDParam.Value = idPredmeta;
+            var studyYearParam = new SqlParameter("studyYear", SqlDbType.Int);
+            studyYearParam.Value = studijskaGodina;
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.Add(studentIDParam);
+            command.Parameters.Add(studyYearParam);
+            command.Parameters.Add(subjectIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    return new PredmetZaStudenta(result.GetString(0), result.GetFloat(1), result.GetFloat(2), result.GetInt32(3), aktivnosti,
+                        idPredmeta, indeks, studijskaGodina);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
+            return null;
         }
 
     }

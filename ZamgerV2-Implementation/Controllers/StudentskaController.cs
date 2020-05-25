@@ -276,8 +276,8 @@ namespace ZamgerV2_Implementation.Controllers
                 {"checkboxPrva", 1},
                 {"checkboxDruga", 2},
                 {"checkboxTreca", 3},
-                {"checkboxCetvrta", 4 },
-                {"checkboxPeta", 5 }
+                {"checkboxCetvrta", 4},
+                {"checkboxPeta", 5}
             };
 
 
@@ -521,15 +521,121 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
 
-        //trebat ce editovat ovu metodu kad se dodaju i predmeti svi i sve, ocjene i to da se sve prikaže o studentu ovdje!
+        [Route("/studentska/uredi-predmet/{id}")]
+        [HttpGet]
+        public IActionResult UrediPredmet(int id)
+        {
+            KreiranPredmetViewModel predmet = logg.dajKreiranPredmetPoID(id);
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            return View(predmet);
+        }
+
+        [Route("/studentska/uredi-predmet/{id}")]
+        [HttpPost]
+        public IActionResult UrediPredmet(int id, IFormCollection forma)
+        {
+            NumberFormatInfo format = new NumberFormatInfo();
+            format.NumberDecimalSeparator = ".";
+            List<string> listaOdsjeciZaDodati = new List<string>();
+            List<int> listaGodineZaDodati = new List<int>();
+
+            var mapOdsjeci = new Dictionary<string, string>()
+            {
+                {"checkboxRI", "Računarstvo i informatika"},
+                { "checkboxAiE", "Automatika i elektronika"},
+                { "checkboxTK", "Telekomunikacije" },
+                {"checkboxEE", "Elektroenergetika" }
+            };
+
+            var mapGodine = new Dictionary<string, int>()
+            {
+                {"checkboxPrva", 1},
+                {"checkboxDruga", 2},
+                {"checkboxTreca", 3},
+                {"checkboxCetvrta", 4},
+                {"checkboxPeta", 5}
+            };
+
+
+            foreach (KeyValuePair<string, string> entry in mapOdsjeci)
+            {
+                String tempst = forma[entry.Key];
+                if (tempst != null)
+                {
+                    listaOdsjeciZaDodati.Add(entry.Value);
+                }
+            }
+
+            foreach (KeyValuePair<string, int> entry in mapGodine)
+            {
+                String temps = forma[entry.Key];
+                if (temps != null)
+                {
+                    listaGodineZaDodati.Add(entry.Value);
+                }
+            }
+
+            int izborni = 0;
+            String temp = forma["checkboxIzborni"];
+            if (temp != null)
+            {
+                izborni = 1;
+            }
+
+
+            KreiranPredmetViewModel prdmt = logg.dajKreiranPredmetPoID(id);
+            if(!String.IsNullOrEmpty(forma["ectsPoeni"]) && !forma["ectsPoeni"].Equals(prdmt.EctsPoeni.ToString()))
+            {
+                logg.promijeniEctsPredmetu(id, float.Parse(forma["ectsPoeni"]));
+            }
+
+            if(listaGodineZaDodati.Any() && listaOdsjeciZaDodati.Any())
+            {
+                logg.promijeniDostupnostPredmet(id, listaOdsjeciZaDodati, listaGodineZaDodati, izborni);
+                return RedirectToAction("SviPredmetiList");
+            }
+            return null; //treba dodati error screen, jer predmet ne moze biti nikako nedostupan(da su svi checkboxovi nulirani)
+        }
+
+
+
+
+
         [Route("/studentska/uredi-studenta/{id}")]
         [HttpGet]
         public IActionResult UrediStudenta(int id)
         {
+            ViewBag.pass = logg.dajPasswordPoId(id);
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             Student tempStudent = logg.dajStudentaPoID(id);
-            return View(tempStudent); //napravio sam ja i view al i njega će trebati urediti, treba još informacija o studentu ovdje
+            return View(tempStudent);
         }
+
+        [Route("/studentska/uredi-studenta/{id}")]
+        [HttpPost]
+        public IActionResult UrediStudenta(int id, IFormCollection forma)
+        {
+            Student tempStudent = logg.dajStudentaPoID(id);
+            int prebUpdate = 0, passUpdate = 0, godUpdate = 0;
+            if (!String.IsNullOrEmpty(forma["prebivaliste"]) && !forma["prebivaliste"].Equals(tempStudent.MjestoPrebivališta)) prebUpdate = 1;
+            if (!String.IsNullOrEmpty(forma["passwordUser"]) && !forma["passwordUser"].Equals(logg.dajPasswordPoId(id))) passUpdate = 1;
+            if (!forma["godinaStudija"].Equals(tempStudent.GodinaStudija.ToString())) godUpdate = 1;
+            if (prebUpdate != 0 || passUpdate != 0 || godUpdate != 0)
+            {
+                try
+                {
+                    logg.izmijeniStudentskePodatke(prebUpdate, passUpdate, godUpdate, forma["prebivaliste"], forma["passwordUser"], forma["godinaStudija"], id);
+                    return RedirectToAction("AllStudentsList");
+                }
+                catch(Exception)
+                {
+                    Response.WriteAsync("Nešto nije uredu prilikom editovanja podataka za studenta");
+                    return null;
+                }
+            }
+            return RedirectToAction("AllStudentsList");
+        }
+
 
 
 
@@ -547,7 +653,7 @@ namespace ZamgerV2_Implementation.Controllers
         {
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             ViewBag.zahtjev = logg.dajZahjtevPoId(id);
-            return View(); // treba dodat view sad
+            return View();
         }
 
         [Route("/studentska/obradi-zahtjev/{id}")]

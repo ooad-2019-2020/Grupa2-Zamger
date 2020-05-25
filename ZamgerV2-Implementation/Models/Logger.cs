@@ -170,9 +170,6 @@ namespace ZamgerV2_Implementation.Models
             try
             {
                 command.ExecuteNonQuery();
-
-                Thread.Sleep(100);
-
                 command2.ExecuteNonQuery();
 
             }
@@ -500,7 +497,6 @@ namespace ZamgerV2_Implementation.Models
                 command.Parameters.Add(nameParam);
                 command.Parameters.Add(ECTSpointsParam);
                 command.ExecuteNonQuery();
-                Thread.Sleep(100);
 
                 for (int i = 0; i < odsjeci.Count; i++)
                 {
@@ -531,6 +527,116 @@ namespace ZamgerV2_Implementation.Models
                 System.Diagnostics.Debug.WriteLine("nesto nije u redu");
                 return -1;
                 throw new Exception("Greška prilikom ubacivanja studenta u bazu");
+            }
+        }
+
+        public void izmijeniStudentskePodatke(int prebUpdate, int passUpdate, int godUpdate, String prebivalište, String password, String godinaStudija, int idStudenta)
+        {
+            String kveri;
+            String kveri2;
+            SqlParameter paramPrebivaliste = null, paramPassword = null, paramID = null, paramID2 = null;
+            SqlCommand cmd=null, cmd2=null;
+            if (prebUpdate == 1)
+            {
+                kveri = "update studenti set mjestoPrebivališta = @prebivalisteParam where brojIndeksa = @userID2";
+                paramPrebivaliste = new SqlParameter("prebivalisteParam", System.Data.SqlDbType.NVarChar);
+                paramPrebivaliste.Value = prebivalište;
+                paramID = new SqlParameter("userID2", System.Data.SqlDbType.Int);
+                paramID.Value = idStudenta;
+                cmd = new SqlCommand(kveri, conn);
+                cmd.Parameters.Add(paramPrebivaliste); cmd.Parameters.Add(paramID);
+            }
+            if(passUpdate == 1)
+            {
+                kveri2 = "update korisnici set password = @pass where idKorisnika = @userID";
+                paramPassword = new SqlParameter("pass", System.Data.SqlDbType.NVarChar);
+                paramPassword.Value = password;
+                paramID2 = new SqlParameter("userID", System.Data.SqlDbType.Int);
+                paramID2.Value = idStudenta;
+                cmd2 = new SqlCommand(kveri2, conn);
+                cmd2.Parameters.Add(paramPassword); cmd2.Parameters.Add(paramID2);
+            }
+            if(godUpdate==1)
+            {
+                this.upišiStudentaNaGodinu(idStudenta, int.Parse(godinaStudija));
+            }
+            try
+            {
+                if (prebUpdate == 1) cmd.ExecuteNonQuery();
+                if (passUpdate == 1) cmd2.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom editovanja podataka za studenta");
+            }
+        }
+
+        public void upišiStudentaNaGodinu(int idStudenta, int godStudija)
+        {
+            Student tempStudent = this.dajStudentaPoID(idStudenta);
+            string kveri = "update studenti set godinaStudija = @godParam where brojIndeksa = @studentID";
+            var paramGodina = new SqlParameter("godParam", System.Data.SqlDbType.Int);
+            paramGodina.Value = godStudija;
+            var paramID = new SqlParameter("studentID", System.Data.SqlDbType.Int);
+            paramID.Value = idStudenta;
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.Add(paramGodina); cmd.Parameters.Add(paramID);
+            List<int> ideviPredmeta = this.dajIDPredmetaNaGodiniIOdsjeku(godStudija, tempStudent.Odsjek);
+
+            StringBuilder sb = new StringBuilder("insert into ocjene values");
+            for (int i = 0; i < ideviPredmeta.Count; i++)
+            {
+                if (i < ideviPredmeta.Count - 1)
+                {
+                    sb.Append("(").Append(idStudenta).Append(",").Append(ideviPredmeta[i]).Append(", 5, 0,").Append(DateTime.Now.Year.ToString()).Append("), ");
+                }
+                else
+                {
+                    sb.Append("(").Append(idStudenta).Append(",").Append(ideviPredmeta[i]).Append(", 5, 0,").Append(DateTime.Now.Year.ToString()).Append(")");
+                }
+            }
+
+            SqlCommand command2 = new SqlCommand(sb.ToString(), conn);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                command2.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom upisivanja ocjena sa nove godine");
+            }
+        }
+
+        public List<int> dajIDPredmetaNaGodiniIOdsjeku(int god, String odsjek)
+        {
+            List<int> lista = new List<int>();
+            string kveri2 = "select p.idPredmeta from PREDMETI p, DOSTUPNOST_PREDMETA dp where dp.idPredmeta=p.idPredmeta and dp.odsjek=@odsjek and dp.godinaStudija=@godina and dp.izborni=0";
+            var paramGodina = new SqlParameter("godina", System.Data.SqlDbType.Int);
+            paramGodina.Value = god;
+            var paramOdsjek = new SqlParameter("odsjek", System.Data.SqlDbType.NVarChar);
+            paramOdsjek.Value = odsjek;
+            SqlCommand command = new SqlCommand(kveri2, conn);
+            command.Parameters.Add(paramGodina); command.Parameters.Add(paramOdsjek);
+            try
+            {
+                var result = command.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        lista.Add(result.GetInt32(0));
+                    }
+                    return lista;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom dobijanja predmeta po id iz baze");
             }
         }
 
@@ -1181,7 +1287,7 @@ namespace ZamgerV2_Implementation.Models
             List<Tuple<int, string, double, int, int>> lista = new List<Tuple<int, string, double, int, int>>();
             SqlParameter nazivParametar = null;
             SqlParameter godinaParametar = null;
-            int indNaziv = 0, indGodina = 0, indIzborni = 0;
+            int indNaziv = 0, indGodina = 0;
             if (!String.IsNullOrEmpty(naziv))
             {
                 kveri += " and pre.naziv = @nazivPredmeta";
@@ -1225,10 +1331,115 @@ namespace ZamgerV2_Implementation.Models
         }
 
 
+        public String dajPasswordPoId(int id)
+        {
+            string kveri = "select password from korisnici where idKorisnika = @userID";
+            SqlParameter idParametar = new SqlParameter("userID", System.Data.SqlDbType.Int);
+            idParametar.Value = id;
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.Add(idParametar);
+            try
+            {
+                return (string)cmd.ExecuteScalar();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "nešto nije uredu prilikom dobvljanja passworda za korisnika");
+            }
+        }
 
+
+        public Tuple<int, string, double, int, int> dajPredmetBasicPoId(int id)
+        {
+            string kveri = "SELECT distinct pre.idPredmeta, pre.naziv, pre.ectsPoeni, dp.godinaStudija, dp.izborni FROM PREDMETI pre, DOSTUPNOST_PREDMETA dp WHERE pre.idPredmeta=dp.idPredmeta and pre.idPredmeta = @predmetID";
+            SqlParameter idParametar = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
+            idParametar.Value = id;
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.Add(idParametar);
+            try
+            {
+                var result = cmd.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();       
+                    return new Tuple<int, string, double, int, int>(result.GetInt32(0), result.GetString(1), result.GetFloat(2), result.GetInt32(3), result.GetInt32(4));
+
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom dobavljanja predmet basic infos po ID");
+            }
+        }
+
+        public void promijeniEctsPredmetu(int id, float ects)
+        {
+            string kveri = "update predmeti set ectsPoeni = @ects where idPredmeta = @predmetID";
+            SqlParameter idParametar = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
+            idParametar.Value = id;
+            SqlParameter ectsParametar = new SqlParameter("ects", System.Data.SqlDbType.Real);
+            ectsParametar.Value = ects;
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.Add(idParametar); cmd.Parameters.Add(ectsParametar);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom mijenjanja ects poena predmetu");
+            }
+        }
+
+        public void promijeniDostupnostPredmet(int id, List<string> odsjeci, List<int> godine, int izborni)
+        {
+            string delKveri = "delete from DOSTUPNOST_PREDMETA where idPredmeta = @predmetID";
+            SqlParameter idParametar = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
+            idParametar.Value = id;
+            SqlCommand delCmd = new SqlCommand(delKveri, conn);
+            delCmd.Parameters.Add(idParametar);
+            try
+            {
+                delCmd.ExecuteNonQuery();
+                for (int i = 0; i < odsjeci.Count; i++)
+                {
+                    string odsjek = odsjeci[i];
+                    for (int j = 0; j < godine.Count; j++)
+                    {
+                        int godina = godine[j];
+                        var predmetID2 = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
+                        predmetID2.Value = id;
+                        string sqlKveri2 = "INSERT INTO DOSTUPNOST_PREDMETA VALUES(@predmetID, @course, @studyYear, @selective)";
+                        var courseParam = new SqlParameter("course", System.Data.SqlDbType.NVarChar);
+                        courseParam.Value = odsjek;
+                        var studyYearParam = new SqlParameter("studyYear", System.Data.SqlDbType.Int);
+                        studyYearParam.Value = godina;
+                        var selectiveParam = new SqlParameter("selective", System.Data.SqlDbType.Int);
+                        selectiveParam.Value = izborni;
+                        SqlCommand command2 = new SqlCommand(sqlKveri2, conn);
+                        command2.Parameters.Add(predmetID2);
+                        command2.Parameters.Add(courseParam);
+                        command2.Parameters.Add(studyYearParam);
+                        command2.Parameters.Add(selectiveParam);
+                        command2.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom mijenjanja dostupnosti za predmet");
+            }
+
+        }
 
 
     }
 
+
+   
 
 }

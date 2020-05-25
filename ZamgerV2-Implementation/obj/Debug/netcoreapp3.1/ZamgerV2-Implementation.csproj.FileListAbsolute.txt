@@ -202,3 +202,5 @@ F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Sha
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\SviPredmetiList.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\pretarziPredmeteLayout.cshtml.g.cs
 F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\PretražiPredmet.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Shared\UrediPredmetLayout.cshtml.g.cs
+F:\Grupa2-Zamger\ZamgerV2-Implementation\obj\Debug\netcoreapp3.1\Razor\Views\Studentska\UrediPredmet.cshtml.g.cs

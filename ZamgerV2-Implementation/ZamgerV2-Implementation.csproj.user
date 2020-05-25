@@ -2,7 +2,11 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
+<<<<<<< HEAD
     <WebStackScaffolding_LayoutPageFile>~/Views/Shared/UrediPredmetLayout.cshtml</WebStackScaffolding_LayoutPageFile>
+=======
+    <WebStackScaffolding_LayoutPageFile>~/Views/Shared/obavještenjeInfoLayout.cshtml</WebStackScaffolding_LayoutPageFile>
+>>>>>>> 89b676268686844c228336cd30c26eba40757686
     <WebStackScaffolding_IsLayoutPageSelected>True</WebStackScaffolding_IsLayoutPageSelected>
     <WebStackScaffolding_IsPartialViewSelected>False</WebStackScaffolding_IsPartialViewSelected>
     <WebStackScaffolding_IsReferencingScriptLibrariesSelected>False</WebStackScaffolding_IsReferencingScriptLibrariesSelected>

@@ -680,7 +680,52 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/studentska/plate-svih-uposlenih")]
         public IActionResult PlateSvihUposlenih()
         {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             ViewBag.uposlenici = logg.pretražiNastavnoOsoblje(null, null, "Izaberite");
+            return View();
+        }
+
+
+        [Route("/studentska/izbrisi-studenta/{id}")]
+        public IActionResult IzbrišiStudenta(int id)
+        {
+            logg.izbrisiStudentaPoId(id);
+            return RedirectToAction("StudentUspješnoIzbrisan");
+        }
+
+        [Route("/studentska/student-uspjesno-izbrisan")]
+        public IActionResult StudentUspješnoIzbrisan()
+        {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            return View();
+        }
+
+        [Route("/studentska/izbrisi-nastavno-osoblje/{id}")]
+        public IActionResult IzbrišiNastavnoOsoblje(int id)
+        {
+            logg.izbrisiNastavnoOsobljePoId(id);
+            return RedirectToAction("NastavnoOsobljeUspješnoIzbrisano");
+        }
+
+        [Route("/studentska/nastavno-osoblje-uspjesno-izbrisano")]
+        public IActionResult NastavnoOsobljeUspješnoIzbrisano()
+        {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            return View();
+        }
+
+
+        [Route("/studentska/izbrisi-predmet/{id}")]
+        public IActionResult IzbrišiPredmet(int id)
+        {
+            logg.izbrisiPredmetPoId(id);
+            return RedirectToAction("UspješnoIzbrisanPredmet");
+        }
+
+        [Route("/studentska/predmet-uspjesno-izbrisan")]
+        public IActionResult UspješnoIzbrisanPredmet()
+        {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             return View();
         }
 

@@ -210,9 +210,11 @@
 
 
                 <div class="row staff-grid-row">
-
-                    @foreach (Tuple<int,NastavnoOsoblje> s in Model)
+                    
+                    @if (Model != null)
                     {
+                        foreach (Tuple<int, NastavnoOsoblje> s in Model)
+                        {
                         <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                             <div class="profile-widget">
                                 <div class="profile-img">
@@ -221,8 +223,8 @@
                                 <div class="dropdown profile-action">
                                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi studenta</a>
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i>Izbriši studenta</a>
+                                        <a class="dropdown-item" href="#"><i class="fa fa-pencil m-r-5"></i> Uredi osobu</a>
+                                        <a class="dropdown-item" href="/studentska/izbrisi-nastavno-osoblje/@s.Item2.IdOsobe"><i class="fa fa-trash-o m-r-5"></i>Izbriši osobu</a>
                                     </div>
                                 </div>
                                 <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">@s.Item2.Ime @s.Item2.Prezime</a></h4>
@@ -230,27 +232,10 @@
                                 <div class="small text-muted">Broj predmeta: @s.Item1</div>
                             </div>
                         </div>
+                        }
                     }
 
                 </div>
-            </div>
-        </div>
-    </div>
-    <div id="delete_employee" class="modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content modal-md">
-                <div class="modal-header">
-                    <h4 class="modal-title">Delete Employee</h4>
-                </div>
-                <form>
-                    <div class="modal-body card-box">
-                        <p>Are you sure want to delete this?</p>
-                        <div class="m-t-20">
-                            <a href="https://dreamguys.co.in/preadmin/school/dark/all-students.html#" class="btn btn-white" data-dismiss="modal">Close</a>
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>

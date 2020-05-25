@@ -223,11 +223,13 @@
                                             <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Ime i prezime </th><th style="min-width: 70px; width: 70px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Broj indeksa: activate to sort column ascending">Br. indeksa</th><th style="min-width: 20px; width: 50px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Class: activate to sort column ascending">Godina studija</th><th style="min-width: 50px; width: 100px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">Odsjek</th><th style="min-width: 50px; width: 86.8px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label=" Address: activate to sort column ascending"> Prebivalište</th><th style="min-width: 80px; width: 80.4px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date of Birth: activate to sort column ascending">Datum rođenja</th><th style="min-width: 50px; width: 126px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending">Email</th><th class="text-right sorting" style="min-width: 50px; width: 50px;" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Akcija</th></tr>
                                         </thead>
                                         <tbody>
-
-                                            @for (int i = 0; i < Model.Count; i++)
+                                            
+                                            @if (Model != null)
                                             {
-                                                if (i % 2 == 0)
+                                                for (int i = 0; i < Model.Count; i++)
                                                 {
+                                                    if (i % 2 == 0)
+                                                    {
                                                     <tr role="row" class="odd">
                                                         <td class="sorting_1">
                                                             <a href="#" class="avatar">@Model[i].Ime[0]@Model[i].Prezime[0]</a>
@@ -243,14 +245,14 @@
                                                             <a href="/studentska/uredi-studenta/@Model[i].BrojIndeksa" class="btn btn-primary btn-sm mb-1">
                                                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                                                             </a>
-                                                            <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
+                                                            <a href="/studentska/izbrisi-studenta/@Model[i].BrojIndeksa" class="btn btn-danger btn-sm mb-1">
                                                                 <i class="fa fa-trash" aria-hidden="true"></i>
-                                                            </button>
+                                                            </a>
                                                         </td>
                                                     </tr>
-                                                }
-                                                else
-                                                {
+                                                    }
+                                                    else
+                                                    {
                                                     <tr role="row" class="even">
                                                         <td class="sorting_1">
                                                             <a href="#" class="avatar">@Model[i].Ime[0]@Model[i].Prezime[0]</a>
@@ -271,6 +273,7 @@
                                                             </button>
                                                         </td>
                                                     </tr>
+                                                    }
                                                 }
                                             }
                                         </tbody>

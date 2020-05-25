@@ -215,52 +215,33 @@
                                     <table class="table table-striped custom-table">
                                         <thead>
                                             <tr>
-                                                <th style="min-width:91px;">Naziv ispita </th>
-                                                <th style="min-width:50px;">Predmet</th>
-                                                <th style="min-width:50px;">Godina</th>
-                                                <th style="min-width:50px;">Odsjeci</th>
+                                                <th style="min-width:91px;">Naslov </th>
+                                                <th style="min-width:50px;">Sadržaj</th>
                                                 <th style="min-width:50px;">Vrijeme</th>
-                                                <th style="min-width:50px;">Datum</th>
-                                                <th class="text-right" style="width:30%;">Akcija</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
-                                                </td>
-                                                <td>English</td>
-                                                <td>5</td>
-                                                <td>B</td>
-                                                <td>10.00am</td>
-                                                <td>20/1/2019</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
-                                                </td>
-                                                <td>English</td>
-                                                <td>4</td>
-                                                <td>A</td>
-                                                <td>10.00am</td>
-                                                <td>2/1/2019</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            @for (int i = 0; i < ViewBag.listaObavjestenja.Count; i++)
+                                             {
+
+                                                <tr>
+                                                    <td><a href="/student/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja/@Model.BrojIndeksa"> @ViewBag.listaObavjestenja[i].Naslov</a></td>
+                                                    @{String kratakSadrzaj;}
+                                                    @if (ViewBag.listaObavjestenja[i].Sadržaj.Length > 60)
+                                                    {
+                                                        kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj.Substring(0, 60);
+                                                        kratakSadrzaj += "...";
+                                                    }
+                                                    else
+                                                    {
+                                                        kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj;
+                                                    }
+                                                    <td>@kratakSadrzaj</td>
+                                                    <td>@ViewBag.listaObavjestenja[i].dateTime</td>
+                                                </tr>
+
+                                                    
+                                             }
                                         </tbody>
                                     </table>
                                 </div>

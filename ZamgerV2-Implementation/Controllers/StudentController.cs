@@ -34,7 +34,8 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.polozeni = zmgr.dajBrojPoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
             ViewBag.nepolozeni = zmgr.dajBrojNepoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
             ViewBag.prosjek = zmgr.dajProsjekPoID(trenutniKorisnik.BrojIndeksa);
-            
+            ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
+
             return View(trenutniKorisnik); 
         }
 

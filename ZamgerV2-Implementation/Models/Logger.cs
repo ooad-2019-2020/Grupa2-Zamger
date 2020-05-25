@@ -897,7 +897,7 @@ namespace ZamgerV2_Implementation.Models
         public List<Obavještenje> dajObavještenja()
         {
             List<Obavještenje> obavještenja = new List<Obavještenje>();
-            string kveri = "select * from obavještenja";
+            string kveri = "select * from obavještenja order by vrijemeObavještenja desc";
             try { 
             SqlCommand command = new SqlCommand(kveri, conn);
             
@@ -1435,6 +1435,109 @@ namespace ZamgerV2_Implementation.Models
                 throw new Exception(e.StackTrace + " greška prilikom mijenjanja dostupnosti za predmet");
             }
 
+        }
+
+        public void izbrisiStudentaPoId(int id)
+        {
+            string kveri1 = "DELETE FROM ISPITI WHERE idStudenta = @id";
+            string kveri2 = "DELETE FROM PRISUSTVO WHERE idStudenta = @id";
+            string kveri3 = "DELETE FROM ZAHTJEVI WHERE idStudenta = @id";
+            string kveri4 = "DELETE FROM ZADAĆE WHERE idStudenta = @id";
+            string kveri5 = "DELETE FROM ODGOVORI_NA_ANKETU WHERE idStudenta = @id";
+            string kveri6 = "DELETE FROM ODAZVANI_STUDENTI WHERE idStudenta = @id";
+            string kveri7 = "DELETE FROM OCJENE WHERE idStudenta = @id";
+            string kveri8 = "DELETE FROM STUDENTI WHERE brojIndeksa = @id";
+            string kveri9 = "DELETE FROM KORISNICI WHERE idKorisnika = @id";
+            var idParam = new SqlParameter("id", System.Data.SqlDbType.Int);
+            idParam.Value = id;
+            SqlCommand komanda1 = new SqlCommand(kveri1, conn); komanda1.Parameters.Add(idParam);
+            SqlCommand komanda2 = new SqlCommand(kveri2, conn); komanda2.Parameters.AddWithValue("id", id);
+            SqlCommand komanda3 = new SqlCommand(kveri3, conn); komanda3.Parameters.AddWithValue("id", id);
+            SqlCommand komanda4 = new SqlCommand(kveri4, conn); komanda4.Parameters.AddWithValue("id", id);
+            SqlCommand komanda5 = new SqlCommand(kveri5, conn); komanda5.Parameters.AddWithValue("id", id);
+            SqlCommand komanda6 = new SqlCommand(kveri6, conn); komanda6.Parameters.AddWithValue("id", id);
+            SqlCommand komanda7 = new SqlCommand(kveri7, conn); komanda7.Parameters.AddWithValue("id", id);
+            SqlCommand komanda8 = new SqlCommand(kveri8, conn); komanda8.Parameters.AddWithValue("id", id);
+            SqlCommand komanda9 = new SqlCommand(kveri9, conn); komanda9.Parameters.AddWithValue("id", id);
+            try
+            {
+                komanda1.ExecuteNonQuery();
+                komanda2.ExecuteNonQuery();
+                komanda3.ExecuteNonQuery();
+                komanda4.ExecuteNonQuery();
+                komanda5.ExecuteNonQuery();
+                komanda6.ExecuteNonQuery();
+                komanda7.ExecuteNonQuery();
+                komanda8.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("greška prilikom brisanja studenta iz baze");
+            }
+        }
+
+
+        public void izbrisiPredmetPoId(int id)
+        {
+            string kveri1 = "DELETE FROM PRISUSTVO WHERE idPredmeta = @id";
+            string kveri2 = "DELETE FROM ANSAMBL WHERE idPredmeta = @id";
+            string kveri3 = "DELETE FROM DOSTUPNOST_PREDMETA WHERE idPredmeta = @id";
+            string kveri4 = "DELETE FROM ANKETE_NA_PREDMETIMA WHERE idPredmeta = @id";
+            string kveri5 = "DELETE FROM ZADAĆE WHERE idPredmeta = @id";
+            string kveri6 = "DELETE FROM ISPITI WHERE idPredmeta = @id";
+            string kveri7 = "DELETE FROM OCJENE WHERE idPredmeta = @id";
+            string kveri8 = "DELETE FROM AKTIVNOSTI WHERE idPredmeta = @id";
+            string kveri9 = "DELETE FROM PREDMETI WHERE idPredmeta = @id";
+            SqlParameter idParam = new SqlParameter("id", System.Data.SqlDbType.Int);
+            idParam.Value = id;
+            SqlCommand komanda1 = new SqlCommand(kveri1, conn); komanda1.Parameters.AddWithValue("id", id);
+            SqlCommand komanda2 = new SqlCommand(kveri2, conn); komanda2.Parameters.AddWithValue("id", id);
+            SqlCommand komanda3 = new SqlCommand(kveri3, conn); komanda3.Parameters.AddWithValue("id", id);
+            SqlCommand komanda4 = new SqlCommand(kveri4, conn); komanda4.Parameters.AddWithValue("id", id);
+            SqlCommand komanda5 = new SqlCommand(kveri5, conn); komanda5.Parameters.AddWithValue("id", id);
+            SqlCommand komanda6 = new SqlCommand(kveri6, conn); komanda6.Parameters.AddWithValue("id", id);
+            SqlCommand komanda7 = new SqlCommand(kveri7, conn); komanda7.Parameters.AddWithValue("id", id);
+            SqlCommand komanda8 = new SqlCommand(kveri8, conn); komanda8.Parameters.AddWithValue("id", id);
+            SqlCommand komanda9 = new SqlCommand(kveri9, conn); komanda9.Parameters.AddWithValue("id", id);
+
+            try
+            {
+                komanda1.ExecuteNonQuery();
+                komanda2.ExecuteNonQuery();
+                komanda3.ExecuteNonQuery();
+                komanda4.ExecuteNonQuery();
+                komanda5.ExecuteNonQuery();
+                komanda6.ExecuteNonQuery();
+                komanda7.ExecuteNonQuery();
+                komanda8.ExecuteNonQuery();
+                komanda9.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("greška prilikom brisanja predmeta iz baze");
+            }
+        }
+
+        public void izbrisiNastavnoOsobljePoId(int id)
+        {
+            string kveri1 = "DELETE FROM ANSAMBL WHERE idNastavnogOsoblja = @id";
+            string kveri2 = "DELETE FROM NASTAVNO_OSOBLJE WHERE idOsobe = @id";
+            string kveri3 = "DELETE FROM KORISNICI WHERE idKorisnika = @id";
+            SqlParameter idParam = new SqlParameter("id", System.Data.SqlDbType.Int);
+            idParam.Value = id;
+            SqlCommand komanda1 = new SqlCommand(kveri1, conn); komanda1.Parameters.AddWithValue("id", id);
+            SqlCommand komanda2 = new SqlCommand(kveri2, conn); komanda2.Parameters.AddWithValue("id", id);
+            SqlCommand komanda3 = new SqlCommand(kveri3, conn); komanda3.Parameters.AddWithValue("id", id);
+            try
+            {
+                komanda1.ExecuteNonQuery();
+                komanda2.ExecuteNonQuery();
+                komanda3.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("greška prilikom brisanja nastavnog osoblja iz baze");
+            }
         }
 
 

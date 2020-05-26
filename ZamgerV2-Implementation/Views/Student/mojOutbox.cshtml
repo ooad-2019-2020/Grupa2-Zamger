@@ -132,7 +132,7 @@
                                         </thead>
                                         <tbody>
 
-                                            @if (Model != null)
+                                            @if (Model.Outbox != null)
                                             {
                                                 for (int i = 0; i < Model.Outbox.Count; i++)
                                                 {
@@ -169,33 +169,33 @@
                                                         </tr>
                                                     }
                                                     else
-                                                    {
-                                        <tr role="row" class="even">
-                                            <td> @Model.Outbox[i].UserPrimaoca</td>
-                                            <td class="sorting_1">
-                                                <h2><a href="#">@Model.Outbox[i].Naslov</a></h2>
-                                            </td>
-                                            @{String kratakSadrzaj;}
-                                            @if (Model.Outbox[i].Sadrzaj.Length > 60)
-                                            {
-                                                kratakSadrzaj = Model.Outbox[i].Sadrzaj.Substring(0, 60);
-                                                kratakSadrzaj += "...";
-                                            }
-                                            else
-                                            {
-                                                kratakSadrzaj = Model.Outbox[i].Sadrzaj;
-                                            }
-                                            <td>@kratakSadrzaj</td>
-                                            <td>@Model.Outbox[i].VrijemePoruke</td>
-                                            @if (Model.Outbox[i].Procitana == 1)
-                                            {
-                                                <td>Otvarana</td>
-                                            }
-                                            else
-                                            {
-                                                <td>Nije otvarana</td>
-                                            }
-                                        </tr>
+                                                                    {
+                                                        <tr role="row" class="even">
+                                                            <td> @Model.Outbox[i].UserPrimaoca</td>
+                                                            <td class="sorting_1">
+                                                                <h2><a href="#">@Model.Outbox[i].Naslov</a></h2>
+                                                            </td>
+                                                            @{String kratakSadrzaj;}
+                                                            @if (Model.Outbox[i].Sadrzaj.Length > 60)
+                                                            {
+                                                                kratakSadrzaj = Model.Outbox[i].Sadrzaj.Substring(0, 60);
+                                                                kratakSadrzaj += "...";
+                                                            }
+                                                            else
+                                                            {
+                                                                kratakSadrzaj = Model.Outbox[i].Sadrzaj;
+                                                            }
+                                                            <td>@kratakSadrzaj</td>
+                                                            <td>@Model.Outbox[i].VrijemePoruke</td>
+                                                            @if (Model.Outbox[i].Procitana == 1)
+                                                            {
+                                                                <td>Otvarana</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>Nije otvarana</td>
+                                                            }
+                                                        </tr>
                                                 }
                                              }
                                         }

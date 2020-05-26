@@ -156,7 +156,7 @@
                         <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                             <ul class="list-inline breadcrumb float-right">
                                 <li class="list-inline-item"><a href="~/studentska/dashboard">Početna</a></li>
-                                <li class="list-inline-item"> Uredi studenta</li>
+                                <li class="list-inline-item"> Uredi osobu</li>
                             </ul>
                         </div>
                     </div>
@@ -168,7 +168,7 @@
                                 <div class="page-title">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="Page-title">Podaci studenta</div>
+                                            <div class="Page-title">Podaci osobe</div>
                                         </div>
                                     </div>
                                 </div>
@@ -186,9 +186,15 @@
                                                 <select name="trenutnaTitula" placeholder="@Model.Titula">
                                                     @foreach (string t in ViewBag.titule)
                                                     {
-                                                        
+                                                        if (t.Equals(Model.Titula))
+                                                        {
+                                                            <option selected>@t</option>
+                                                        }
+                                                        else
+                                                        {
                                                             <option>@t</option>
-                                                        
+                                                        }
+
                                                     }
                                                 </select>
                                                 <label class="control-label">Titula</label><i class="bar"></i>

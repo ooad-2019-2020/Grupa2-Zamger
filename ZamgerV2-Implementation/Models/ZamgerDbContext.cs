@@ -18,7 +18,7 @@ namespace ZamgerV2_Implementation.Models
 
         private ZamgerDbContext()
         {
-            String connString = "server=DESKTOP-47GORSV;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);
@@ -83,7 +83,7 @@ namespace ZamgerV2_Implementation.Models
                 }
                 else
                 {
-                    throw new Exception("Nema outboxa za dati id");
+                    return null;
                 }
             }
             catch (Exception e)
@@ -117,7 +117,7 @@ namespace ZamgerV2_Implementation.Models
                 }
                 else
                 {
-                    throw new Exception("Nema inboxa za dati id");
+                    return null;
                 }
             }
             catch(Exception e)
@@ -154,13 +154,12 @@ namespace ZamgerV2_Implementation.Models
             try
             {
                 komanda.ExecuteNonQuery();
+                return true;
             }
             catch(Exception e)
             {
-                return false;
                 throw new Exception("Slanje poruke neuspješno");
             }
-            return true;
         }
 
         public bool oznaciProcitanu(int idPoruke)
@@ -173,13 +172,12 @@ namespace ZamgerV2_Implementation.Models
             try
             {
                 komanda.ExecuteNonQuery();
+                return true;
             }
             catch(Exception e)
             {
-                return false;
                 throw new Exception("Greška pri označavanju poruke pročitanom");
             }
-            return true;
         }
 
         public int dajNoviPorukaId()

@@ -214,7 +214,41 @@ namespace ZamgerV2_Implementation.Controllers
             return View(trenutniKorisnik);
         }
 
+        [Route("/student/poruke/moj-inbox/{idPoruke}/{idStudenta}")]
+        public IActionResult detaljiPorukeInbox(int idPoruke, int idStudenta)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(idStudenta);
+            if (tempK.GetType() == typeof(Student))
+            {
+                trenutniKorisnik = (Student)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+            ViewBag.poruka = zmgr.dajPoruku(idPoruke);
+            zmgr.oznaciProcitanu(idPoruke);
+            return View(trenutniKorisnik);
+        }
 
+        [Route("/student/poruke/moj-outbox/{idPoruke}/{idStudenta}")]
+        public IActionResult detaljiPorukeOutbox(int idPoruke, int idStudenta)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(idStudenta);
+            if (tempK.GetType() == typeof(Student))
+            {
+                trenutniKorisnik = (Student)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+            ViewBag.poruka = zmgr.dajPoruku(idPoruke);
+            zmgr.oznaciProcitanu(idPoruke);
+            return View(trenutniKorisnik);
+        }
 
 
 

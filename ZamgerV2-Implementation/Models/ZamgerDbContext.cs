@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace ZamgerV2_Implementation.Models
 
         private ZamgerDbContext()
         {
-            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-47GORSV;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);
@@ -93,6 +94,35 @@ namespace ZamgerV2_Implementation.Models
 
         }
         
+        public Poruka dajPoruku(int id)
+        {
+            Poruka p;
+            string kveri = "select pošiljalac, primalac, naslov, sadržaj, vrijemePoruke, pročitana, idPoruke, k1.username, k2.username from DOPISIVANJE, KORISNICI k1, KORISNICI k2 Where pošiljalac = k1.idKorisnika AND primalac = k2.idKorisnika AND idPoruke = @porukaId ";
+            var porukaIdParam = new SqlParameter("porukaId", System.Data.SqlDbType.Int);
+            SqlCommand komanda = new SqlCommand(kveri, conn);
+            porukaIdParam.Value = id;
+            komanda.Parameters.Add(porukaIdParam);
+            try
+            {
+                var result = komanda.ExecuteReader();
+                if(result.Read())
+                {
+                    Poruka privremenaPoruka = new Poruka(result.GetInt32(0), result.GetInt32(1), result.GetString(2), result.GetString(3), result.GetDateTime(4), result.GetInt32(5), result.GetInt32(6));
+                    privremenaPoruka.UserPosiljaoca = result.GetString(7);
+                    privremenaPoruka.UserPrimaoca = result.GetString(8);
+                    return privremenaPoruka;
+                }
+                else
+                {
+                    return null;
+                }
+                
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "-nije ok");
+            }
+        }
         public List<Poruka> dajInbox(int id)
         {
             List<Poruka> lista = new List<Poruka>();

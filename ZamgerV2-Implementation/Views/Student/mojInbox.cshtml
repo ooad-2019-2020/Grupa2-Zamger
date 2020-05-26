@@ -104,12 +104,12 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                        <h5 class="text-uppercase">Moj outbox - list</h5>
+                        <h5 class="text-uppercase">Moj inbox - list</h5>
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
                             <li class="list-inline-item"><a href="/student/dashboard/@Model.BrojIndeksa">Početna</a></li>
-                            <li class="list-inline-item"> Moj outbox - list</li>
+                            <li class="list-inline-item"> Moj inbox - list</li>
                         </ul>
                     </div>
                 </div>
@@ -140,10 +140,10 @@
                                                     {
                                                         <tr role="row" class="odd">
 
-                                                            <td> @Model.Inbox[i].UserPosiljaoca</td>
+                                                            <td> <a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa"> @Model.Inbox[i].UserPosiljaoca</td>
                                                             <td class="sorting_1">
 
-                                                                <h2><a href="#">@Model.Inbox[i].Naslov</a></h2>
+                                                                <h2><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@Model.Inbox[i].Naslov</a></h2>
                                                             </td>
                                                             @{String kratakSadrzaj;}
                                                             @if (Model.Inbox[i].Sadrzaj.Length > 60)
@@ -155,15 +155,15 @@
                                                             {
                                                                 kratakSadrzaj = Model.Inbox[i].Sadrzaj;
                                                             }
-                                                            <td>@kratakSadrzaj</td>
-                                                            <td>@Model.Inbox[i].VrijemePoruke</td>
+                                                            <td> <a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@kratakSadrzaj</td>
+                                                            <td> <a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@Model.Inbox[i].VrijemePoruke</td>
                                                             @if (Model.Inbox[i].Procitana == 1)
                                                             {
-                                                                <td>Otvarana</td>
+                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">Otvarana</td>
                                                             }
                                                             else
                                                             {
-                                                                <td>Nije otvarana</td>
+                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">Nije otvarana</td>
                                                             }
 
                                                         </tr>
@@ -171,9 +171,9 @@
                                                     else
                                                     {
                                                         <tr role="row" class="even">
-                                                            <td> @Model.Inbox[i].UserPosiljaoca</td>
+                                                            <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa"> @Model.Inbox[i].UserPosiljaoca</td>
                                                             <td class="sorting_1">
-                                                                <h2><a href="#">@Model.Inbox[i].Naslov</a></h2>
+                                                                <h2><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@Model.Inbox[i].Naslov</a></h2>
                                                             </td>
                                                             @{String kratakSadrzaj;}
                                                             @if (Model.Inbox[i].Sadrzaj.Length > 60)
@@ -185,15 +185,15 @@
                                                             {
                                                                 kratakSadrzaj = Model.Inbox[i].Sadrzaj;
                                                             }
-                                                            <td>@kratakSadrzaj</td>
-                                                            <td>@Model.Inbox[i].VrijemePoruke</td>
+                                                            <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@kratakSadrzaj</td>
+                                                            <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@Model.Inbox[i].VrijemePoruke</td>
                                                             @if (Model.Inbox[i].Procitana == 1)
                                                             {
-                                                                <td>Otvarana</td>
+                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">Otvarana</td>
                                                             }
                                                             else
                                                             {
-                                                                <td>Nije otvarana</td>
+                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">Nije otvarana</td>
                                                             }
                                                         </tr>
                                                     }

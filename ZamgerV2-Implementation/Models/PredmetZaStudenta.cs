@@ -36,5 +36,7 @@ namespace ZamgerV2_Implementation.Models
         public List<Aktivnost> Aktivnosti { get => aktivnosti; set => aktivnosti = value; }
         public int IdPredmeta { get => idPredmeta; set => idPredmeta = value; }
         public int IdStudenta { get => idStudenta; set => idStudenta = value; }
+        
+        public int StudijskaGodina { get => studijskaGodina; set => studijskaGodina = value; }
     }
 }

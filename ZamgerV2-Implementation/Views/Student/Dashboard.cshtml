@@ -58,10 +58,9 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-book" aria-hidden="true"></i><span> Predmeti </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                @for (int i = 0; i < ViewBag.listaPredmeta.Count; i++)
-                                {
-                                    <li><a href="#">@ViewBag.listaPredmeta[i].Item1</a></li>
-                                }
+                                
+                                 <li><a href="/student/predmeti-list/@Model.BrojIndeksa">Moji predmeti</a></li>
+                                
 
                             </ul>
                         </li>

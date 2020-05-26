@@ -17,7 +17,7 @@ namespace ZamgerV2_Implementation.Models
 
         private ZamgerDbContext()
         {
-            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);
@@ -102,6 +102,7 @@ namespace ZamgerV2_Implementation.Models
             List<PredmetZaStudenta> lista = new List<PredmetZaStudenta>();
 
             string kveri = "select p.naziv, p.ectsPoeni, o.bodovi, o.ocjena, o.idPredmeta, o.idStudenta, o.studijskaGodina from PREDMETI p, OCJENE o where p.idPredmeta=o.idPredmeta and o.idStudenta=@idStudenta";
+            
             var userIDParam = new SqlParameter("idStudenta", System.Data.SqlDbType.Int);
             userIDParam.Value = id;
             SqlCommand command = new SqlCommand(kveri, conn);
@@ -603,7 +604,7 @@ namespace ZamgerV2_Implementation.Models
         {
             List<Tuple<string, int, int>> mojiPredmeti = new List<Tuple<string, int, int>>();
 
-            string kveri = "select p.naziv, p.idPredmeta, o.studijskaGodina from ocjene o, predmeti p where o.idStudenta = @StudentID and o.idPredmeta = p.idPredmeta order by o.studijskaGodina asc";
+            string kveri = "select p.naziv, p.ectsPoeni p.idPredmeta, o.studijskaGodina from ocjene o, predmeti p where o.idStudenta = @StudentID and o.idPredmeta = p.idPredmeta order by o.studijskaGodina asc";
             var studentIDParam = new SqlParameter("StudentID", SqlDbType.Int);
             studentIDParam.Value = indeks;
             SqlCommand command = new SqlCommand(kveri, conn);
@@ -615,7 +616,7 @@ namespace ZamgerV2_Implementation.Models
                 {
                     while (result.Read())
                     {
-                        mojiPredmeti.Add(new Tuple<string, int, int>(result.GetString(0), result.GetInt32(1), result.GetInt32(2)));
+                        mojiPredmeti.Add(new Tuple<string, int, int>(result.GetString(0), result.GetInt32(2), result.GetInt32(3)));
                     }
                     return mojiPredmeti;
                 }
@@ -718,7 +719,9 @@ namespace ZamgerV2_Implementation.Models
             List<Aktivnost> aktivnosti = new List<Aktivnost>();
             if(zadaće != null) foreach (Zadaća zadaća in zadaće) aktivnosti.Add(zadaća);
             if(ispiti != null) foreach (Ispit ispit in ispiti) aktivnosti.Add(ispit);
-            string kveri = "select p.naziv, p.ectsPoeni, o.bodovi, o.ocjena from ocjene o, predmeti p where idStudenta = @studentID and idPredmeta = @subjectID and studijskaGodina = @studyYear";
+            string kveri = "select p.naziv, p.ectsPoeni, o.bodovi, o.ocjena from ocjene o, predmeti p where o.idStudenta = @studentID and o.idPredmeta = @subjectID and o.studijskaGodina = @studyYear and p.idPredmeta = o.idPredmeta";
+            //string kveri = "select p.naziv, p.ectsPoeni, o.bodovi, o.ocjena, o.idPredmeta, o.idStudenta, o.studijskaGodina from PREDMETI p, OCJENE o where p.idPredmeta=o.idPredmeta and o.idStudenta=@idStudenta";
+
             var studentIDParam = new SqlParameter("studentID", SqlDbType.Int);
             studentIDParam.Value = indeks;
             var subjectIDParam = new SqlParameter("subjectID", SqlDbType.Int);

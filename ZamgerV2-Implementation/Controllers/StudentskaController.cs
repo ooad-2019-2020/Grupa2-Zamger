@@ -729,6 +729,36 @@ namespace ZamgerV2_Implementation.Controllers
             return View();
         }
 
+        [Route("/studentska/uredi-nastavno-osoblje/{id}")]
+        [HttpGet]
+        public IActionResult UrediNastavnoOsoblje(int id)
+        {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            NastavnoOsoblje no = logg.dajKreiranoNastavnoOsobljePoID(id);
+            ViewBag.predmetiNaKojimPredaje = logg.dajNazivePredmetaNaKojimPredajePoID(id);
+            ViewBag.sviPredmeti = logg.dajSvePredmeteImenaID();
+            ViewBag.pass = logg.dajPasswordPoId(id);
+            ViewBag.titule = new List<string>() { "Red. prof. dr", "Doc. dr", "Van. prof. dr", "Mr. dipl. ing", "BSc. ing" };
+            return View(no);
+        }
+
+        [Route("/studentska/uredi-nastavno-osoblje/{id}")]
+        [HttpPost]
+        public IActionResult UrediNastavnoOsoblje(int id, IFormCollection forma)
+        {
+            logg.izmijeniNastavnikaPoId(id, forma["prebivaliste"], forma["trenutnaTitula"], forma["passwordUser"], forma["predmet1"], forma["predmet2"]);
+            return RedirectToAction("NastavnoOsobljeUspješnoUređeno");
+        }
+
+        [Route("/student/osoba-uspjesno-editovana")]
+        public IActionResult NastavnoOsobljeUspješnoUređeno()
+        {
+            return View();
+        }
+
+
+
+
 
 
     }

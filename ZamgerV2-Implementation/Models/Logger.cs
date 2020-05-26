@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
 namespace ZamgerV2_Implementation.Models
 {
@@ -1537,6 +1538,113 @@ namespace ZamgerV2_Implementation.Models
             catch (Exception e)
             {
                 throw new Exception("greška prilikom brisanja nastavnog osoblja iz baze");
+            }
+        }
+
+        public void izmijeniNastavnikaPoId(int id, string prebivaliste, string titula, string password, string predmet1, string predmet2)
+        {
+            NastavnoOsoblje tempOsoba = this.dajKreiranoNastavnoOsobljePoID(id);
+            if(!String.IsNullOrEmpty(titula) && !titula.Equals(tempOsoba.Titula))
+            {
+                Dictionary<string, int> mapTitule = new Dictionary<string, int>()
+                {
+                    { "Red. prof. dr", 4},
+                    {"Doc. dr", 4},
+                    {"Van. prof. dr", 4},
+                    {"Mr. dipl. ing", 2},
+                    {"BSc. ing", 2}
+                };
+                this.promijeniTipKorisnika(id, mapTitule[titula]);
+                this.promijeniTituluOsoblju(id, titula);
+            }
+            if(!String.IsNullOrEmpty(prebivaliste) && !prebivaliste.Equals(tempOsoba.MjestoPrebivališta))
+            {
+                this.promijeniPrebivališteOsoblju(id, prebivaliste);
+            }
+            if (!String.IsNullOrEmpty(password)) this.promijeniPasswordKorisniku(id, password);
+            if(int.Parse(predmet1)!=-1 || int.Parse(predmet2)!=-1)
+            {
+                this.izbrisiIzAnsamblaPoId(id);
+                this.zadužiKreiranogNaPredmetima(id, int.Parse(predmet1), int.Parse(predmet2));
+            }
+        }
+
+        public void promijeniTipKorisnika(int id, int tip)
+        {
+            string kveri = "update korisnici set tipKorisnika = @tipKor where idKorisnika = @ID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("tipKor", tip);
+            cmd.Parameters.AddWithValue("ID", id);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom mijenjanja nivoa pristupa za korisnika");
+            }
+        }
+
+        public void promijeniTituluOsoblju(int id, string titula)
+        {
+            string kveri = "update NASTAVNO_OSOBLJE set titula = @titula where idOsobe = @ID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("ID", id);
+            cmd.Parameters.AddWithValue("titula", titula);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom mijenjanja titule za nastavno osoblje");
+            }
+        }
+
+        public void promijeniPasswordKorisniku(int id, string pass)
+        {
+            string kveri = "update korisnici set password = @passw where idKorisnika = @ID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("passw", pass);
+            cmd.Parameters.AddWithValue("ID", id);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom mijenjanja passworda za korisnika");
+            }
+        }
+
+        public void izbrisiIzAnsamblaPoId(int id)
+        {
+            string kveri = "delete from ansambl where idNastavnogOsoblja = @id";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("id", id);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom brisanja osobe iz ansambla");
+            }
+        }
+
+        public void promijeniPrebivališteOsoblju(int id, string prebivaliste)
+        {
+            string kveri = "update NASTAVNO_OSOBLJE set mjestoPrebivališta = @mjesto where idOsobe = @id";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("id", id);
+            cmd.Parameters.AddWithValue("mjesto", prebivaliste);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom mijenjanja prebivališta za osoblje");
             }
         }
 

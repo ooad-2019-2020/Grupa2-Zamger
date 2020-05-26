@@ -1,7 +1,7 @@
-﻿@model List<Tuple<int,NastavnoOsoblje>>
+﻿@model NastavnoOsoblje
 @{
-    ViewData["Title"] = "PretražiNastavnoOsoblje";
-    Layout = "~/Views/Shared/nastavnoOsobljePretragaLayout.cshtml";
+    ViewData["Title"] = "UrediNastavnoOsoblje";
+    Layout = "~/Views/Shared/urediNastavnoOsobljeLayout.cshtml";
 }
 
 <div class="main-wrapper">
@@ -80,7 +80,7 @@
         </ul>
         <div class="dropdown mobile-user-menu float-right">
             <!-- mobile menu -->
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+            <a href="https://dreamguys.co.in/preadmin/school/dark/index.html#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
             <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" href="#">Moj Profil</a>
                 <a class="dropdown-item" href="~/">Odjavi se</a>
@@ -107,7 +107,7 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span> Studenti</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="/studentska/svi-studenti">Svi studenti</a></li>
+                                <li><a href="~/studentska/svi-studenti-list">Svi studenti</a></li>
                                 <li><a href="~/studentska/kreiraj-studenta">Kreiraj studenta</a></li>
                             </ul>
                         </li>
@@ -144,100 +144,131 @@
     </div>
 
 
-
     <div class="page-wrapper" style="min-height: 723px;">
         <!-- content -->
-        <div class="content container-fluid">
-            <div class="page-header">
-                <div class="row">
-                    <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                        <h5 class="text-uppercase">Svo nastavno osoblje</h5>
-                    </div>
-                    <div class="col-lg-5 col-md-12 col-sm-12 col-12">
-                        <ul class="list-inline breadcrumb float-right">
-                            <li class="list-inline-item"><a href="~/studentska/dashboard">Početna</a></li>
-                            <li class="list-inline-item"> Svo nastavno osoblje</li>
-                        </ul>
+        <form asp-antiforgery="false" asp-action="UrediNastavnoOsoblje" method="post">
+            <div class="content container-fluid">
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-12 col-sm-12 col-12">
+                            <h5 class="text-uppercase">Uredi podatke za osobu: @Model.Ime @Model.Prezime</h5>
+                        </div>
+                        <div class="col-lg-5 col-md-12 col-sm-12 col-12">
+                            <ul class="list-inline breadcrumb float-right">
+                                <li class="list-inline-item"><a href="~/studentska/dashboard">Početna</a></li>
+                                <li class="list-inline-item"> Uredi studenta</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 col-3">
-                </div>
-                <div class="col-sm-8 col-9 text-right m-b-20">
-                    <a href="~/studentska/kreiraj-nastavno-osoblje" class="btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Kreiraj osobu</a>
-                    <div class="view-icons">
-                        <a href="/studentska/svo-nastavno-osoblje" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
-                        <a href="/studentska/svo-nastavno-osoblje-list" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="content-page">
-                <form asp-antiforgery="false" asp-action="PretražiNastavnoOsoblje" method="post">
-                    <div class="row filter-row">
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group custom-mt-form-group">
-                                <input type="text" name="imeOsobe">
-                                <label class="control-label">Ime</label><i class="bar"></i>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group custom-mt-form-group">
-                                <input type="text" name="prezimeOsobe">
-                                <label class="control-label">Prezime</label><i class="bar"></i>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group custom-mt-form-group">
-                                <select name="predmeti">
-                                    <option>Izaberite</option>
-                                    @foreach (KeyValuePair<string, int> entry in ViewBag.Predmeti)
-                                    {
-                                        <option>@entry.Key</option>
-                                    }
-                                </select>
-                                <label class="control-label">Predmeti</label><i class="bar"></i>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <button class="btn btn-success btn-block mt-4 mb-2" type="submit"> Pretraži </button>
-                        </div>
-                    </div>
-                </form>
-
-
-
-                <div class="row staff-grid-row">
-                    
-                    @if (Model != null)
-                    {
-                        foreach (Tuple<int, NastavnoOsoblje> s in Model)
-                        {
-                        <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                            <div class="profile-widget">
-                                <div class="profile-img">
-                                    <a href="#" class="avatar">@s.Item2.Ime[0]@s.Item2.Prezime[0]</a>
-                                </div>
-                                <div class="dropdown profile-action">
-                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="/studentska/uredi-nastavno-osoblje/@s.Item2.IdOsobe"><i class="fa fa-pencil m-r-5"></i> Uredi osobu</a>
-                                        <a class="dropdown-item" href="/studentska/izbrisi-nastavno-osoblje/@s.Item2.IdOsobe"><i class="fa fa-trash-o m-r-5"></i>Izbriši osobu</a>
+                <div class="page-content">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="card">
+                                <div class="page-title">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="Page-title">Podaci studenta</div>
+                                        </div>
                                     </div>
                                 </div>
-                                <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="#">@s.Item2.Ime @s.Item2.Prezime</a></h4>
-                                <div class="small text-muted">@s.Item2.Titula</div>
-                                <div class="small text-muted">Broj predmeta: @s.Item1</div>
+
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                            <div class="form-group custom-mt-form-group">
+                                                <input type="text" name="imePrezime" required placeholder="@Model.Ime @Model.Prezime" readonly>
+                                                <label class="control-label">Ime i prezime osobe</label><i class="bar"></i>
+                                            </div>
+                                            <div class="form-group custom-mt-form-group">
+                                                <select name="trenutnaTitula" placeholder="@Model.Titula">
+                                                    @foreach (string t in ViewBag.titule)
+                                                    {
+                                                        
+                                                            <option>@t</option>
+                                                        
+                                                    }
+                                                </select>
+                                                <label class="control-label">Titula</label><i class="bar"></i>
+                                            </div>
+
+                                            <div class="form-group custom-mt-form-group">
+                                                <select name="predmet1" placeholder="@ViewBag.predmetiNaKojimPredaje[0]">
+                                                    <option value="-1">Izaberite</option>
+                                                    @foreach (KeyValuePair<string, int> entry in ViewBag.sviPredmeti)
+                                                    {
+                                                        if (entry.Key.Equals(ViewBag.predmetiNaKojimPredaje[0]))
+                                                        {
+                                                            <option value="@entry.Value" selected>@entry.Key</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@entry.Value">@entry.Key</option>
+                                                        }
+
+                                                    }
+                                                </select>
+                                                <label class="control-label">1. predmet na kom predaje</label><i class="bar"></i>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                            <div class="form-group custom-mt-form-group">
+                                                <input type="text" name="passwordUser" placeholder="@ViewBag.pass">
+                                                <label class="control-label">Trenutni password</label><i class="bar"></i>
+                                            </div>
+
+
+
+                                            <div class="form-group custom-mt-form-group">
+                                                <input type="text" name="prebivaliste" placeholder="@Model.MjestoPrebivališta">
+                                                <label class="control-label">Mjesto prebivališta</label><i class="bar"></i>
+                                            </div>
+
+                                            @if (ViewBag.predmetiNaKojimPredaje.Count == 2)
+                                            {
+                                                <div class="form-group custom-mt-form-group">
+                                                    <select name="predmet2" placeholder="@ViewBag.predmetiNaKojimPredaje[1]">
+                                                        <option value="-1">Izaberite</option>
+                                                        @foreach (KeyValuePair<string, int> entry in ViewBag.sviPredmeti)
+                                                        {
+                                                            if (entry.Key.Equals(ViewBag.predmetiNaKojimPredaje[1]))
+                                                            {
+                                                                <option value="@entry.Value" selected>@entry.Key</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@entry.Value">@entry.Key</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                    <label class="control-label">2. predmet na kom predaje</label><i class="bar"></i>
+                                                </div>
+                                            }
+
+
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                                            <div class="form-group text-center custom-mt-form-group">
+                                                <button class="btn btn-primary mr-2" type="submit">Spremi</button>
+                                                <a href="/studentska/svo-nastavno-osoblje-list" class="btn btn-secondary"> Odustani</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-                        }
-                    }
-
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 <div class="sidebar-overlay" data-reff=""></div>
@@ -249,5 +280,27 @@
 <script type="text/javascript" src="~/js/moment.min.js"></script>
 <script type="text/javascript" src="~/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
-
+<script type="text/javascript">
+    function EnableDisableTextBox(ddlModels) {
+        var selectedValue = ddlModels.options[ddlModels.selectedIndex].value;
+        var txtOther = document.getElementById("prosjekBScInput");
+        var txtRe = document.getElementById("BSCinput")
+        var txtOtherDrzava = document.getElementById("državaBSc");
+        if (selectedValue == 2 || selectedValue == 1) {
+            txtOther.hidden = false;
+            txtRe.setAttribute("required", "");
+            if (!txtOther.disabled) {
+                txtOther.focus();
+            }
+            if (selectedValue == 2) {
+                txtOtherDrzava.hidden = false;
+            }
+        }
+        else {
+            txtOther.hidden = true;
+            txtRe.removeAttribute("required");
+            txtOtherDrzava.hidden = true;
+        }
+    }
+</script>
 

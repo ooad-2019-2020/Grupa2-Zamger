@@ -4,305 +4,307 @@
     Layout = "~/Views/Shared/studentDashboardLayout.cshtml";
 }
 
-<div class="main-wrapper">
-    <div class="header">
-        <!-- Header start -->
-        <div class="header-left">
-            <a href="~/studentska/dashboard" class="logo">
-                <img src="~/images/logo.png" width="40" height="40" alt="">
-                <span class="text-uppercase">Zamger-v2</span>
-            </a>
-        </div>
-        <div class="page-title-box float-left">
-            <h3 class="text-uppercase">Preschool</h3>
-        </div>
-        <a id="mobile_btn" class="mobile_btn float-left" href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
-        <ul class="nav user-menu float-right">
-           
-            <li class="nav-item dropdown d-none d-sm-block">
-                <a href="javascript:void(0);" id="open_msg_box" class="hasnotifications nav-link"><i class="fa fa-comment"></i> <span class="badge badge-pill bg-primary float-right">8</span></a>
-            </li>
-            <li class="nav-item dropdown has-arrow">
-                <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                    <span class="user-img">
-                        <img class="rounded-circle" src="~/images/user.jpg" width="40" alt="Admin">
-                        <span class="status online"></span>
-                    </span>
-                    <span>@Model.Ime</span>
+    <div class="main-wrapper">
+        <div class="header">
+            <!-- Header start -->
+            <div class="header-left">
+                <a href="~/student/dashboard/@Model.BrojIndeksa" class="logo">
+                    <img src="~/images/logo.png" width="40" height="40" alt="">
+                    <span class="text-uppercase">Zamger-v2</span>
                 </a>
-                <div class="dropdown-menu">
+            </div>
+            <div class="page-title-box float-left">
+                <h3 class="text-uppercase">Preschool</h3>
+            </div>
+            <a id="mobile_btn" class="mobile_btn float-left" href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+            <ul class="nav user-menu float-right">
+
+                <li class="nav-item dropdown d-none d-sm-block">
+                    <a href="javascript:void(0);" id="open_msg_box" class="hasnotifications nav-link"><i class="fa fa-comment"></i> <span class="badge badge-pill bg-primary float-right">8</span></a>
+                </li>
+                <li class="nav-item dropdown has-arrow">
+                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                        <span class="user-img">
+                            <img class="rounded-circle" src="~/images/user.jpg" width="40" alt="Admin">
+                            <span class="status online"></span>
+                        </span>
+                        <span>@Model.Ime</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Moj Profil</a>
+                        <a class="dropdown-item" href="~/">Odjavi se</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="dropdown mobile-user-menu float-right">
+                <!-- mobile menu -->
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="#">Moj Profil</a>
                     <a class="dropdown-item" href="~/">Odjavi se</a>
                 </div>
-            </li>
-        </ul>
-        <div class="dropdown mobile-user-menu float-right">
-            <!-- mobile menu -->
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">Moj Profil</a>
-                <a class="dropdown-item" href="~/">Odjavi se</a>
             </div>
         </div>
-    </div>
-    <div class="sidebar" id="sidebar">
-        <!-- sidebar -->
-        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 100%; height: 663px;">
-            <div class="sidebar-inner slimscroll" style="overflow: hidden; width: 100%; height: 663px;">
-                <div id="sidebar-menu" class="sidebar-menu">
-                    <ul>
-                        <li class="menu-title">Glavni meni</li>
-                        <li class="active">
-                            <a href="#"><i class="fa fa-tachometer" aria-hidden="true"></i> Početna</a>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fa fa-book" aria-hidden="true"></i><span> Predmeti </span> <span class="menu-arrow"></span></a>
-                            <ul class="list-unstyled" style="display: none;">
-                                
-                                 <li><a href="/student/predmeti-list/@Model.BrojIndeksa">Moji predmeti</a></li>
-                                
+        <div class="sidebar" id="sidebar">
+            <!-- sidebar -->
+            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 100%; height: 663px;">
+                <div class="sidebar-inner slimscroll" style="overflow: hidden; width: 100%; height: 663px;">
+                    <div id="sidebar-menu" class="sidebar-menu">
+                        <ul>
+                            <li class="menu-title">Glavni meni</li>
+                            <li class="active">
+                                <a href="#"><i class="fa fa-tachometer" aria-hidden="true"></i> Početna</a>
+                            </li>
+                            <li class="submenu">
+                                <a href="#"><i class="fa fa-book" aria-hidden="true"></i><span> Predmeti </span> <span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
 
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-table" aria-hidden="true"></i>Nadolazeći ispiti</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-table" aria-hidden="true"></i> Događaji</a>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
-                            <ul class="list-unstyled" style="display: none;">
-                                <li><a href="/student/sva-obavještenja-list/@Model.BrojIndeksa">Sva obavještenja</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Poruke</span> <span class="menu-arrow"></span></a>
-                            <ul class="list-unstyled" style="display: none;">
-                                <li><a href="#">Pošalji poruku</a></li>
-                                <li><a href="#">Inbox</a></li>
-                                <li><a href="#">Outbox</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Zahtjevi</span> <span class="menu-arrow"></span></a>
-                            <ul class="list-unstyled" style="display: none;">
-                                <li><a href="/student/moji-zahtjevi/@Model.BrojIndeksa">Moji zahtjevi</a></li>
-                                <li><a href="/student/kreiraj-zahtjev/@Model.BrojIndeksa">Pošalji zahtjev</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div><div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 499.812px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-        </div>
-    </div>
-    <div class="page-wrapper" style="min-height: 723px;">
-        <!-- content -->
-        <div class="content container-fluid">
-            <div class="row">
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-primary"><i class="fa fa-book" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            <h3>@ViewBag.polozeni</h3>
-                            <span>Broj položenih predmeta</span>
-                        </div>
+                                    <li><a href="/student/predmeti-list/@Model.BrojIndeksa">Moji predmeti</a></li>
+
+
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-table" aria-hidden="true"></i>Nadolazeći ispiti</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-table" aria-hidden="true"></i> Događaji</a>
+                            </li>
+                            <li class="submenu">
+                                <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
+                                    <li><a href="/student/sva-obavještenja-list/@Model.BrojIndeksa">Sva obavještenja</a></li>
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Poruke</span> <span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
+                                    <li><a href="#">Pošalji poruku</a></li>
+                                    <li><a href="/student/poruke/moj-inbox/@Model.BrojIndeksa">Inbox</a></li>
+                                    <li><a href="/student/poruke/moj-outbox/@Model.BrojIndeksa">Outbox</a></li>
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Zahtjevi</span> <span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
+                                    <li><a href="/student/moji-zahtjevi/@Model.BrojIndeksa">Moji zahtjevi</a></li>
+                                    <li><a href="/student/kreiraj-zahtjev/@Model.BrojIndeksa">Pošalji zahtjev</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-info"><i class="fa fa-frown-o" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            <h3>@ViewBag.nepolozeni</h3>
-                            <span>Broj nepoloženih predmeta</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-warning"><i class="fa fa-align-center" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            <h3>@String.Format("{0:0.00}", ViewBag.prosjek) </h3>
-                            <span>Trenutni prosjek</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-success"><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            <h3>1</h3>
-                            <span>Godina studija</span>
-                        </div>
-                    </div>
-                </div>
+                </div><div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 499.812px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
             </div>
+        </div>
 
 
-
-            <div class="row mt-4">
-                <div class="col-lg-6">
-                    <div class="content-page">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="page-title mb-2">
-                                    Aktivnosti
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="min-width:91px;">Naziv ispita </th>
-                                                <th style="min-width:50px;">Predmet</th>
-                                                <th style="min-width:50px;">Godina</th>
-                                                <th style="min-width:50px;">Odsjeci</th>
-                                                <th style="min-width:50px;">Vrijeme</th>
-                                                <th style="min-width:50px;">Datum</th>
-                                                <th class="text-right" style="width:30%;">Akcija</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
-                                                </td>
-                                                <td>English</td>
-                                                <td>5</td>
-                                                <td>B</td>
-                                                <td>10.00am</td>
-                                                <td>20/1/2019</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
-                                                </td>
-                                                <td>English</td>
-                                                <td>4</td>
-                                                <td>A</td>
-                                                <td>10.00am</td>
-                                                <td>2/1/2019</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+        <div class="page-wrapper" style="min-height: 723px;">
+            <!-- content -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="dash-widget dash-widget5">
+                            <span class="dash-widget-icon bg-primary"><i class="fa fa-book" aria-hidden="true"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>@ViewBag.polozeni</h3>
+                                <span>Broj položenih predmeta</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="dash-widget dash-widget5">
+                            <span class="dash-widget-icon bg-info"><i class="fa fa-frown-o" aria-hidden="true"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>@ViewBag.nepolozeni</h3>
+                                <span>Broj nepoloženih predmeta</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="dash-widget dash-widget5">
+                            <span class="dash-widget-icon bg-warning"><i class="fa fa-align-center" aria-hidden="true"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>@String.Format("{0:0.00}", ViewBag.prosjek) </h3>
+                                <span>Trenutni prosjek</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="dash-widget dash-widget5">
+                            <span class="dash-widget-icon bg-success"><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>1</h3>
+                                <span>Godina studija</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
 
-                <div class="col-lg-6">
-                    <div class="content-page">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="page-title mb-2">
-                                    Obavještenja
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="min-width:91px;">Naslov </th>
-                                                <th style="min-width:50px;">Sadržaj</th>
-                                                <th style="min-width:50px;">Vrijeme</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @for (int i = 0; i < ViewBag.listaObavjestenja.Count; i++)
-                                             {
 
+                <div class="row mt-4">
+                    <div class="col-lg-6">
+                        <div class="content-page">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="page-title mb-2">
+                                        Aktivnosti
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped custom-table">
+                                            <thead>
                                                 <tr>
-                                                    <td><a href="/student/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja/@Model.BrojIndeksa"> @ViewBag.listaObavjestenja[i].Naslov</a></td>
-                                                    @{String kratakSadrzaj;}
-                                                    @if (ViewBag.listaObavjestenja[i].Sadržaj.Length > 60)
-                                                    {
-                                                        kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj.Substring(0, 60);
-                                                        kratakSadrzaj += "...";
-                                                    }
-                                                    else
-                                                    {
-                                                        kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj;
-                                                    }
-                                                    <td>@kratakSadrzaj</td>
-                                                    <td>@ViewBag.listaObavjestenja[i].dateTime</td>
+                                                    <th style="min-width:91px;">Naziv ispita </th>
+                                                    <th style="min-width:50px;">Predmet</th>
+                                                    <th style="min-width:50px;">Godina</th>
+                                                    <th style="min-width:50px;">Odsjeci</th>
+                                                    <th style="min-width:50px;">Vrijeme</th>
+                                                    <th style="min-width:50px;">Datum</th>
+                                                    <th class="text-right" style="width:30%;">Akcija</th>
                                                 </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
+                                                    </td>
+                                                    <td>English</td>
+                                                    <td>5</td>
+                                                    <td>B</td>
+                                                    <td>10.00am</td>
+                                                    <td>20/1/2019</td>
+                                                    <td class="text-right">
+                                                        <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
+                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                        </a>
+                                                        <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
+                                                    </td>
+                                                    <td>English</td>
+                                                    <td>4</td>
+                                                    <td>A</td>
+                                                    <td>10.00am</td>
+                                                    <td>2/1/2019</td>
+                                                    <td class="text-right">
+                                                        <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
+                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                        </a>
+                                                        <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                                    
-                                             }
-                                        </tbody>
-                                    </table>
+
+                    <div class="col-lg-6">
+                        <div class="content-page">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="page-title mb-2">
+                                        Obavještenja
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped custom-table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="min-width:91px;">Naslov </th>
+                                                    <th style="min-width:50px;">Sadržaj</th>
+                                                    <th style="min-width:50px;">Vrijeme</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < ViewBag.listaObavjestenja.Count; i++)
+                                                {
+
+                                                    <tr>
+                                                        <td><a href="/student/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja/@Model.BrojIndeksa"> @ViewBag.listaObavjestenja[i].Naslov</a></td>
+                                                        @{String kratakSadrzaj;}
+                                                        @if (ViewBag.listaObavjestenja[i].Sadržaj.Length > 60)
+                                                        {
+                                                            kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj.Substring(0, 60);
+                                                            kratakSadrzaj += "...";
+                                                        }
+                                                        else
+                                                        {
+                                                            kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj;
+                                                        }
+                                                        <td>@kratakSadrzaj</td>
+                                                        <td>@ViewBag.listaObavjestenja[i].dateTime</td>
+                                                    </tr>
+
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="notification-box">
-                <div class="msg-sidebar notifications msg-noti">
-                    <div class="topnav-dropdown-header">
-                        <span>Poruke</span>
-                    </div>
-                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 599px;">
-                        <div class="drop-scroll msg-list-scroll" style="overflow: hidden; width: auto; height: 599px;">
-                            <ul class="list-box">
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">R</span>
+                <div class="notification-box">
+                    <div class="msg-sidebar notifications msg-noti">
+                        <div class="topnav-dropdown-header">
+                            <span>Poruke</span>
+                        </div>
+                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 599px;">
+                            <div class="drop-scroll msg-list-scroll" style="overflow: hidden; width: auto; height: 599px;">
+                                <ul class="list-box">
+                                    <li>
+                                        <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
+                                            <div class="list-item">
+                                                <div class="list-left">
+                                                    <span class="avatar">R</span>
+                                                </div>
+                                                <div class="list-body">
+                                                    <span class="message-author">Richard Miles </span>
+                                                    <span class="message-time">12:28 AM</span>
+                                                    <div class="clearfix"></div>
+                                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                                </div>
                                             </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Richard Miles </span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
+                                            <div class="list-item new-message">
+                                                <div class="list-left">
+                                                    <span class="avatar">J</span>
+                                                </div>
+                                                <div class="list-body">
+                                                    <span class="message-author">Ruth C. Gault</span>
+                                                    <span class="message-time">1 Aug</span>
+                                                    <div class="clearfix"></div>
+                                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">
-                                        <div class="list-item new-message">
-                                            <div class="list-left">
-                                                <span class="avatar">J</span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Ruth C. Gault</span>
-                                                <span class="message-time">1 Aug</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div><div class="slimScrollBar" style="background: rgb(135, 135, 135); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 809px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-                    </div>
-                    <div class="topnav-dropdown-footer">
-                        <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">Vidi sve poruke</a>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div><div class="slimScrollBar" style="background: rgb(135, 135, 135); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 809px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                        </div>
+                        <div class="topnav-dropdown-footer">
+                            <a href="https://dreamguys.co.in/preadmin/school/dark/chat.html">Vidi sve poruke</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 <div class="sidebar-overlay" data-reff=""></div>
 <script type="text/javascript" src="~/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="~/js/popper.min.js"></script>

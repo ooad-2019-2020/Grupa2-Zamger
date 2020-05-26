@@ -24,5 +24,7 @@ namespace ZamgerV2_Implementation.Models
         public double Bodovi { get => bodovi; set => bodovi = value; }
         public int MaxBrojBodova { get => maxBrojBodova; set => maxBrojBodova = value; }
         public double BrojBodovaZaProlaz { get => brojBodovaZaProlaz; set => brojBodovaZaProlaz = value; }
+
+        
     }
 }

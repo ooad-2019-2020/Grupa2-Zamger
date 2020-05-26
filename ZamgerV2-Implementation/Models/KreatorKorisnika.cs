@@ -30,6 +30,9 @@ namespace ZamgerV2_Implementation.Models
                     {
                         prdmt.Aktivnosti = zmgr.dajAktivnostiZaStudentovPredmet(prdmt.IdPredmeta, prdmt.IdStudenta);
                     }
+
+                    temps.Inbox = zmgr.dajInbox(id);
+                    temps.Outbox = zmgr.dajOutbox(id);
                     return temps;
                 }
                 else
@@ -40,6 +43,9 @@ namespace ZamgerV2_Implementation.Models
                     {
                         prdmt.Aktivnosti = zmgr.dajAktivnostiZaStudentovPredmet(prdmt.IdPredmeta, prdmt.IdStudenta);
                     }
+                    
+                    temps.Inbox = zmgr.dajInbox(id);
+                    temps.Outbox = zmgr.dajOutbox(id);
                     return temps;
                 }
             }
@@ -55,6 +61,8 @@ namespace ZamgerV2_Implementation.Models
                         prdmt.Studenti = zmgr.formirajStudenteNaPredmetuPoId(prdmt.IdPredmeta);
                     }
                     tempOsoba.Aktivnosti = zmgr.formirajAktivnostiZaNastavnoOsobljePoIdOsobe(id);
+                    tempOsoba.Inbox = zmgr.dajInbox(id);
+                    tempOsoba.Outbox = zmgr.dajOutbox(id);
                     return tempOsoba;
                 }
                 else
@@ -73,6 +81,8 @@ namespace ZamgerV2_Implementation.Models
                     }
                     tempOsoba.Aktivnosti = zmgr.formirajAktivnostiZaNastavnoOsobljePoIdOsobe(id);
                     tempOsoba.AnketeNaPredmetima = anketice;
+                    tempOsoba.Inbox = zmgr.dajInbox(id);
+                    tempOsoba.Outbox = zmgr.dajOutbox(id);
                     return tempOsoba;
                 }
             }

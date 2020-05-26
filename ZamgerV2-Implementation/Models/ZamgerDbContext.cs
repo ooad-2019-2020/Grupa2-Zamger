@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,142 @@ namespace ZamgerV2_Implementation.Models
             }
         }
 
+        public List<Poruka> dajOutbox(int id)
+        {
+            List<Poruka> lista = new List<Poruka>();
+            string kveri = "select pošiljalac, primalac, naslov, sadržaj, vrijemePoruke, pročitana, idPoruke, k1.username, k2.username from DOPISIVANJE, KORISNICI k1, KORISNICI k2 Where pošiljalac = k1.idKorisnika AND primalac = k2.idKorisnika AND pošiljalac = @pId ORDER BY vrijemePoruke DESC";
+            var idParam = new SqlParameter("pId", System.Data.SqlDbType.Int);
+            SqlCommand komanda = new SqlCommand(kveri, conn);
+            idParam.Value = id;
+            komanda.Parameters.Add(idParam);
+            try
+            {
+                var result = komanda.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        Poruka privremenaPoruka = new Poruka(result.GetInt32(0), result.GetInt32(1), result.GetString(2), result.GetString(3), result.GetDateTime(4), result.GetInt32(5), result.GetInt32(6));
+                        privremenaPoruka.UserPosiljaoca = result.GetString(7);
+                        privremenaPoruka.UserPrimaoca = result.GetString(8);
+                        lista.Add(privremenaPoruka);
+                    }
+                    return lista;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + "-nije ok");
+            }
+
+        }
+        
+        public List<Poruka> dajInbox(int id)
+        {
+            List<Poruka> lista = new List<Poruka>();
+            string kveri = "select pošiljalac, primalac, naslov, sadržaj, vrijemePoruke, pročitana, idPoruke, k1.username, k2.username from DOPISIVANJE, KORISNICI k1, KORISNICI k2 Where pošiljalac = k1.idKorisnika AND primalac = k2.idKorisnika AND primalac = @pId ORDER BY vrijemePoruke DESC";
+            var idParam = new SqlParameter("pId", System.Data.SqlDbType.Int);
+            SqlCommand komanda = new SqlCommand(kveri, conn);
+            idParam.Value = id;
+            komanda.Parameters.Add(idParam);
+            try
+            {
+                var result = komanda.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        Poruka privremenaPoruka = new Poruka(result.GetInt32(0), result.GetInt32(1), result.GetString(2), result.GetString(3), result.GetDateTime(4), result.GetInt32(5), result.GetInt32(6));
+                        privremenaPoruka.UserPosiljaoca = result.GetString(7);
+                        privremenaPoruka.UserPrimaoca = result.GetString(8);
+                        lista.Add(privremenaPoruka);
+                    }
+                    return lista;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "-nije ok");
+            }
+        }
+
+        public bool posaljiPoruku(Poruka poruka)
+        {
+            string kveri = "INSERT INTO DOPISIVANJE VALUES(@posId, @primId , @naslov, @sadržaj, @vrijemePoruke, @pročitana, @idPoruke)";
+            SqlParameter posIdParam = new SqlParameter("posId", System.Data.SqlDbType.Int);
+            SqlParameter primIdParam = new SqlParameter("primId", System.Data.SqlDbType.Int);
+            SqlParameter naslovParam = new SqlParameter("naslov", System.Data.SqlDbType.NVarChar);
+            SqlParameter sadrzajParam = new SqlParameter("sadržaj", System.Data.SqlDbType.NVarChar);
+            SqlParameter vrijemeParam = new SqlParameter("vrijemePoruke", System.Data.SqlDbType.DateTime);
+            SqlParameter procitanaParam = new SqlParameter("pročitana", System.Data.SqlDbType.Int);
+            SqlParameter idPorukeParam = new SqlParameter("idPoruke", System.Data.SqlDbType.Int);
+            posIdParam.Value = poruka.IdPosiljaoca;
+            primIdParam.Value = poruka.IdPrimaoca;
+            naslovParam.Value = poruka.Naslov;
+            sadrzajParam.Value = poruka.Sadrzaj;
+            vrijemeParam.Value = poruka.VrijemePoruke;
+            procitanaParam.Value = poruka.Procitana;
+            idPorukeParam.Value = poruka.IdPoruke;
+            SqlCommand komanda = new SqlCommand(kveri, conn);
+            komanda.Parameters.Add(posIdParam);
+            komanda.Parameters.Add(primIdParam);
+            komanda.Parameters.Add(naslovParam);
+            komanda.Parameters.Add(sadrzajParam);
+            komanda.Parameters.Add(vrijemeParam);
+            komanda.Parameters.Add(procitanaParam);
+            komanda.Parameters.Add(idPorukeParam);
+            try
+            {
+                komanda.ExecuteNonQuery();
+                return true;
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Slanje poruke neuspješno");
+            }
+        }
+
+        public bool oznaciProcitanu(int idPoruke)
+        {
+            string kveri = "UPDATE DOPISIVANJE SET pročitana = 1 WHERE idPoruke = @id";
+            SqlParameter idParam = new SqlParameter("id", System.Data.SqlDbType.Int);
+            idParam.Value = idPoruke;
+            SqlCommand komanda = new SqlCommand(kveri, conn);
+            komanda.Parameters.Add(idParam);
+            try
+            {
+                komanda.ExecuteNonQuery();
+                return true;
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Greška pri označavanju poruke pročitanom");
+            }
+        }
+
+        public int dajNoviPorukaId()
+        {
+            string kveri = "SELECT isnull(max(idPoruke), 0) FROM DOPISIVANJE";
+            SqlCommand komanda = new SqlCommand(kveri, conn);
+            try
+            {
+                int resultID = (int)komanda.ExecuteScalar();
+                return resultID;
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.StackTrace + "error u generisanju ID");
+                return -1;
+            }
+        }
 
         public Student dajStudentaPoID(int? idStudenta)
         {

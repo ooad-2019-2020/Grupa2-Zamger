@@ -19,7 +19,7 @@ namespace ZamgerV2_Implementation.Models
 
         private ZamgerDbContext()
         {
-            String connString = "server=DESKTOP-47GORSV;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);
@@ -188,7 +188,8 @@ namespace ZamgerV2_Implementation.Models
             }
             catch(Exception e)
             {
-                throw new Exception("Slanje poruke neuspješno");
+                
+                throw new Exception(e.StackTrace+"Slanje poruke neuspješno");
             }
         }
 
@@ -212,7 +213,7 @@ namespace ZamgerV2_Implementation.Models
 
         public int dajNoviPorukaId()
         {
-            string kveri = "SELECT isnull(max(idPoruke), 0) FROM DOPISIVANJE";
+            string kveri = "SELECT isnull(max(idPoruke)+1, 0) FROM DOPISIVANJE";
             SqlCommand komanda = new SqlCommand(kveri, conn);
             try
             {
@@ -920,6 +921,19 @@ namespace ZamgerV2_Implementation.Models
             return null;
         }
 
+        public List<Korisnik> pretražiKorisnike(string ime, string prezime)
+        {
+            List<Korisnik> korisnici = new List<Korisnik>();
+            Logger logg = Logger.GetInstance();
+            List<Student> studenti = logg.pretražiStudenta(null, ime, prezime, null);
+            if(studenti!=null) foreach (Student student in studenti) korisnici.Add(student);
+
+            List<Tuple<int, NastavnoOsoblje>> nastavnoOsoblje = logg.pretražiNastavnoOsoblje(ime, prezime, "Izaberite");
+            if(nastavnoOsoblje!=null) foreach (Tuple<int, NastavnoOsoblje> tapl in nastavnoOsoblje) korisnici.Add(tapl.Item2);
+
+            Logger.removeInstance();
+            return korisnici;
+        }
     }
 
 

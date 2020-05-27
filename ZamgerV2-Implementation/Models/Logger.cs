@@ -22,7 +22,7 @@ namespace ZamgerV2_Implementation.Models
         {
             //ST6TE70 - PASHA
 
-            String connString = "server=DESKTOP-47GORSV;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
 
             //0G31M9N - WHOSO
             //47GORSV - RILE
@@ -1004,7 +1004,9 @@ namespace ZamgerV2_Implementation.Models
             string kveri = "select * from studenti ";
             string indeksKveri = "@index = brojIndeksa ";
             string imeKveri = "@name = ime";
+            //string imeKveri = "ime like '@name%'";
             string prezimeKveri = "@lastName = prezime ";
+            //string prezimeKveri = "prezime like '@lastName%'";
             string odsjekKveri = "@course = odsjek ";
             //if (brojIndeksa != -1 || ime != null || prezime != null || odsjek != null) where ="where ";
             bool provjeraIndeks = false;

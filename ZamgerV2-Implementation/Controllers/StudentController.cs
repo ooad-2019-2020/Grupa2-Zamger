@@ -23,7 +23,7 @@ namespace ZamgerV2_Implementation.Controllers
         {
             KreatorKorisnika creator = new KreatorKorisnika();
             Korisnik tempK = creator.FactoryMethod(id);
-            if(tempK.GetType() == typeof(Student))
+            if (tempK.GetType() == typeof(Student))
             {
                 trenutniKorisnik = (Student)tempK;
             }
@@ -36,9 +36,9 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.prosjek = zmgr.dajProsjekPoID(trenutniKorisnik.BrojIndeksa);
             ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
             //ViewBag.listaPredmeta = zmgr.dajMojePredmete(trenutniKorisnik.BrojIndeksa);
-            
 
-            return View(trenutniKorisnik); 
+
+            return View(trenutniKorisnik);
         }
 
         [Route("/student/kreiraj-zahtjev/{id}")]
@@ -63,7 +63,7 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult KreirajZahtjev(int id, IFormCollection forma)
         {
             int idZaht = zmgr.generišiIdZahtjeva();
-            if(zmgr.spremiZahtjev(new Zahtjev(id, forma["VrstaZahtjeva"].ToString(), DateTime.Now, 0, idZaht)))
+            if (zmgr.spremiZahtjev(new Zahtjev(id, forma["VrstaZahtjeva"].ToString(), DateTime.Now, 0, idZaht)))
             {
                 return RedirectToAction("UspješnoKreiranZahtjev", new { id = id });
             }
@@ -128,7 +128,7 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
 
-        [Route ("/student/obavještenje/{idObavještenja}/{id}")]
+        [Route("/student/obavještenje/{idObavještenja}/{id}")]
         public IActionResult AnnouncementStudentInfo(int idObavještenja, int id)
         {
             KreatorKorisnika creator = new KreatorKorisnika();
@@ -145,7 +145,7 @@ namespace ZamgerV2_Implementation.Controllers
             return View(trenutniKorisnik);
         }
 
-        [Route ("/student/predmet/{id}/{idPredmeta}/{studijskaGodina}")]
+        [Route("/student/predmet/{id}/{idPredmeta}/{studijskaGodina}")]
         public IActionResult StudentSubjectInfo(int id, int idPredmeta, int studijskaGodina)
         {
             KreatorKorisnika creator = new KreatorKorisnika();
@@ -165,7 +165,7 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
 
-        [Route ("/student/predmeti-list/{id}")]
+        [Route("/student/predmeti-list/{id}")]
         public IActionResult MySubjects(int id)
         {
             KreatorKorisnika creator = new KreatorKorisnika();
@@ -183,7 +183,7 @@ namespace ZamgerV2_Implementation.Controllers
             return View(trenutniKorisnik);
         }
 
-        [Route ("/student/poruke/moj-inbox/{idStudenta}")]
+        [Route("/student/poruke/moj-inbox/{idStudenta}")]
         public IActionResult mojInbox(int idStudenta)
         {
             KreatorKorisnika creator = new KreatorKorisnika();
@@ -250,6 +250,95 @@ namespace ZamgerV2_Implementation.Controllers
             return View(trenutniKorisnik);
         }
 
+        [Route("/student/studenti-list/{idStudenta}")]
+        public IActionResult searchStudentsForMessage(int idStudenta)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(idStudenta);
+            if (tempK.GetType() == typeof(Student))
+            {
+                trenutniKorisnik = (Student)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/student/studenti-list/{idStudenta}/pretraga")]
+        [HttpPost]
+        public IActionResult searchStudentsForMessageForm(IFormCollection forma, int idStudenta)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(idStudenta);
+            if (tempK.GetType() == typeof(Student))
+            {
+                trenutniKorisnik = (Student)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+
+            //Logger logg = Logger.GetInstance();
+
+            List<Korisnik> korisnici = zmgr.pretražiKorisnike(forma["Ime"], forma["Prezime"]);
+
+            ViewBag.korisnici = korisnici;
+
+            return View(trenutniKorisnik);
+        }
+
+
+        [Route("/student/studenti-list/{idStudenta}/pretraga/{idPrimaoca}")]
+        [HttpGet]
+        public IActionResult sendMessage(int idStudenta, int idPrimaoca)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(idStudenta);
+            if (tempK.GetType() == typeof(Student))
+            {
+                trenutniKorisnik = (Student)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+
+
+            return View(trenutniKorisnik);
+        }
+
+
+
+        [Route("/student/studenti-list/{idStudenta}/pretraga/{idPrimaoca}")]
+        [HttpPost]
+        public IActionResult sendMessage(IFormCollection forma,int idStudenta, int idPrimaoca)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(idStudenta);
+            if (tempK.GetType() == typeof(Student))
+            {
+                trenutniKorisnik = (Student)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+
+            if(forma!=null)
+            {
+                string sadržaj = forma["sadržaj"];
+                string naslov = forma["naslov"];
+                Poruka poruka = new Poruka(idStudenta, idPrimaoca, naslov, sadržaj, DateTime.Now, 0, zmgr.dajNoviPorukaId());
+                zmgr.posaljiPoruku(poruka);
+                //Response.WriteAsync("Poruka je poslana: " + zmgr.posaljiPoruku(poruka));
+                return RedirectToAction("mojOutbox", new { idStudenta = idStudenta });
+            }
+
+            return View(trenutniKorisnik);
+        }
 
 
     }

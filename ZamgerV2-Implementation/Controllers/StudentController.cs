@@ -35,9 +35,7 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.nepolozeni = zmgr.dajBrojNepoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
             ViewBag.prosjek = zmgr.dajProsjekPoID(trenutniKorisnik.BrojIndeksa);
             ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
-            //ViewBag.listaPredmeta = zmgr.dajMojePredmete(trenutniKorisnik.BrojIndeksa);
-
-
+           
             return View(trenutniKorisnik);
         }
 
@@ -246,7 +244,6 @@ namespace ZamgerV2_Implementation.Controllers
                 trenutniKorisnik = (MasterStudent)tempK;
             }
             ViewBag.poruka = zmgr.dajPoruku(idPoruke);
-            zmgr.oznaciProcitanu(idPoruke);
             return View(trenutniKorisnik);
         }
 

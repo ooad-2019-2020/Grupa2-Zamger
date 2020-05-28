@@ -22,7 +22,7 @@ namespace ZamgerV2_Implementation.Models
         {
             //ST6TE70 - PASHA
 
-            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
 
             //0G31M9N - WHOSO
             //47GORSV - RILE

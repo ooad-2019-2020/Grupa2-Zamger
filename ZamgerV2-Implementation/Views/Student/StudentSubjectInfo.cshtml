@@ -144,8 +144,23 @@
                                         <div class="col-md-5">
                                             <div class="profile-info-left">
                                                 <h3 class="user-name m-t-0">@ViewBag.predmet.Naziv</h3>
-                                                <h5 class="company-role m-t-0 m-b-0">ECTS poeni: @String.Format("{0:0.00}", ViewBag.predmet.EctsPoeni)</h5>
-
+                                                <ul>
+                                                    <li>
+                                                        <h5 class="company-role m-t-0 m-b-0">ECTS poeni: @String.Format("{0:0.00}", ViewBag.predmet.EctsPoeni)</h5>
+                                                    </li>
+                                                    <li>
+                                                        <h5 class="company-role m-t-0 m-b-0">Ansambl na predmetu: </h5>
+                                                    </li>
+                                                    @if(ViewBag.ansambl != null || ViewBag.ansambl.Count!=0)
+                                                    {
+                                                        foreach(NastavnoOsoblje nastavnoOsoblje in ViewBag.ansambl)
+                                                        {
+                                                            <li>
+                                                                <span class="text">@nastavnoOsoblje.Titula @nastavnoOsoblje.Ime  @nastavnoOsoblje.Prezime</span>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
                                             </div>
                                         </div>
                                         <div class="col-md-6">

@@ -157,6 +157,7 @@ namespace ZamgerV2_Implementation.Controllers
                 trenutniKorisnik = (MasterStudent)tempK;
             }
             ViewBag.predmet = zmgr.dajPredmetZaStudentaPoID(id, idPredmeta, studijskaGodina);
+            ViewBag.ansambl = zmgr.dajAnsamblNaPredmetu(idPredmeta);
             //ViewBag.listaPredmeta = zmgr.dajMojePredmete(id);
 
             return View(trenutniKorisnik);

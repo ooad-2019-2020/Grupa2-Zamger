@@ -19,7 +19,7 @@ namespace ZamgerV2_Implementation.Models
 
         private ZamgerDbContext()
         {
-            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
             try
             {
                 conn = new SqlConnection(connString);
@@ -933,6 +933,41 @@ namespace ZamgerV2_Implementation.Models
 
             Logger.removeInstance();
             return korisnici;
+        }
+
+
+        public List<NastavnoOsoblje> dajAnsamblNaPredmetu(int idPredmeta)
+        {
+            List<NastavnoOsoblje> ansambl = new List<NastavnoOsoblje>();
+            Logger logg = Logger.GetInstance();
+            string kveri1 = "select idNastavnogOsoblja from ansambl where idPredmeta = @subjectID";
+            var subjectIDParam = new SqlParameter("subjectID", SqlDbType.Int);
+            subjectIDParam.Value = idPredmeta;
+            SqlCommand command = new SqlCommand(kveri1, conn);
+            command.Parameters.Add(subjectIDParam);
+            try
+            {
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        int id = result.GetInt32(0);
+                        ansambl.Add(logg.dajKreiranoNastavnoOsobljePoID(id));
+
+                    }
+                }
+                else
+                {
+                    return ansambl;
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
+
+            return ansambl;
         }
     }
 

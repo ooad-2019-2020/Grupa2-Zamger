@@ -162,6 +162,7 @@
                                 <tr>
                                     <th>Ime i prezime</th>
                                     <th>Tip korisnika</th>
+                                    <th>Username</th>
                                 </tr>
                             </thead>
 
@@ -172,16 +173,19 @@
                                     {
                                         string status = "student";
                                         int id = -1;
+                                        string username = "";
                                         if (korisnik.GetType() == typeof(NastavnoOsoblje))
                                         {
                                             NastavnoOsoblje no = (NastavnoOsoblje)korisnik;
                                             status = no.Titula;
                                             id = (int)no.IdOsobe;
+                                            username = no.Username;
                                         }
                                         else if (korisnik.GetType() == typeof(Student))
                                         {
                                             Student stud = (Student)korisnik;
                                             id = (int)stud.BrojIndeksa;
+                                            username = stud.Username;
 
                                         }
                                         else if (korisnik.GetType() == typeof(Profesor))
@@ -189,12 +193,14 @@
                                             Profesor profa = (Profesor)korisnik;
                                             status = profa.Titula;
                                             id = (int)profa.IdOsobe;
+                                            username = profa.Username;
                                         }
 
                                         if (id == Model.BrojIndeksa) continue;
                                         <tr role="row">
                                             <td><a href="~/student/studenti-list/@Model.BrojIndeksa/pretraga/@id">@korisnik.Ime @korisnik.Prezime</a></td>
                                             <td>@status</td>
+                                            <td>@username</td>
                                         </tr>
 
                                     }

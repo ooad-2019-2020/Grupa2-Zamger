@@ -364,7 +364,7 @@ border: 4px solid #01c0c8;background: transparent;-webkit-border-radius: 60px;-m
 [9. Login]
 */
 .main-wrapper {height:100%;}
-.account-page {padding: 40px 0;background-image: url("../img/bg-account.jpeg");height:100%; height: 100%;width: 100%;min-height: 100vh;display: flex;flex-wrap: wrap;justify-content: center;align-items: center;padding: 15px;background-repeat: no-repeat;background-position: center;background-size: cover;position: relative;z-index: 1;}
+.account-page {padding: 40px 0;background-image: url("../images/banner1.jpg");height:100%; height: 100%;width: 100%;min-height: 100vh;display: flex;flex-wrap: wrap;justify-content: center;align-items: center;padding: 15px;background-repeat: no-repeat;background-position: center;background-size: cover;position: relative;z-index: 1;}
 .account-page::before {content: "";display: block;position: absolute;z-index: -1;width: 100%;height: 100%;top: 0;left: 0;background-color: rgba(68, 172, 178, 0.7);}
 .account-title {font-size: 32px;font-weight: normal;margin: 0 0 40px;text-align: center;color: #3b424a;}
 .account-box {margin: 0 auto;width: 400px; border:0px solid #e7e7e7;background-color:#3b424a;box-shadow:0 6px 15px rgba(36, 37, 38, 0.08);border-radius: 0px;color: #757e73;}

@@ -19,7 +19,9 @@ namespace ZamgerV2_Implementation.Models
 
         private ZamgerDbContext()
         {
+
             String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+
             try
             {
                 conn = new SqlConnection(connString);
@@ -916,9 +918,9 @@ namespace ZamgerV2_Implementation.Models
             }
             catch(Exception e)
             {
-
+                throw new Exception(e.StackTrace);
             }
-            return null;
+
         }
 
         public List<Korisnik> pretražiKorisnike(string ime, string prezime)
@@ -964,7 +966,7 @@ namespace ZamgerV2_Implementation.Models
             }
             catch(Exception e)
             {
-
+                throw new Exception(e.StackTrace);
             }
 
             return ansambl;

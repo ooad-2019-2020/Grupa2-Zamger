@@ -63,11 +63,12 @@ namespace ZamgerV2_Implementation.Controllers
             int idZaht = zmgr.generišiIdZahtjeva();
             if (zmgr.spremiZahtjev(new Zahtjev(id, forma["VrstaZahtjeva"].ToString(), DateTime.Now, 0, idZaht)))
             {
-                return RedirectToAction("UspješnoKreiranZahtjev", new { id = id });
+                return RedirectToAction("UspješnoKreiranZahtjev", new { id=id });
             }
             else
             {
-                return null; //ovdje treba neki error view vratit 404 il nešta
+                //ovdje treba neki error view vratit 404 il nešta
+                return RedirectToAction("prikaziGresku", new { idStudenta = id, lokacija = "kreiraj-zahtjev" + id, idPoruke = 1 });
             }
         }
 
@@ -332,9 +333,34 @@ namespace ZamgerV2_Implementation.Controllers
                 Poruka poruka = new Poruka(idStudenta, idPrimaoca, naslov, sadržaj, DateTime.Now, 0, zmgr.dajNoviPorukaId());
                 zmgr.posaljiPoruku(poruka);
                 //Response.WriteAsync("Poruka je poslana: " + zmgr.posaljiPoruku(poruka));
-                return RedirectToAction("mojOutbox", new { idStudenta = idStudenta });
+                return RedirectToAction("prikaziGresku", new { idStudenta = idStudenta, lokacija = "studenti-list/"+idStudenta+"/pretraga/"+idPrimaoca, idPoruke=2}); 
             }
 
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/student/{idStudenta}/{lokacija}/greska/{idPoruke}")]
+        public IActionResult prikaziGresku(int idStudenta, string lokacija, int idPoruke)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(idStudenta);
+            if (tempK.GetType() == typeof(Student))
+            {
+                trenutniKorisnik = (Student)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (MasterStudent)tempK;
+            }
+            if (idPoruke == 1)
+            {
+                ViewBag.poruka = "Greška pri kreiranju zahtjeva";
+            }
+            else if (idPoruke == 2)
+            {
+                ViewBag.poruka = "Greška pri slanju poruke";
+            }
+            
             return View(trenutniKorisnik);
         }
 

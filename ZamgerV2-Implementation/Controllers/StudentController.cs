@@ -35,6 +35,7 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.nepolozeni = zmgr.dajBrojNepoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
             ViewBag.prosjek = zmgr.dajProsjekPoID(trenutniKorisnik.BrojIndeksa);
             ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
+            ViewBag.listaNePrijavljenihIspita = zmgr.dajIspiteNaKojeSeStudentNijePrijavio(id);
            
             return View(trenutniKorisnik);
         }

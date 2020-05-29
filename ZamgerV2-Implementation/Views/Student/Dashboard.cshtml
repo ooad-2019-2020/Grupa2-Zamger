@@ -148,7 +148,7 @@
                         <div class="dash-widget dash-widget5">
                             <span class="dash-widget-icon bg-success"><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
                             <div class="dash-widget-info">
-                                <h3>1</h3>
+                                <h3>@Model.GodinaStudija</h3>
                                 <span>Godina studija</span>
                             </div>
                         </div>
@@ -169,52 +169,63 @@
                                         <table class="table table-striped custom-table">
                                             <thead>
                                                 <tr>
-                                                    <th style="min-width:91px;">Naziv ispita </th>
-                                                    <th style="min-width:50px;">Predmet</th>
-                                                    <th style="min-width:50px;">Godina</th>
-                                                    <th style="min-width:50px;">Odsjeci</th>
-                                                    <th style="min-width:50px;">Vrijeme</th>
-                                                    <th style="min-width:50px;">Datum</th>
+                                                    <th style="min-width:150px;">Naziv aktivnosti</th>
+                                                    <th style="min-width:50px;">Vrsta</th>
+                                                    <th style="min-width:150px;">Predmet</th>
+                                                    <th style="min-width:150px;">Vrijeme</th>  
                                                     <th class="text-right" style="width:30%;">Akcija</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
-                                                    </td>
-                                                    <td>English</td>
-                                                    <td>5</td>
-                                                    <td>B</td>
-                                                    <td>10.00am</td>
-                                                    <td>20/1/2019</td>
-                                                    <td class="text-right">
-                                                        <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
-                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                        </a>
-                                                        <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
-                                                    </td>
-                                                    <td>English</td>
-                                                    <td>4</td>
-                                                    <td>A</td>
-                                                    <td>10.00am</td>
-                                                    <td>2/1/2019</td>
-                                                    <td class="text-right">
-                                                        <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
-                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                        </a>
-                                                        <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                @if (Model.Predmeti != null)
+                                                {
+                                                    for (int i = 0; i < Model.Predmeti.Count; i++)
+                                                    {
+                                                        if (Model.Predmeti[i].Aktivnosti != null)
+                                                        {
+                                                            @for (int j = 0; j < Model.Predmeti[i].Aktivnosti.Count; j++)
+                                                            {
+                                                                if (Model.Predmeti[i].Aktivnosti[j].KrajnjiDatum > DateTime.Now)
+                                                                {
+                                                                    String vrsta = "Zadaća";
+                                                                    if (Model.Predmeti[i].Aktivnosti[j].GetType() == typeof(Ispit)) vrsta = "Ispit";
+                                                                    <tr>
+
+                                                                        <td>@Model.Predmeti[i].Aktivnosti[j].Naziv</td>
+                                                                        <td>@vrsta</td>
+                                                                        <td>@Model.Predmeti[i].Naziv</td>
+                                                                        <td>@Model.Predmeti[i].Aktivnosti[j].KrajnjiDatum</td>
+
+                                                                        <td class="text-right">
+                                                                            <a href="#" class="btn btn-primary btn-sm mb-1">
+                                                                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                @if (ViewBag.listaNePrijavljenihIspita != null)
+                                                {
+                                                    for (int i = 0; i < ViewBag.listaNePrijavljenihIspita.Count; i++)
+                                                    {
+                                                        <tr>
+                                                            <td>@ViewBag.listaNePrijavljenihIspita[i].Item2.Naziv</td>
+                                                            <td>Ispit</td>
+                                                            <td>@ViewBag.listaNePrijavljenihIspita[i].Item1</td>
+                                                            <td>@ViewBag.listaNePrijavljenihIspita[i].Item2.KrajnjiDatum</td>
+
+                                                            <td class="text-right">
+                                                                <a href="#" class="btn btn-primary btn-sm mb-1">
+                                                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+
                                             </tbody>
                                         </table>
                                     </div>

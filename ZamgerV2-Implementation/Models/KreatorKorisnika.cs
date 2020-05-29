@@ -55,6 +55,7 @@ namespace ZamgerV2_Implementation.Models
                 if(trenutniKorisnik.GetType() == typeof(NastavnoOsoblje))
                 {
                     NastavnoOsoblje tempOsoba = (NastavnoOsoblje)trenutniKorisnik;
+                    tempOsoba.IdOsobe = id;
                     tempOsoba.PredmetiNaKojimPredaje = zmgr.formirajPredmeteZaNastavnoOsobljePoId(id);
                     foreach(PredmetZaNastavnoOsoblje prdmt in tempOsoba.PredmetiNaKojimPredaje)
                     {
@@ -68,6 +69,7 @@ namespace ZamgerV2_Implementation.Models
                 else
                 {
                     Profesor tempOsoba = (Profesor)trenutniKorisnik;
+                    tempOsoba.IdOsobe = id;
                     List<Anketa> anketice = new List<Anketa>();
                     tempOsoba.PredmetiNaKojimPredaje = zmgr.formirajPredmeteZaNastavnoOsobljePoId(id);
                     foreach (PredmetZaNastavnoOsoblje prdmt in tempOsoba.PredmetiNaKojimPredaje)

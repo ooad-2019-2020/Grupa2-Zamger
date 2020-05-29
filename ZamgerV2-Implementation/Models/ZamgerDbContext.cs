@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ZamgerV2_Implementation.Models
@@ -285,7 +286,9 @@ namespace ZamgerV2_Implementation.Models
                 {
                     while(result.Read())
                     {
-                        lista.Add(new PredmetZaStudenta(result.GetString(0), result.GetFloat(1), result.GetFloat(2), result.GetInt32(3), null, result.GetInt32(4), result.GetInt32(5), result.GetInt32(6)));
+                        PredmetZaStudenta predmet = new PredmetZaStudenta(result.GetString(0), result.GetFloat(1), result.GetFloat(2), result.GetInt32(3), null, result.GetInt32(4), result.GetInt32(5), result.GetInt32(6));
+                        predmet.Aktivnosti = this.dajAktivnostiZaStudentovPredmet(predmet.IdPredmeta, id);
+                        lista.Add(predmet);
                     }
                     return lista;
                 }
@@ -308,7 +311,7 @@ namespace ZamgerV2_Implementation.Models
             var userIDParam = new SqlParameter("studentID", System.Data.SqlDbType.Int);
             userIDParam.Value = idStudenta;
             var predmetIDParam = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
-            predmetIDParam.Value = idStudenta;
+            predmetIDParam.Value = idPredmet;
 
             SqlCommand command = new SqlCommand(kveri, conn);
             command.Parameters.Add(userIDParam);
@@ -319,7 +322,7 @@ namespace ZamgerV2_Implementation.Models
             var userIDParam2 = new SqlParameter("IDStudent", System.Data.SqlDbType.Int);
             userIDParam2.Value = idStudenta;
             var predmetIDParam2 = new SqlParameter("IDPredmet", System.Data.SqlDbType.Int);
-            predmetIDParam2.Value = idStudenta;
+            predmetIDParam2.Value = idPredmet;
 
             SqlCommand command2 = new SqlCommand(kveri2, conn);
             command2.Parameters.Add(userIDParam2);
@@ -970,6 +973,102 @@ namespace ZamgerV2_Implementation.Models
             }
 
             return ansambl;
+        }
+
+
+        public int generišiIdAktivnosti()
+        {
+            string kveri = "select isnull(Count(idAktivnosti)+1,0) from AKTIVNOSTI";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            try
+            {
+                return (int)cmd.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom generisanja id za aktivnost");
+            }
+        }
+
+
+        public int kreirajAktivnost(int idPredmeta, String naziv, DateTime vrijeme, String vrsta, double maxBrojBodova)
+        {
+            int idAktivnosti = this.generišiIdAktivnosti();
+            string kveri = "insert into AKTIVNOSTI values (@aktivnostID, @predmetID, @vrsta, @naziv, @rok, @maxbrojbodova)";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("aktivnostID", idAktivnosti);
+            cmd.Parameters.AddWithValue("predmetID", idPredmeta);
+            cmd.Parameters.AddWithValue("naziv", naziv);
+            cmd.Parameters.AddWithValue("rok", vrijeme);
+            cmd.Parameters.AddWithValue("vrsta", vrsta);
+            cmd.Parameters.AddWithValue("maxbrojbodova", maxBrojBodova);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                return idAktivnosti;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom kreiranja aktivnosti");
+            }
+        }
+
+
+        public void ubaciDefaultPodatkeZaZadaću(int idZadaće, PredmetZaNastavnoOsoblje prdmt, String nazivZadaće, double maxBrojBodova, DateTime vrijeme)
+        {
+            StringBuilder sb = new StringBuilder("insert into zadaće values");
+            for (int i = 0; i < prdmt.Studenti.Count; i++)
+            {
+                if (i < prdmt.Studenti.Count-1)
+                {
+                    sb.Append("(").Append(idZadaće).Append(",").Append(prdmt.Studenti[i].BrojIndeksa).Append(",").Append(prdmt.IdPredmeta+", '").Append(nazivZadaće).Append("', 0, ").Append("@vrijeme").Append(", null, "+maxBrojBodova+", null), ");
+                }
+                else
+                {
+                    sb.Append("(").Append(idZadaće).Append(",").Append(prdmt.Studenti[i].BrojIndeksa).Append(",").Append(prdmt.IdPredmeta + ", '").Append(nazivZadaće).Append("', 0, ").Append("@vrijeme").Append(", null, " + maxBrojBodova + ", null)");
+                }
+            }
+            string kveri = sb.ToString();
+            SqlParameter vrijemeParam = new SqlParameter("vrijeme", SqlDbType.DateTime);
+            vrijemeParam.Value = vrijeme;
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.Add(vrijemeParam);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom unosa default podataka za zadaću");
+            }
+        }
+
+        public List<Tuple<string,Aktivnost>> dajIspiteNaKojeSeStudentNijePrijavio(int idStudenta)
+        {
+            List<Tuple<string, Aktivnost>> lista = new List<Tuple<string, Aktivnost>>();
+            string kveri = "select p.naziv, a.idAktivnosti, a.idPredmeta, a.vrsta, a.naziv, a.rok, a.maxBrojBodova from aktivnosti a, predmeti p, ocjene o where vrsta = 'Ispit' and a.idPredmeta=p.idPredmeta and o.idPredmeta=p.idPredmeta and o.idStudenta=@studentID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("studentID", idStudenta);
+            try
+            {
+                var result = cmd.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        lista.Add(new Tuple<string, Aktivnost>(result.GetString(0), new Ispit(idStudenta, result.GetInt32(2), result.GetString(4), result.GetDateTime(5), 0, result.GetInt32(1), result.GetInt32(6), 10)));
+                    }
+                    return lista;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom učitavanja ispita na koje se student nije prijavio!");
+            }
         }
     }
 

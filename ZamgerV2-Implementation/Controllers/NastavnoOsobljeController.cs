@@ -19,7 +19,7 @@ namespace ZamgerV2_Implementation.Controllers
             zmgr = ZamgerDbContext.GetInstance();
         }
 
-        [Route("/nastavno-osoblje/dashboard")]
+        [Route("/nastavno-osoblje/dashboard/{id}")]
         public IActionResult Dashboard(int id)
         {
             KreatorKorisnika creator = new KreatorKorisnika();
@@ -32,8 +32,8 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 trenutniKorisnik = (Profesor)tempK;
             }
-            Response.WriteAsync("Logovana osoba je: " + trenutniKorisnik.Titula + " " + trenutniKorisnik.Ime + " " + trenutniKorisnik.Prezime+" i tipa je --"+ trenutniKorisnik.GetType().ToString());
-            return View();
+            ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
+            return View(trenutniKorisnik);
         }
     }
 }

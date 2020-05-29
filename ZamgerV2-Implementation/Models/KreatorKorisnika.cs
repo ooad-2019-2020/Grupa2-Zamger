@@ -19,10 +19,10 @@ namespace ZamgerV2_Implementation.Models
 
             Korisnik trenutniKorisnik;
             int tipKorisnika = zmgr.dajTipKorisnikaPoId(id);
-            if(tipKorisnika == 1)
+            if (tipKorisnika == 1)
             {
                 trenutniKorisnik = zmgr.dajStudentaPoID(id);
-                if(trenutniKorisnik.GetType() == typeof(Student))
+                if (trenutniKorisnik.GetType() == typeof(Student))
                 {
                     Student temps = (Student)trenutniKorisnik;
                     temps.Predmeti = zmgr.formirajPredmeteZaStudentaPoId(id);
@@ -43,20 +43,21 @@ namespace ZamgerV2_Implementation.Models
                     {
                         prdmt.Aktivnosti = zmgr.dajAktivnostiZaStudentovPredmet(prdmt.IdPredmeta, prdmt.IdStudenta);
                     }
-                    
+
                     temps.Inbox = zmgr.dajInbox(id);
                     temps.Outbox = zmgr.dajOutbox(id);
                     return temps;
                 }
             }
-            else if(tipKorisnika == 2 || tipKorisnika == 4)
+            else if (tipKorisnika == 2 || tipKorisnika == 4)
             {
                 trenutniKorisnik = zmgr.dajNastavnoOsobljePoId(id);
-                if(trenutniKorisnik.GetType() == typeof(NastavnoOsoblje))
+                if (trenutniKorisnik.GetType() == typeof(NastavnoOsoblje))
                 {
                     NastavnoOsoblje tempOsoba = (NastavnoOsoblje)trenutniKorisnik;
+                    tempOsoba.IdOsobe = id;
                     tempOsoba.PredmetiNaKojimPredaje = zmgr.formirajPredmeteZaNastavnoOsobljePoId(id);
-                    foreach(PredmetZaNastavnoOsoblje prdmt in tempOsoba.PredmetiNaKojimPredaje)
+                    foreach (PredmetZaNastavnoOsoblje prdmt in tempOsoba.PredmetiNaKojimPredaje)
                     {
                         prdmt.Studenti = zmgr.formirajStudenteNaPredmetuPoId(prdmt.IdPredmeta);
                     }
@@ -68,13 +69,14 @@ namespace ZamgerV2_Implementation.Models
                 else
                 {
                     Profesor tempOsoba = (Profesor)trenutniKorisnik;
+                    tempOsoba.IdOsobe = id;
                     List<Anketa> anketice = new List<Anketa>();
                     tempOsoba.PredmetiNaKojimPredaje = zmgr.formirajPredmeteZaNastavnoOsobljePoId(id);
                     foreach (PredmetZaNastavnoOsoblje prdmt in tempOsoba.PredmetiNaKojimPredaje)
                     {
                         prdmt.Studenti = zmgr.formirajStudenteNaPredmetuPoId(prdmt.IdPredmeta);
                         List<Anketa> tempAnkete = zmgr.dajAnketeZaPredmetPoId(prdmt.IdPredmeta);
-                        if(tempAnkete != null)
+                        if (tempAnkete != null)
                         {
                             anketice.AddRange(tempAnkete);
                         }

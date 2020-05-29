@@ -1,7 +1,7 @@
 ﻿@model NastavnoOsoblje
 @{
-    ViewData["Title"] = "Dashboard";
-    Layout = "~/Views/Shared/nastavnoOsobljeDashboardLayout.cshtml";
+    ViewData["Title"] = "detaljiPorukeInbox";
+    Layout = "~/Views/Shared/detaljiPorukeLayout.cshtml";
 }
 
 <div class="main-wrapper">
@@ -117,181 +117,64 @@
 
 
     <div class="page-wrapper" style="min-height: 723px;">
-        <!-- content -->
         <div class="content container-fluid">
-            <div class="row">
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-primary"><i class="fa fa-book" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            @{
-                                int brojPredmeta = 0;
-                                if(Model.PredmetiNaKojimPredaje!=null)
-                                {
-                                    brojPredmeta = Model.PredmetiNaKojimPredaje.Count;
-                                }
-                            }
-                            <h3>@brojPredmeta</h3>
-                            <span>Broj predmeta</span>
-                        </div>
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-12 col-sm-12 col-12">
+                        <h5 class="text-uppercase">DETALJI PORUKE</h5>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-info"><i class="fa fa-hashtag" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            @{
-                                int brojAktivnosti = 0;
-                                if (Model.Aktivnosti != null)
-                                {
-                                    brojAktivnosti = Model.Aktivnosti.Count;
-                                }
-                            }
-                            <h3>@brojAktivnosti</h3>
-                            <span>Broj aktivnosti</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-warning"><i class="fa fa-align-center" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            <h3>@Model.Titula</h3>
-                            <span>Titula</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-success"><i class="fa fa-money" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            @{
-                                BridgePlata bridge = new BridgePlata(Model);
-                                double plata = bridge.dajPlatu();
-                            }
-                            <h3>Mjesečna plata</h3>
-                            <span>@String.Format("{0:0.00}", plata) KM</span>
-                        </div>
+                    <div class="col-lg-5 col-md-12 col-sm-12 col-12">
+                        <ul class="list-inline breadcrumb float-right">
+                            <li class="list-inline-item"><a href="/nastavno-osoblje/dashboard/@Model.IdOsobe">Početna</a></li>
+                            <li class="list-inline-item"> Detalji poruke</li>
+                        </ul>
                     </div>
                 </div>
             </div>
+            <div class="content-page">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="aboutprofile-sidebar">
+                            <div class="row">
+                                <div class="col-lg-9 col-md-12 col-sm-12 col-12">
+                                    <div class="profile-content">
+                                        <div class="row">
 
+                                            <div class="card">
+                                                <!-- Nav tabs -->
+                                                <ul class="nav customtab">
+                                                    <li class="nav-item"><a href="#" class="nav-link active show">@ViewBag.poruka.Naslov</a></li>
+                                                </ul>
 
+                                                <!-- Tab panes -->
+                                                <div class="tab-content">
+                                                    <div class="tab-pane active show">
+                                                        <div id="biography" class="biography">
+                                                            <div class="row">
 
-            <div class="row mt-4">
-                <div class="col-lg-6">
-                    <div class="content-page">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="page-title mb-2">
-                                    Aktivnosti
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="min-width:91px;">Naziv ispita </th>
-                                                <th style="min-width:50px;">Predmet</th>
-                                                <th style="min-width:50px;">Godina</th>
-                                                <th style="min-width:50px;">Odsjeci</th>
-                                                <th style="min-width:50px;">Vrijeme</th>
-                                                <th style="min-width:50px;">Datum</th>
-                                                <th class="text-right" style="width:30%;">Akcija</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
-                                                </td>
-                                                <td>English</td>
-                                                <td>5</td>
-                                                <td>B</td>
-                                                <td>10.00am</td>
-                                                <td>20/1/2019</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
-                                                </td>
-                                                <td>English</td>
-                                                <td>4</td>
-                                                <td>A</td>
-                                                <td>10.00am</td>
-                                                <td>2/1/2019</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                                                <strong>Vrijeme poruke: </strong>
+                                                                <br>
+                                                                <p class="text-muted">  @ViewBag.poruka.VrijemePoruke</p>
 
+                                                            </div>
+                                                            <hr>
+                                                            <p>
+                                                                @ViewBag.Poruka.Sadrzaj
+                                                            </p>
 
-                <div class="col-lg-6">
-                    <div class="content-page">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="page-title mb-2">
-                                    Obavještenja
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="min-width:91px;">Naslov </th>
-                                                <th style="min-width:50px;">Sadržaj</th>
-                                                <th style="min-width:50px;">Vrijeme</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @for (int i = 0; i < ViewBag.listaObavjestenja.Count; i++)
-                                            {
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                <tr>
-                                                    <td><a href="/nastavno-osoblje/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja/@Model.IdOsobe"> @ViewBag.listaObavjestenja[i].Naslov</a></td>
-                                                    @{String kratakSadrzaj;}
-                                                    @if (ViewBag.listaObavjestenja[i].Sadržaj.Length > 60)
-                                                    {
-                                                        kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj.Substring(0, 60);
-                                                        kratakSadrzaj += "...";
-                                                    }
-                                                    else
-                                                    {
-                                                        kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj;
-                                                    }
-                                                    <td>@kratakSadrzaj</td>
-                                                    <td>@ViewBag.listaObavjestenja[i].dateTime</td>
-                                                </tr>
-
-
-                                            }
-                                        </tbody>
-                                    </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="notification-box">
                 <div class="msg-sidebar notifications msg-noti">
                     <div class="topnav-dropdown-header">

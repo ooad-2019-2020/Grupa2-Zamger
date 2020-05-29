@@ -35,5 +35,163 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
             return View(trenutniKorisnik);
         }
+
+        [Route("/nastavno-osoblje/osobe-list/{id}")]
+        public IActionResult searchUsersForMessage(int id)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(id);
+            if (tempK.GetType() == typeof(NastavnoOsoblje))
+            {
+                trenutniKorisnik = (NastavnoOsoblje)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (Profesor)tempK;
+            }
+            
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/nastavno-osoblje/osobe-list/{id}/pretraga")]
+        [HttpPost]
+        public IActionResult searchUsersForMessageForm(IFormCollection forma, int id)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(id);
+            if (tempK.GetType() == typeof(NastavnoOsoblje))
+            {
+                trenutniKorisnik = (NastavnoOsoblje)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (Profesor)tempK;
+            }
+
+            //Logger logg = Logger.GetInstance();
+
+            List<Korisnik> korisnici = zmgr.pretražiKorisnike(forma["Ime"], forma["Prezime"]);
+
+            ViewBag.korisnici = korisnici;
+
+            return View(trenutniKorisnik);
+        }
+
+
+        [Route("/nastavno-osoblje/osobe-list/{id}/pretraga/{idPrimaoca}")]
+        [HttpGet]
+        public IActionResult teacherSendMessage(int id, int idPrimaoca)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(id);
+            if (tempK.GetType() == typeof(NastavnoOsoblje))
+            {
+                trenutniKorisnik = (NastavnoOsoblje)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (Profesor)tempK;
+            }
+
+
+            return View(trenutniKorisnik);
+        }
+
+
+
+        [Route("/nastavno-osoblje/osobe-list/{id}/pretraga/{idPrimaoca}")]
+        [HttpPost]
+        public IActionResult sendMessage(IFormCollection forma, int id, int idPrimaoca)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(id);
+            if (tempK.GetType() == typeof(NastavnoOsoblje))
+            {
+                trenutniKorisnik = (NastavnoOsoblje)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (Profesor)tempK;
+            }
+
+            if (forma != null)
+            {
+                string sadržaj = forma["sadržaj"];
+                string naslov = forma["naslov"];
+                Poruka poruka = new Poruka(id, idPrimaoca, naslov, sadržaj, DateTime.Now, 0, zmgr.dajNoviPorukaId());
+                zmgr.posaljiPoruku(poruka);
+                //Response.WriteAsync("Poruka je poslana: " + zmgr.posaljiPoruku(poruka));
+                return RedirectToAction("prikaziGresku", new { idStudenta = id, lokacija = "studenti-list/" + id + "/pretraga/" + idPrimaoca, idPoruke = 2 });
+            }
+
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/nastavno-osoblje/poruke/moj-inbox/{id}")]
+        public IActionResult mojInbox(int id)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(id);
+            if (tempK.GetType() == typeof(NastavnoOsoblje))
+            {
+                trenutniKorisnik = (NastavnoOsoblje)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (Profesor)tempK;
+            }
+            return View(trenutniKorisnik);
+        }
+        [Route("/nastavno-osoblje/poruke/moj-outbox/{id}")]
+        public IActionResult mojOutbox(int id)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(id);
+            if (tempK.GetType() == typeof(NastavnoOsoblje))
+            {
+                trenutniKorisnik = (NastavnoOsoblje)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (Profesor)tempK;
+            }
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/nastavno-osoblje/poruke/moj-inbox/{idPoruke}/{id}")]
+        public IActionResult detaljiPorukeInbox(int idPoruke, int id)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(id);
+            if (tempK.GetType() == typeof(NastavnoOsoblje))
+            {
+                trenutniKorisnik = (NastavnoOsoblje)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (Profesor)tempK;
+            }
+            ViewBag.poruka = zmgr.dajPoruku(idPoruke);
+            zmgr.oznaciProcitanu(idPoruke);
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/nastavno-osoblje/poruke/moj-outbox/{idPoruke}/{id}")]
+        public IActionResult detaljiPorukeOutbox(int idPoruke, int id)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(id);
+            if (tempK.GetType() == typeof(NastavnoOsoblje))
+            {
+                trenutniKorisnik = (NastavnoOsoblje)tempK;
+            }
+            else
+            {
+                trenutniKorisnik = (Profesor)tempK;
+            }
+            ViewBag.poruka = zmgr.dajPoruku(idPoruke);
+            return View(trenutniKorisnik);
+        }
+
     }
 }

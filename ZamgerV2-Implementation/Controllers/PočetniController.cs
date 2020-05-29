@@ -47,7 +47,7 @@ namespace ZamgerV2_Implementation.Controllers
             string sqlKveri = "SELECT idKorisnika, tipKorisnika from korisnici where username like @user and password like @pass";
 
 
-           SqlConnection conn = new SqlConnection("server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true");
+           SqlConnection conn = new SqlConnection("server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true");
 
            SqlCommand command = new SqlCommand(sqlKveri, conn);
             

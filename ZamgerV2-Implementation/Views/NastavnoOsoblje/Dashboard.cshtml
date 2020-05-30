@@ -8,7 +8,7 @@
     <div class="header">
         <!-- Header start -->
         <div class="header-left">
-            <a href="~/nastavno-osoblje/dashboard/@Model.IdOsobe" class="logo">
+            <a href="~/nastavno-osoblje/dashboard" class="logo">
                 <img src="~/images/logo.png" width="40" height="40" alt="">
                 <span class="text-uppercase">Zamger-v2</span>
             </a>
@@ -47,7 +47,7 @@
                 </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Moj Profil</a>
-                    <a class="dropdown-item" href="~/">Odjavi se</a>
+                    <a class="dropdown-item" href="/Početni/OdjaviSe">Odjavi se</a>
                 </div>
             </li>
         </ul>
@@ -82,8 +82,8 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-table" aria-hidden="true"></i> <span> Aktivnosti</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="/nastavno-osoblje/@Model.IdOsobe/moje-aktivnosti">Moje aktivnosti</a></li>
-                                <li><a href="/nastavno-osoblje/@Model.IdOsobe/kreiraj-aktivnost">Kreiraj aktivnost</a></li>
+                                <li><a href="/nastavno-osoblje/moje-aktivnosti">Moje aktivnosti</a></li>
+                                <li><a href="/nastavno-osoblje/kreiraj-aktivnost">Kreiraj aktivnost</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
@@ -96,16 +96,16 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="/nastavno-osoblje/sva-obavještenja-list/@Model.IdOsobe">Sva obavještenja</a></li>
-                                <li><a href="/nastavno-osoblje/kreiraj-obavjestenje/@Model.IdOsobe">Kreiraj obavještenje</a></li>
+                                <li><a href="/nastavno-osoblje/sva-obavještenja-list">Sva obavještenja</a></li>
+                                <li><a href="/nastavno-osoblje/kreiraj-obavjestenje">Kreiraj obavještenje</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Poruke</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="~/nastavno-osoblje/osobe-list/@Model.IdOsobe">Pošalji poruku</a></li>
-                                <li><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.IdOsobe">Inbox</a></li>
-                                <li><a href="/nastavno-osoblje/poruke/moj-outbox/@Model.IdOsobe">Outbox</a></li>
+                                <li><a href="~/nastavno-osoblje/osobe-list">Pošalji poruku</a></li>
+                                <li><a href="/nastavno-osoblje/poruke/moj-inbox">Inbox</a></li>
+                                <li><a href="/nastavno-osoblje/poruke/moj-outbox">Outbox</a></li>
                             </ul>
                         </li>
 
@@ -190,52 +190,37 @@
                                     <table class="table table-striped custom-table">
                                         <thead>
                                             <tr>
-                                                <th style="min-width:91px;">Naziv ispita </th>
-                                                <th style="min-width:50px;">Predmet</th>
-                                                <th style="min-width:50px;">Godina</th>
-                                                <th style="min-width:50px;">Odsjeci</th>
-                                                <th style="min-width:50px;">Vrijeme</th>
-                                                <th style="min-width:50px;">Datum</th>
+                                                <th style="min-width:150px;">Naziv aktivnosti</th>
+                                                <th style="min-width:50px;">Vrsta</th>
+                                               
+                                                <th style="min-width:150px;">Vrijeme</th>
                                                 <th class="text-right" style="width:30%;">Akcija</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
-                                                </td>
-                                                <td>English</td>
-                                                <td>5</td>
-                                                <td>B</td>
-                                                <td>10.00am</td>
-                                                <td>20/1/2019</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/exam-detail.html" class="avatar">C</a>
-                                                </td>
-                                                <td>English</td>
-                                                <td>4</td>
-                                                <td>A</td>
-                                                <td>10.00am</td>
-                                                <td>2/1/2019</td>
-                                                <td class="text-right">
-                                                    <a href="https://dreamguys.co.in/preadmin/school/dark/edit-exam.html" class="btn btn-primary btn-sm mb-1">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </a>
-                                                    <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            @if (Model.Aktivnosti!=null)
+                                            {
+                                                for (int i = 0; i < Model.Aktivnosti.Count; i++)
+                                                {
+                                                    
+                                                        
+                                                                String vrsta = "Zadaća";
+                                                                if (Model.Aktivnosti[i].GetType() == typeof(Ispit)) vrsta = "Ispit";
+                                                                <tr>
+
+                                                                    <td>@Model.Aktivnosti[i].Naziv</td>
+                                                                    <td>@vrsta</td>
+                                                                   
+                                                                    <td>@Model.Aktivnosti[i].KrajnjiDatum</td>
+                                                                    <td class="text-right">
+                                                                        <a href="#" class="btn btn-primary btn-sm mb-1">
+                                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                    
+                                                }
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
@@ -266,7 +251,7 @@
                                             {
 
                                                 <tr>
-                                                    <td><a href="/nastavno-osoblje/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja/@Model.IdOsobe"> @ViewBag.listaObavjestenja[i].Naslov</a></td>
+                                                    <td><a href="/nastavno-osoblje/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja"> @ViewBag.listaObavjestenja[i].Naslov</a></td>
                                                     @{String kratakSadrzaj;}
                                                     @if (ViewBag.listaObavjestenja[i].Sadržaj.Length > 60)
                                                     {
@@ -311,7 +296,7 @@
                                         if (p.Procitana == 0)
                                         {
                                             <li>
-                                                <a href="/nastavno-osoblje/poruke/moj-inbox/@p.IdPoruke/@Model.IdOsobe">
+                                                <a href="/nastavno-osoblje/poruke/moj-inbox/@p.IdPoruke">
                                                     <div class="list-item">
                                                         <div class="list-left">
                                                             <span class="avatar">@p.UserPosiljaoca[0]@p.UserPosiljaoca[1]</span>
@@ -332,7 +317,7 @@
                         </div><div class="slimScrollBar" style="background: rgb(135, 135, 135); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 809px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
                     </div>
                     <div class="topnav-dropdown-footer">
-                        <a href="/nastavno-osoblje/poruke/moj-inbox/@Model.IdOsobe">Vidi sve poruke</a>
+                        <a href="/nastavno-osoblje/poruke/moj-inbox">Vidi sve poruke</a>
                     </div>
                 </div>
             </div>

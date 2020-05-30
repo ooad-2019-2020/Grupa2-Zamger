@@ -10,7 +10,7 @@
     <div class="header">
         <!-- Header start -->
         <div class="header-left">
-            <a href="~/student/dashboard/@Model.BrojIndeksa" class="logo">
+            <a href="~/student/dashboard" class="logo">
                 <img src="~/images/logo.png" width="40" height="40" alt="">
                 <span class="text-uppercase">Zamger-v2</span>
             </a>
@@ -49,7 +49,7 @@
                 </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Moj Profil</a>
-                    <a class="dropdown-item" href="~/">Odjavi se</a>
+                    <a class="dropdown-item" href="/Početni/OdjaviSe">Odjavi se</a>
                 </div>
             </li>
         </ul>
@@ -70,7 +70,7 @@
                     <ul>
                         <li class="menu-title">Glavni meni</li>
                         <li class="active">
-                            <a href="/student/dashboard/@Model.BrojIndeksa"><i class="fa fa-tachometer" aria-hidden="true"></i> Početna</a>
+                            <a href="/student/dashboard"><i class="fa fa-tachometer" aria-hidden="true"></i> Početna</a>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fa fa-book" aria-hidden="true"></i><span> Predmeti </span> <span class="menu-arrow"></span></a>
@@ -93,16 +93,16 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Poruke</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="~/student/studenti-list/@Model.BrojIndeksa">Pošalji poruku</a></li>
-                                <li><a href="/student/poruke/moj-inbox/@Model.BrojIndeksa">Inbox</a></li>
-                                <li><a href="/student/poruke/moj-outbox/@Model.BrojIndeksa">Outbox</a></li>
+                                <li><a href="~/student/studenti-list">Pošalji poruku</a></li>
+                                <li><a href="/student/poruke/moj-inbox">Inbox</a></li>
+                                <li><a href="/student/poruke/moj-outbox">Outbox</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Zahtjevi</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="/student/moji-zahtjevi/@Model.BrojIndeksa">Moji zahtjevi</a></li>
-                                <li><a href="/student/kreiraj-zahtjev/@Model.BrojIndeksa">Pošalji zahtjev</a></li>
+                                <li><a href="/student/moji-zahtjevi">Moji zahtjevi</a></li>
+                                <li><a href="/student/kreiraj-zahtjev">Pošalji zahtjev</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -123,7 +123,7 @@
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
-                            <li class="list-inline-item"><a href="/student/dashboard/@Model.BrojIndeksa">Početna</a></li>
+                            <li class="list-inline-item"><a href="/student/dashboard">Početna</a></li>
                             <li class="list-inline-item"> Moj inbox - list</li>
                         </ul>
                     </div>
@@ -155,10 +155,10 @@
                                                     {
                                                         <tr role="row" class="odd">
 
-                                                            <td> <a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa"> @Model.Inbox[i].UserPosiljaoca</td>
+                                                            <td> <a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke"> @Model.Inbox[i].UserPosiljaoca </a></td>
                                                             <td class="sorting_1">
 
-                                                                <h2><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@Model.Inbox[i].Naslov</a></h2>
+                                                                <h2><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@Model.Inbox[i].Naslov</a></h2>
                                                             </td>
                                                             @{String kratakSadrzaj;}
                                                             @if (Model.Inbox[i].Sadrzaj.Length > 60)
@@ -170,15 +170,15 @@
                                                             {
                                                                 kratakSadrzaj = Model.Inbox[i].Sadrzaj;
                                                             }
-                                                            <td> <a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@kratakSadrzaj</td>
-                                                            <td> <a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@Model.Inbox[i].VrijemePoruke</td>
+                                                            <td> <a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@kratakSadrzaj </a></td>
+                                                            <td> <a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@Model.Inbox[i].VrijemePoruke </a></td>
                                                             @if (Model.Inbox[i].Procitana == 1)
                                                             {
-                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">Otvarana</td>
+                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">Otvarana </a></td>
                                                             }
                                                             else
                                                             {
-                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">Nije otvarana</td>
+                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">Nije otvarana </a></td>
                                                             }
 
                                                         </tr>
@@ -186,9 +186,9 @@
                                                     else
                                                     {
                                                         <tr role="row" class="even">
-                                                            <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa"> @Model.Inbox[i].UserPosiljaoca</td>
+                                                            <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke"> @Model.Inbox[i].UserPosiljaoca </a></td>
                                                             <td class="sorting_1">
-                                                                <h2><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@Model.Inbox[i].Naslov</a></h2>
+                                                                <h2><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@Model.Inbox[i].Naslov</a></h2>
                                                             </td>
                                                             @{String kratakSadrzaj;}
                                                             @if (Model.Inbox[i].Sadrzaj.Length > 60)
@@ -200,15 +200,15 @@
                                                             {
                                                                 kratakSadrzaj = Model.Inbox[i].Sadrzaj;
                                                             }
-                                                            <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@kratakSadrzaj</td>
-                                                            <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">@Model.Inbox[i].VrijemePoruke</td>
+                                                            <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@kratakSadrzaj </a></td>
+                                                            <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@Model.Inbox[i].VrijemePoruke </a></td>
                                                             @if (Model.Inbox[i].Procitana == 1)
                                                             {
-                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">Otvarana</td>
+                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">Otvarana </a></td>
                                                             }
                                                             else
                                                             {
-                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.BrojIndeksa">Nije otvarana</td>
+                                                                <td><a href="/student/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">Nije otvarana </a></td>
                                                             }
                                                         </tr>
                                                     }
@@ -241,7 +241,7 @@
                                         if (p.Procitana == 0)
                                         {
                                             <li>
-                                                <a href="/student/poruke/moj-inbox/@p.IdPoruke/@Model.BrojIndeksa">
+                                                <a href="/student/poruke/moj-inbox/@p.IdPoruke">
                                                     <div class="list-item">
                                                         <div class="list-left">
                                                             <span class="avatar">@p.UserPosiljaoca[0]@p.UserPosiljaoca[1]</span>
@@ -262,27 +262,9 @@
                         </div><div class="slimScrollBar" style="background: rgb(135, 135, 135); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 809px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
                     </div>
                     <div class="topnav-dropdown-footer">
-                        <a href="/student/poruke/moj-inbox/@Model.BrojIndeksa">Vidi sve poruke</a>
+                        <a href="/student/poruke/moj-inbox">Vidi sve poruke</a>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div id="delete_employee" class="modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content modal-md">
-                <div class="modal-header">
-                    <h4 class="modal-title">Delete student</h4>
-                </div>
-                <form>
-                    <div class="modal-body card-box">
-                        <p>Are you sure want to delete this?</p>
-                        <div class="m-t-20">
-                            <a href="https://dreamguys.co.in/preadmin/school/dark/students-list.html#" class="btn btn-white" data-dismiss="modal">Close</a>
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -296,9 +278,12 @@
 <script type="text/javascript" src="~/js/select2.min.js"></script>
 <script type="text/javascript" src="~/js/moment.min.js"></script>
 <script type="text/javascript" src="~/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="~/js/morris.min.js"></script>
+<script type="text/javascript" src="~/js/raphael-min.js"></script>
+<script type="text/javascript" src="~/js/fullcalendar.min.js"></script>
+<script type="text/javascript" src="~/js/jquery.fullcalendar.js"></script>
+<script type="text/javascript" src="~/js/chart.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
-<script type="text/javascript" src="~/js/jquery.timeago.js"></script>
-
 
 
 

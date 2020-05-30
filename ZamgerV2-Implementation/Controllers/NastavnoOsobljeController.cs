@@ -1,76 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ZamgerV2_Implementation.Helpers;
 using ZamgerV2_Implementation.Models;
 
 namespace ZamgerV2_Implementation.Controllers
 {
+    [Autorizacija(false, TipKorisnika.NastavnoOsoblje, TipKorisnika.Profesor)]
     public class NastavnoOsobljeController : Controller
     {
         private NastavnoOsoblje trenutniKorisnik;
         private ZamgerDbContext zmgr;
-
 
         public NastavnoOsobljeController()
         {
             zmgr = ZamgerDbContext.GetInstance();
         }
 
-        [Route("/nastavno-osoblje/dashboard/{id}")]
-        public IActionResult Dashboard(int id)
+        [Route("/nastavno-osoblje/dashboard")]
+        public IActionResult Dashboard()
         {
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
+            trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            
             ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
             return View(trenutniKorisnik);
         }
 
 
-        [Route("/nastavno-osoblje/{id}/kreiraj-aktivnost")]
+        [Route("/nastavno-osoblje/kreiraj-aktivnost")]
         [HttpGet]
-        public IActionResult KreirajAktivnost(int id)
+        public IActionResult KreirajAktivnost()
         {
-
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
-
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             return View(trenutniKorisnik);
         }
 
-        [Route("/nastavno-osoblje/{id}/kreiraj-aktivnost")]
+        [Route("/nastavno-osoblje/kreiraj-aktivnost")]
         [HttpPost]
         public IActionResult KreirajAktivnost(int id, IFormCollection forma)
         {
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
-
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             DateTime oDate = Convert.ToDateTime(forma["datum"] + " " + forma["vrijeme"]);
 
             int idAktivnosti = zmgr.kreirajAktivnost(int.Parse(forma["izabraniPredmet"]), forma["naziv"], oDate, forma["vrstaAktivnosti"], double.Parse(forma["maxBrojBodova"]));
@@ -85,186 +55,92 @@ namespace ZamgerV2_Implementation.Controllers
                     }
                 }
             }
-
-            return RedirectToAction("MojeAktivnosti", new { id = trenutniKorisnik.IdOsobe });
+            return RedirectToAction("MojeAktivnosti");
         }
 
 
-        [Route("/nastavno-osoblje/{id}/moje-aktivnosti")]
-        public IActionResult MojeAktivnosti(int id)
+        [Route("/nastavno-osoblje/moje-aktivnosti")]
+        public IActionResult MojeAktivnosti()
         {
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
-
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             return View(trenutniKorisnik);
         }
 
-        [Route("/nastavno-osoblje/osobe-list/{id}")]
-        public IActionResult searchUsersForMessage(int id)
+        [Route("/nastavno-osoblje/osobe-list")]
+        public IActionResult searchUsersForMessage()
         {
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
-
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             return View(trenutniKorisnik);
         }
 
-        [Route("/nastavno-osoblje/osobe-list/{id}/pretraga")]
+        [Route("/nastavno-osoblje/osobe-list/pretraga")]
         [HttpPost]
-        public IActionResult searchUsersForMessageForm(IFormCollection forma, int id)
+        public IActionResult searchUsersForMessageForm(IFormCollection forma)
         {
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
-
-            //Logger logg = Logger.GetInstance();
-
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             List<Korisnik> korisnici = zmgr.pretražiKorisnike(forma["Ime"], forma["Prezime"]);
-
             ViewBag.korisnici = korisnici;
-
             return View(trenutniKorisnik);
         }
 
 
-        [Route("/nastavno-osoblje/osobe-list/{id}/pretraga/{idPrimaoca}")]
+        [Route("/nastavno-osoblje/osobe-list/pretraga/{idPrimaoca}")]
         [HttpGet]
-        public IActionResult teacherSendMessage(int id, int idPrimaoca)
+        public IActionResult teacherSendMessage(int idPrimaoca)
         {
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
-
-
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             return View(trenutniKorisnik);
         }
 
 
 
-        [Route("/nastavno-osoblje/osobe-list/{id}/pretraga/{idPrimaoca}")]
+        [Route("/nastavno-osoblje/osobe-list/pretraga/{idPrimaoca}")]
         [HttpPost]
-        public IActionResult sendMessage(IFormCollection forma, int id, int idPrimaoca)
+        public IActionResult sendMessage(IFormCollection forma, int idPrimaoca)
         {
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
-
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             if (forma != null)
             {
                 string sadržaj = forma["sadržaj"];
                 string naslov = forma["naslov"];
-                Poruka poruka = new Poruka(id, idPrimaoca, naslov, sadržaj, DateTime.Now, 0, zmgr.dajNoviPorukaId());
+                Poruka poruka = new Poruka(trenutniKorisnik.IdOsobe.Value, idPrimaoca, naslov, sadržaj, DateTime.Now, 0, zmgr.dajNoviPorukaId());
                 zmgr.posaljiPoruku(poruka);
                 //Response.WriteAsync("Poruka je poslana: " + zmgr.posaljiPoruku(poruka));
-                return RedirectToAction("prikaziGresku", new { idStudenta = id, lokacija = "studenti-list/" + id + "/pretraga/" + idPrimaoca, idPoruke = 2 });
+                return RedirectToAction("prikaziGresku", new { lokacija = "studenti-list/pretraga/" + idPrimaoca, idPoruke = 2 });
             }
-
             return View(trenutniKorisnik);
         }
 
-        [Route("/nastavno-osoblje/poruke/moj-inbox/{id}")]
+        [Route("/nastavno-osoblje/poruke/moj-inbox")]
         public IActionResult mojInbox(int id)
         {
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
-            return View(trenutniKorisnik);
-        }
-        [Route("/nastavno-osoblje/poruke/moj-outbox/{id}")]
-        public IActionResult mojOutbox(int id)
-        {
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             return View(trenutniKorisnik);
         }
 
-        [Route("/nastavno-osoblje/poruke/moj-inbox/{idPoruke}/{id}")]
-        public IActionResult detaljiPorukeInbox(int idPoruke, int id)
+        [Route("/nastavno-osoblje/poruke/moj-outbox")]
+        public IActionResult mojOutbox(int id)
         {
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/nastavno-osoblje/poruke/moj-inbox/{idPoruke}")]
+        public IActionResult detaljiPorukeInbox(int idPoruke)
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             ViewBag.poruka = zmgr.dajPoruku(idPoruke);
             zmgr.oznaciProcitanu(idPoruke);
             return View(trenutniKorisnik);
         }
 
-        [Route("/nastavno-osoblje/poruke/moj-outbox/{idPoruke}/{id}")]
-        public IActionResult detaljiPorukeOutbox(int idPoruke, int id)
+        [Route("/nastavno-osoblje/poruke/moj-outbox/{idPoruke}")]
+        public IActionResult detaljiPorukeOutbox(int idPoruke)
         {
-            KreatorKorisnika creator = new KreatorKorisnika();
-            Korisnik tempK = creator.FactoryMethod(id);
-            if (tempK.GetType() == typeof(NastavnoOsoblje))
-            {
-                trenutniKorisnik = (NastavnoOsoblje)tempK;
-            }
-            else
-            {
-                trenutniKorisnik = (Profesor)tempK;
-            }
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             ViewBag.poruka = zmgr.dajPoruku(idPoruke);
             return View(trenutniKorisnik);
         }
-
-
 
     }
 }

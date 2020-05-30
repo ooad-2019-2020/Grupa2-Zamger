@@ -9,19 +9,10 @@ namespace ZamgerV2_Implementation.Models
 {
     public class LoginViewModel
     {
-        [Required]
-        private String username;
-        [Required]
+        [Required(ErrorMessage = "Username je obavezan")]
+        public String username { get; set; }
+        [Required(ErrorMessage = "Password je obavezan")]
         [DataType(DataType.Password)]
-        private String password;
-
-        public string Username { get => username; set => username = value; }
-        public string Password { get => password; set => password = value; }
-
-        public LoginViewModel(String username, String password)
-        {
-            this.username = username;
-            this.password = password;
-        }
+        public String password { get; set; }
     }
 }

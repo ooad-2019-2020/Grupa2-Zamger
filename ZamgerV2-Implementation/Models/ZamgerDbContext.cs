@@ -21,7 +21,7 @@ namespace ZamgerV2_Implementation.Models
         private ZamgerDbContext()
         {
 
-            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
 
             try
             {
@@ -445,6 +445,16 @@ namespace ZamgerV2_Implementation.Models
             }
         }
 
+
+        public List<Aktivnost> dajAktivnostiZaPredmetPoId(int idPredmeta) //treba iskucat ovdje upit koji ce vratit sve aktivnosti na predmetuzanastavnoosoblje po id
+        {
+            List<Aktivnost> aktivnosti = new List<Aktivnost>();
+            string kveri = "select idAktivnosti, idPredmeta, vrsta, naziv, rok, maxBrojBodova from aktivnosti where idPredmeta = @predmetID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("predmetID", idPredmeta);
+            return null;
+        }
+
         public List<int> dajIdeveStudenataNaPredmetu(int id)
         {
             List<int> idevi = new List<int>();
@@ -502,7 +512,7 @@ namespace ZamgerV2_Implementation.Models
         public List<Aktivnost> formirajAktivnostiZaNastavnoOsobljePoIdOsobe(int id)
         {
             List<Aktivnost> aktivnosti = new List<Aktivnost>();
-            string kveri = "select a.idAktivnosti , a.idPredmeta, a.naziv, a.rok, a.vrsta from AKTIVNOSTI a, PREDMETI p, ANSAMBL an, NASTAVNO_OSOBLJE no where a.idPredmeta=p.idPredmeta and p.idPredmeta=an.idPredmeta and an.idNastavnogOsoblja=no.idOsobe and no.idOsobe=@userID";
+            string kveri = "select a.idAktivnosti , a.idPredmeta, a.naziv, a.rok, a.vrsta from AKTIVNOSTI a, PREDMETI p, ANSAMBL an, NASTAVNO_OSOBLJE no where a.idPredmeta=p.idPredmeta and p.idPredmeta=an.idPredmeta and an.idNastavnogOsoblja=no.idOsobe and no.idOsobe=@userID order by a.rok asc";
             var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
             userIDParam.Value = id;
             SqlCommand command = new SqlCommand(kveri, conn);

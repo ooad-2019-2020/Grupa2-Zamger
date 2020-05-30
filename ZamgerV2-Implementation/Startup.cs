@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,8 @@ namespace ZamgerV2_Implementation
             //services.AddDbContextPool<ZamgerDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ZamgerDBConnection")));
             services.AddControllersWithViews();
             services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +51,8 @@ namespace ZamgerV2_Implementation
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthorization();
 

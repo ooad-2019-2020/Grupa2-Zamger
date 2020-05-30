@@ -8,7 +8,7 @@
     <div class="header">
         <!-- Header start -->
         <div class="header-left">
-            <a href="~/nastavno-osoblje/dashboard/@Model.IdOsobe" class="logo">
+            <a href="~/nastavno-osoblje/dashboard" class="logo">
                 <img src="~/images/logo.png" width="40" height="40" alt="">
                 <span class="text-uppercase">Zamger-v2</span>
             </a>
@@ -47,7 +47,7 @@
                 </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Moj Profil</a>
-                    <a class="dropdown-item" href="~/">Odjavi se</a>
+                    <a class="dropdown-item" href="/Početni/OdjaviSe">Odjavi se</a>
                 </div>
             </li>
         </ul>
@@ -68,7 +68,7 @@
                     <ul>
                         <li class="menu-title">Glavni meni</li>
                         <li class="active">
-                            <a href="/nastavno-osoblje/dashboard/@Model.IdOsobe"><i class="fa fa-tachometer" aria-hidden="true"></i> Početna</a>
+                            <a href="/nastavno-osoblje/dashboard"><i class="fa fa-tachometer" aria-hidden="true"></i> Početna</a>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fa fa-book" aria-hidden="true"></i><span> Predmeti </span> <span class="menu-arrow"></span></a>
@@ -83,7 +83,7 @@
                             <a href="#"><i class="fa fa-table" aria-hidden="true"></i> <span> Aktivnosti</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="#">Moje aktivnosti</a></li>
-                                <li><a href="/nastavno-osoblje/@Model.IdOsobe/kreiraj-aktivnost">Kreiraj aktivnost</a></li>
+                                <li><a href="/nastavno-osoblje/kreiraj-aktivnost">Kreiraj aktivnost</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
@@ -96,16 +96,16 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="/nastavno-osoblje/sva-obavještenja-list/@Model.IdOsobe">Sva obavještenja</a></li>
-                                <li><a href="/nastavno-osoblje/kreiraj-obavjestenje/@Model.IdOsobe">Kreiraj obavještenje</a></li>
+                                <li><a href="/nastavno-osoblje/sva-obavještenja-list">Sva obavještenja</a></li>
+                                <li><a href="/nastavno-osoblje/kreiraj-obavjestenje">Kreiraj obavještenje</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Poruke</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="~/nastavno-osoblje/osobe-list/@Model.IdOsobe">Pošalji poruku</a></li>
-                                <li><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.IdOsobe">Inbox</a></li>
-                                <li><a href="/nastavno-osoblje/moj-outbox/@Model.IdOsobe">Outbox</a></li>
+                                <li><a href="~/nastavno-osoblje/osobe-list">Pošalji poruku</a></li>
+                                <li><a href="/nastavno-osoblje/poruke/moj-inbox">Inbox</a></li>
+                                <li><a href="/nastavno-osoblje/moj-outbox">Outbox</a></li>
                             </ul>
                         </li>
 
@@ -127,7 +127,7 @@
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
-                            <li class="list-inline-item"><a href="/nastavno-osoblje/dashboard/@Model.IdOsobe">Početna</a></li>
+                            <li class="list-inline-item"><a href="/nastavno-osoblje/dashboard">Početna</a></li>
                             <li class="list-inline-item"> Moje aktivnosti</li>
                         </ul>
                     </div>
@@ -138,7 +138,7 @@
 
                 </div>
                 <div class="col-sm-8 col-9 text-right m-b-20">
-                    <a href="/nastavno-osoblje/@Model.IdOsobe/kreiraj-aktivnost" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Kreiraj aktivnost</a>
+                    <a href="/nastavno-osoblje/kreiraj-aktivnost" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Kreiraj aktivnost</a>
                     <div class="view-icons">
                         <a href="#" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
                     </div>
@@ -242,7 +242,7 @@
                                     if (p.Procitana == 0)
                                     {
                                         <li>
-                                            <a href="/nastavno-osoblje/poruke/moj-inbox/@p.IdPoruke/@Model.IdOsobe">
+                                            <a href="/nastavno-osoblje/poruke/moj-inbox/@p.IdPoruke">
                                                 <div class="list-item">
                                                     <div class="list-left">
                                                         <span class="avatar">@p.UserPosiljaoca[0]@p.UserPosiljaoca[1]</span>
@@ -263,7 +263,7 @@
                     </div><div class="slimScrollBar" style="background: rgb(135, 135, 135); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 809px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
                 </div>
                 <div class="topnav-dropdown-footer">
-                    <a href="/nastavno-osoblje/poruke/moj-inbox/@Model.IdOsobe">Vidi sve poruke</a>
+                    <a href="/nastavno-osoblje/poruke/moj-inbox">Vidi sve poruke</a>
                 </div>
             </div>
         </div>

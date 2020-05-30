@@ -1,6 +1,5 @@
 ﻿
-@model Student
-{
+@{
     ViewData["Title"] = "prikaziGresku";
     Layout = "~/Views/Shared/errorLayout.cshtml";
 }
@@ -9,10 +8,8 @@
         <div class="account-page">
             <div class="container">
                 <div class="error-box text-center">
-                    <h1>404</h1>
+                    <h1>500</h1>
                     <h3><i class="fa fa-warning"></i> @ViewBag.poruka</h3>
-                    
-                    <a href="index.html" class="btn btn-primary go-home">Go to Home</a>
                 </div>
             </div>
         </div>

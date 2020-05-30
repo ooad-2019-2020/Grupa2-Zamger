@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ZamgerV2_Implementation.Helpers;
 using ZamgerV2_Implementation.Models;
 
 
@@ -21,6 +22,7 @@ using ZamgerV2_Implementation.Models;
 
 namespace ZamgerV2_Implementation.Controllers
 {
+    [Autorizacija(false, TipKorisnika.StudentskaSluzba)]
     public class StudentskaController : Controller
     {
         private Logger logg;

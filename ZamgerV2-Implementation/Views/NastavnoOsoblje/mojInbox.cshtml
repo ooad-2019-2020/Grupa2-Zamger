@@ -8,7 +8,7 @@
     <div class="header">
         <!-- Header start -->
         <div class="header-left">
-            <a href="~/nastavno-osoblje/dashboard/@Model.IdOsobe" class="logo">
+            <a href="~/nastavno-osoblje/dashboard" class="logo">
                 <img src="~/images/logo.png" width="40" height="40" alt="">
                 <span class="text-uppercase">Zamger-v2</span>
             </a>
@@ -47,7 +47,7 @@
                 </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Moj Profil</a>
-                    <a class="dropdown-item" href="~/">Odjavi se</a>
+                    <a class="dropdown-item" href="/Početni/OdjaviSe">Odjavi se</a>
                 </div>
             </li>
         </ul>
@@ -96,16 +96,16 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="/nastavno-osoblje/sva-obavještenja-list/@Model.IdOsobe">Sva obavještenja</a></li>
-                                <li><a href="/nastavno-osoblje/kreiraj-obavjestenje/@Model.IdOsobe">Kreiraj obavještenje</a></li>
+                                <li><a href="/nastavno-osoblje/sva-obavještenja-list">Sva obavještenja</a></li>
+                                <li><a href="/nastavno-osoblje/kreiraj-obavjestenje">Kreiraj obavještenje</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Poruke</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="~/nastavno-osoblje/osobe-list/@Model.IdOsobe">Pošalji poruku</a></li>
-                                <li><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.IdOsobe">Inbox</a></li>
-                                <li><a href="/nastavno-osoblje/poruke/moj-outbox/@Model.IdOsobe">Outbox</a></li>
+                                <li><a href="~/nastavno-osoblje/osobe-list">Pošalji poruku</a></li>
+                                <li><a href="/nastavno-osoblje/poruke/moj-inbox">Inbox</a></li>
+                                <li><a href="/nastavno-osoblje/poruke/moj-outbox">Outbox</a></li>
                             </ul>
                         </li>
 
@@ -126,7 +126,7 @@
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
-                            <li class="list-inline-item"><a href="/nastavno-osoblje/dashboard/@Model.IdOsobe">Početna</a></li>
+                            <li class="list-inline-item"><a href="/nastavno-osoblje/dashboard">Početna</a></li>
                             <li class="list-inline-item"> Moj inbox - list</li>
                         </ul>
                     </div>
@@ -158,10 +158,10 @@
                                                     {
                                                         <tr role="row" class="odd">
 
-                                                            <td> <a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe"> @Model.Inbox[i].UserPosiljaoca</td>
+                                                            <td> <a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke"> @Model.Inbox[i].UserPosiljaoca</td>
                                                             <td class="sorting_1">
 
-                                                                <h2><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe">@Model.Inbox[i].Naslov</a></h2>
+                                                                <h2><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@Model.Inbox[i].Naslov</a></h2>
                                                             </td>
                                                             @{String kratakSadrzaj;}
                                                             @if (Model.Inbox[i].Sadrzaj.Length > 60)
@@ -173,15 +173,15 @@
                                                             {
                                                                 kratakSadrzaj = Model.Inbox[i].Sadrzaj;
                                                             }
-                                                            <td> <a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe">@kratakSadrzaj</td>
-                                                            <td> <a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe">@Model.Inbox[i].VrijemePoruke</td>
+                                                            <td> <a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@kratakSadrzaj</td>
+                                                            <td> <a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@Model.Inbox[i].VrijemePoruke</td>
                                                             @if (Model.Inbox[i].Procitana == 1)
                                                             {
-                                                                <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe">Otvarana</td>
+                                                                <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">Otvarana</td>
                                                             }
                                                             else
                                                             {
-                                                                <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe">Nije otvarana</td>
+                                                                <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">Nije otvarana</td>
                                                             }
 
                                                         </tr>
@@ -189,9 +189,9 @@
                                                     else
                                                     {
                                                         <tr role="row" class="even">
-                                                            <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe"> @Model.Inbox[i].UserPosiljaoca</td>
+                                                            <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke"> @Model.Inbox[i].UserPosiljaoca</td>
                                                             <td class="sorting_1">
-                                                                <h2><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe">@Model.Inbox[i].Naslov</a></h2>
+                                                                <h2><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@Model.Inbox[i].Naslov</a></h2>
                                                             </td>
                                                             @{String kratakSadrzaj;}
                                                             @if (Model.Inbox[i].Sadrzaj.Length > 60)
@@ -203,15 +203,15 @@
                                                             {
                                                                 kratakSadrzaj = Model.Inbox[i].Sadrzaj;
                                                             }
-                                                            <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe">@kratakSadrzaj</td>
-                                                            <td><a href="/nastavno-osobje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe">@Model.Inbox[i].VrijemePoruke</td>
+                                                            <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@kratakSadrzaj</td>
+                                                            <td><a href="/nastavno-osobje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">@Model.Inbox[i].VrijemePoruke</td>
                                                             @if (Model.Inbox[i].Procitana == 1)
                                                             {
-                                                                <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe">Otvarana</td>
+                                                                <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">Otvarana</td>
                                                             }
                                                             else
                                                             {
-                                                                <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke/@Model.IdOsobe">Nije otvarana</td>
+                                                                <td><a href="/nastavno-osoblje/poruke/moj-inbox/@Model.Inbox[i].IdPoruke">Nije otvarana</td>
                                                             }
                                                         </tr>
                                                     }

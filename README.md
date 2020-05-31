@@ -3,6 +3,8 @@
 
 ![](https://i.imgur.com/9DK3QAZ.png)
 
+### [Kliknite za DEMO video trenutnog stanja projekta](https://www.youtube.com/watch?v=PzcAEelADCQ)
+
 ##### Članovi tima:
 - [Huso Hamzić](https://github.com/hhamzic1)
 - [Paša Džumhur](https://github.com/PasaDzumhur)

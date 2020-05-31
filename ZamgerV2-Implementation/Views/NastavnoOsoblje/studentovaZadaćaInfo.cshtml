@@ -1,9 +1,8 @@
-﻿@model NastavnoOsoblje
+﻿@model NastavnoOsoblje 
 @{
-    ViewData["Title"] = "Dashboard";
-    Layout = "~/Views/Shared/nastavnoOsobljeDashboardLayout.cshtml";
+    ViewData["Title"] = "studentovaZadaćaInfo";
+    Layout = "~/Views/Shared/studentInfoOZadaćiLayout.cshtml";
 }
-
 <div class="main-wrapper">
     <div class="header">
         <!-- Header start -->
@@ -119,163 +118,70 @@
     <div class="page-wrapper" style="min-height: 723px;">
         <!-- content -->
         <div class="content container-fluid">
-            <div class="row">
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-primary"><i class="fa fa-book" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            @{
-                                int brojPredmeta = 0;
-                                if(Model.PredmetiNaKojimPredaje!=null)
-                                {
-                                    brojPredmeta = Model.PredmetiNaKojimPredaje.Count;
-                                }
-                            }
-                            <h3>@brojPredmeta</h3>
-                            <span>Broj predmeta</span>
-                        </div>
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-12 col-sm-12 col-12">
+                        <h5 class="text-uppercase">Informacije o zadaći</h5>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-info"><i class="fa fa-hashtag" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            @{
-                                int brojAktivnosti = 0;
-                                if (Model.Aktivnosti != null)
-                                {
-                                    brojAktivnosti = Model.Aktivnosti.Count;
-                                }
-                            }
-                            <h3>@brojAktivnosti</h3>
-                            <span>Broj aktivnosti</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-warning"><i class="fa fa-align-center" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            <h3>@Model.Titula</h3>
-                            <span>Titula</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget dash-widget5">
-                        <span class="dash-widget-icon bg-success"><i class="fa fa-money" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info">
-                            @{
-                                BridgePlata bridge = new BridgePlata(Model);
-                                double plata = bridge.dajPlatu();
-                            }
-                            <h3>Mjesečna plata</h3>
-                            <span>@String.Format("{0:0.00}", plata) KM</span>
-                        </div>
+                    <div class="col-lg-5 col-md-12 col-sm-12 col-12">
+                        <ul class="list-inline breadcrumb float-right">
+                            <li class="list-inline-item"><a href="/student/dashboard">Početna</a></li>
+                            <li class="list-inline-item"> Informacije o zadaći</li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-
-
-            <div class="row mt-4">
-                <div class="col-lg-6">
-                    <div class="content-page">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="page-title mb-2">
-                                    Aktivnosti
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="min-width:150px;">Naziv aktivnosti</th>
-                                                <th style="min-width:50px;">Vrsta</th>
-                                               
-                                                <th style="min-width:150px;">Vrijeme</th>
-                                                <th class="text-right" style="width:30%;">Akcija</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if (Model.Aktivnosti!=null)
-                                            {
-                                                for (int i = 0; i < Model.Aktivnosti.Count; i++)
-                                                {
-                                                    
-                                                        
-                                                                String vrsta = "Zadaća";
-                                                                if (Model.Aktivnosti[i].GetType() == typeof(Ispit)) vrsta = "Ispit";
-                                                                <tr>
-                                                                    @if (Model.Aktivnosti[i].GetType() == typeof(Zadaća))
-                                                                    {
-                                                                        <td><a href="/nastavno-osoblje/detalji-o-zadaci/@Model.Aktivnosti[i].IdPredmeta/@Model.Aktivnosti[i].IdAktivnosti">@Model.Aktivnosti[i].Naziv</a></td>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <td><a href="/nastavno-osoblje/detalji-o-ispitu/@Model.Aktivnosti[i].IdPredmeta/@Model.Aktivnosti[i].IdAktivnosti">@Model.Aktivnosti[i].Naziv</a></td>
-                                                                    }
-                                                                    <td>@vrsta</td>
-
-                                                                    <td>@Model.Aktivnosti[i].KrajnjiDatum</td>
-                                                                    <td class="text-right">
-                                                                        <a href="/nastavno-osoblje/edituj-aktivnost/@Model.Aktivnosti[i].IdAktivnosti" class="btn btn-primary btn-sm mb-1">
-                                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                    
-                                                }
-                                            }
-                                        </tbody>
-                                    </table>
+            <div class="page-content">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="page-title">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="page-title">Informacije o zadaći za studenta: @ViewBag.trazeniStudent.Ime @ViewBag.trazeniStudent.Prezime (@ViewBag.trazeniStudent.BrojIndeksa)</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <form class="custom-mt-form" asp-antiforgery="false" action="/nastavno-osoblje/zadaca/boduj-zadacu-za-studenta/@ViewBag.trazeniPredmet.IdPredmeta/@ViewBag.trazenaZadaca.IdAktivnosti/@ViewBag.trazeniStudent.BrojIndeksa" method="post" enctype="multipart/form-data">
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item list-group-item-info">
+                                                    Naziv zadaće: @ViewBag.trazenaZadaca.Naziv
+                                                </li>
+                                                <li class="list-group-item">Naziv predmeta: @ViewBag.trazeniPredmet.Naziv</li>
+                                                <li class="list-group-item list-group-item-info">Maksimalni broj bodova: @ViewBag.trazenaZadaca.MaxBrojBodova</li>
+                                                <li class="list-group-item">Ostvareno bodova:<strong> @String.Format("{0:0.00}", ViewBag.trazenaZadaca.Bodovi)</strong></li>
+                                                <li class="list-group-item list-group-item-info">Rok zadaće: @ViewBag.trazenaZadaca.KrajnjiDatum</li>
+                                                @if (!String.IsNullOrEmpty(ViewBag.trazenaZadaca.PutanjaDoZadaće))
+                                                {
+                                                    <li class="list-group-item"><a href="/zadace/@ViewBag.trazenaZadaca.PutanjaDoZadaće"><strong>Rješenje</strong></a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="list-group-item">Rješenje: nije poslana nijedna verzija rješenja</li>
+                                                }
+                                            </ul>
+                                            <br />
+                                            <div class="text" style="color:white">
+                                                <strong>Unesite ostvareni broj bodova:</strong><br />
+                                            </div>
 
 
-                <div class="col-lg-6">
-                    <div class="content-page">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="page-title mb-2">
-                                    Obavještenja
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="min-width:91px;">Naslov </th>
-                                                <th style="min-width:50px;">Sadržaj</th>
-                                                <th style="min-width:50px;">Vrijeme</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @for (int i = 0; i < ViewBag.listaObavjestenja.Count; i++)
+                                            @if (DateTime.Now < ViewBag.trazenaZadaca.KrajnjiDatum)
                                             {
-
-                                                <tr>
-                                                    <td><a href="/nastavno-osoblje/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja"> @ViewBag.listaObavjestenja[i].Naslov</a></td>
-                                                    @{String kratakSadrzaj;}
-                                                    @if (ViewBag.listaObavjestenja[i].Sadržaj.Length > 60)
-                                                    {
-                                                        kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj.Substring(0, 60);
-                                                        kratakSadrzaj += "...";
-                                                    }
-                                                    else
-                                                    {
-                                                        kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj;
-                                                    }
-                                                    <td>@kratakSadrzaj</td>
-                                                    <td>@ViewBag.listaObavjestenja[i].dateTime</td>
-                                                </tr>
-
-
+                                                <input class="form-control" type="number" placeholder="@String.Format("{0:0.00}", ViewBag.trazenaZadaca.Bodovi)" step="0.01" max="@ViewBag.trazenaZadaca.MaxBrojBodova" min="0" name="bodovi" id="bodovi" required><br />
+                                                <div class="text-right">
+                                                    <button type="submit" class="btn btn-primary">Boduj zadaću</button>
+                                                </div>
                                             }
-                                        </tbody>
-                                    </table>
+
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -344,4 +250,5 @@
 <script type="text/javascript" src="~/js/jquery.fullcalendar.js"></script>
 <script type="text/javascript" src="~/js/chart.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
+
 

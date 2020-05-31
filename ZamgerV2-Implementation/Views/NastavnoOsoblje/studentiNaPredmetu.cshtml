@@ -181,7 +181,7 @@
                                                     <tr>
                                                         <td>@trazeni.Studenti[i].Ime</td>
                                                         <td>@trazeni.Studenti[i].Prezime</td>
-                                                        <td>@trazeni.Studenti[i].BrojIndeksa</td>
+                                                        <td><a href="/nastavno-osoblje/predmet/detalji-o-studentu/@trazeni.IdPredmeta/@trazeni.Studenti[i].BrojIndeksa"><strong>@trazeni.Studenti[i].BrojIndeksa</strong></a></td>
                                                         <td>@trazeni.Studenti[i].Odsjek</td>
                                                         <td>@trazeni.Studenti[i].Email</td>
                                                         <td>@String.Format("{0:0.00}", trazeni.Studenti[i].dajBrojBodovaNaPredmetu(ViewBag.trazeniPredmet))</td>

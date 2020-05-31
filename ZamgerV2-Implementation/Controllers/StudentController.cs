@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting.Internal;
 using ZamgerV2_Implementation.Helpers;
 using ZamgerV2_Implementation.Models;
 
@@ -11,10 +14,12 @@ namespace ZamgerV2_Implementation.Controllers
     public class StudentController : Controller
     {
         private ZamgerDbContext zmgr;
+        private readonly IWebHostEnvironment hostingEnvironment;
 
-        public StudentController()
+        public StudentController(IWebHostEnvironment hostingEnvironment)
         {
             zmgr = ZamgerDbContext.GetInstance();
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         [Route("/student/dashboard")]
@@ -24,7 +29,6 @@ namespace ZamgerV2_Implementation.Controllers
 
             ViewBag.polozeni = zmgr.dajBrojPoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
             ViewBag.nepolozeni = zmgr.dajBrojNepoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
-            ViewBag.prosjek = zmgr.dajProsjekPoID(trenutniKorisnik.BrojIndeksa);
             ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
             ViewBag.listaNePrijavljenihIspita = zmgr.dajIspiteNaKojeSeStudentNijePrijavio(trenutniKorisnik.BrojIndeksa.Value);
 
@@ -195,8 +199,89 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 ViewBag.poruka = "Greška pri slanju poruke";
             }
+            else if (idPoruke == 3)
+            {
+                ViewBag.poruka = "Ne pohađate kurs za koji zahtjevate zadaću ili tražena zadaća ne postoji!";
+            }
+            else if (idPoruke == 4)
+            {
+                ViewBag.poruka = "Zadaća nije u .pdf formatu!";
+            }
+            else if (idPoruke == 5)
+            {
+                ViewBag.poruka = "Morate odabrati fajl za upload!";
+            }
+            return View();
+        }
 
-            return View(trenutniKorisnik);
+        [Route("/student/zadaca-info/{idZadaće}/{idPredmeta}")]
+        [HttpGet]
+        public IActionResult infoOZadaći(int idZadaće, int idPredmeta)
+        {
+            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
+            foreach(PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+            {
+                if(p.IdPredmeta==idPredmeta)
+                {
+                    ViewBag.trazeniPredmet = p;
+                    foreach(Aktivnost akt in p.Aktivnosti)
+                    {
+                        if(akt.IdAktivnosti==idZadaće)
+                        {
+                            ViewBag.trazenaZadaca =(Zadaća)akt;
+                            return View(trenutniKorisnik);
+                        }
+                    }
+                }
+            }
+            return RedirectToAction("prikaziGresku", new { lokacija = "zadaca-ne-postoji", idPoruke = 3});
+        }
+
+        [Route("/posalji-zadacu/{idPredmeta}/{idZadaće}")]
+        [HttpPost]
+        public IActionResult pošaljiZadaću(int idPredmeta, int idZadaće, IFormFile rjesenje)
+        {
+            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
+          
+            var aktivnost = zmgr.dajAktivnostPoId(idZadaće);
+            if (rjesenje!=null)
+            {
+                if(rjesenje.ContentType.Equals("application/pdf"))
+                {
+                    foreach (PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+                    {
+                        if (p.IdPredmeta == idPredmeta)
+                        {
+                            foreach (Aktivnost akt in p.Aktivnosti)
+                            {
+                                if (akt.IdAktivnosti == idZadaće && !String.IsNullOrEmpty(((Zadaća)akt).PutanjaDoZadaće))
+                                {
+                                    string putanjaZaBrisanje = Path.Combine(hostingEnvironment.WebRootPath, "zadace", ((Zadaća)akt).PutanjaDoZadaće);
+                                    FileInfo fi = new FileInfo(putanjaZaBrisanje);
+                                    if(fi!=null)
+                                    {
+                                        System.IO.File.Delete(putanjaZaBrisanje);
+                                    }
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    string nazivFajla = trenutniKorisnik.Prezime + "-" + trenutniKorisnik.Ime + "-" + trenutniKorisnik.BrojIndeksa + "-" + idZadaće+"-"+aktivnost.Naziv+"-"+Guid.NewGuid().ToString()+".pdf";
+                    string uploadsFolderPath = Path.Combine(hostingEnvironment.WebRootPath, "zadace");
+                    string fullPutanja = Path.Combine(uploadsFolderPath, nazivFajla);
+                    rjesenje.CopyToAsync(new FileStream(fullPutanja, FileMode.Create));
+                    zmgr.uploadujZadacu(idPredmeta, idZadaće, trenutniKorisnik.BrojIndeksa, nazivFajla);
+                    return RedirectToAction("infoOZadaći", new { idZadaće=idZadaće, idPredmeta=idPredmeta});
+                }
+                else
+                {
+                    return RedirectToAction("prikaziGresku", new { lokacija = "posalji-zadacu", idPoruke = 4 });
+                }
+                
+            }
+            return RedirectToAction("prikaziGresku", new { lokacija = "posalji-zadacu", idPoruke = 5 });
         }
 
 

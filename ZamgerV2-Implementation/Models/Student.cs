@@ -67,5 +67,21 @@ namespace ZamgerV2_Implementation.Models
             return prdmt.Ocjena;
         }
 
+        public double dajTrenutniProsjek()
+        {
+            int brPredmeta=0;
+            int sumaOcjena=0;
+            foreach(PredmetZaStudenta p in predmeti)
+            {
+                if(p.Ocjena>5)
+                {
+                    brPredmeta++;
+                    sumaOcjena += p.Ocjena;
+                }
+            }
+
+            return (double)sumaOcjena / brPredmeta;
+        }
+
     }
 }

@@ -267,6 +267,20 @@ namespace ZamgerV2_Implementation.Models
             }
         }
 
+        internal void uploadujZadacu(int idPredmeta, int idZadaće, int? brojIndeksa, string nazivFajla)
+        {
+            string kveri = "update zadaće set putanjaDoZadaće = @nazivFajla where idPredmeta = @predmetID and redniBroj=@zadacaID and idStudenta=@studentID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("nazivFajla", nazivFajla);
+            cmd.Parameters.AddWithValue("zadacaID", idZadaće);
+            cmd.Parameters.AddWithValue("studentID", brojIndeksa.Value);
+            cmd.Parameters.AddWithValue("predmetID", idPredmeta);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }catch(Exception e) { throw new Exception(e.StackTrace + " greška prilikom uploadanja zadaće!"); }
+
+        }
 
         public List<PredmetZaStudenta> formirajPredmeteZaStudentaPoId(int id)
         {
@@ -344,7 +358,14 @@ namespace ZamgerV2_Implementation.Models
                 {
                     while(result2.Read())
                     {
-                        aktivnosti.Add(new Zadaća(result2.GetInt32(0), result2.GetInt32(1), result2.GetInt32(2), result2.GetString(3), result2.GetFloat(4), result2.GetDateTime(5), null, result2.GetFloat(7), null)); //ovo oko zadaće ne znam koji tip pa sam stavio null
+                        if (!result2.IsDBNull(8))
+                        {
+                            aktivnosti.Add(new Zadaća(result2.GetInt32(0), result2.GetInt32(1), result2.GetInt32(2), result2.GetString(3), result2.GetFloat(4), result2.GetDateTime(5), null, result2.GetFloat(7), result2.GetString(8)));
+                        }
+                        else
+                        {
+                            aktivnosti.Add(new Zadaća(result2.GetInt32(0), result2.GetInt32(1), result2.GetInt32(2), result2.GetString(3), result2.GetFloat(4), result2.GetDateTime(5), null, result2.GetFloat(7), null));
+                        }
                     }
                 }
 
@@ -832,7 +853,15 @@ namespace ZamgerV2_Implementation.Models
                 {
                     while (result.Read())
                     {
-                        zadaće.Add(new Zadaća(result.GetInt32(0), indeks, idPredmeta, result.GetString(1), result.GetFloat(2), result.GetDateTime(3), null, result.GetFloat(5), null));
+                        if(!result.IsDBNull(6))
+                        {
+                            zadaće.Add(new Zadaća(result.GetInt32(0), indeks, idPredmeta, result.GetString(1), result.GetFloat(2), result.GetDateTime(3), null, result.GetFloat(5), result.GetString(6)));
+                        }
+                        else
+                        {
+                            zadaće.Add(new Zadaća(result.GetInt32(0), indeks, idPredmeta, result.GetString(1), result.GetFloat(2), result.GetDateTime(3), null, result.GetFloat(5), null));
+                        }
+                      
                         //ne znam kako preuzet document iz baze, pa je za sad to null
                     }
                     return zadaće;
@@ -1134,6 +1163,20 @@ namespace ZamgerV2_Implementation.Models
                 throw new Exception(e.StackTrace + " greška prilikom izmjene bodova studentove zadaće");
             }
 
+        }
+
+        public void updateOrInsertOcjenuZaStudenta(int idPredmeta, int idStudenta, int ocjena)
+        {
+            string kveri = "update ocjene set ocjena = @ocjena where idPredmeta=@predmetID and idStudenta=@studentID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("ocjena", ocjena);
+            cmd.Parameters.AddWithValue("predmetID", idPredmeta);
+            cmd.Parameters.AddWithValue("studentID", idStudenta);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e) { throw new Exception(e.StackTrace + " greška prilikom upisa ocjene za studenta"); }
         }
     }
 

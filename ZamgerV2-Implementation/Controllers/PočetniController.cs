@@ -76,21 +76,19 @@ namespace ZamgerV2_Implementation.Controllers
                     else if (tipKorisnika == TipKorisnika.Student)
                     {
                         return RedirectToAction("Dashboard", new RouteValueDictionary(
-                        new { controller = "Student", action = "Dashboard", id = idKorisnika }));
+                        new { controller = "Student", action = "Dashboard"}));
                     }
                     else
                     {
                         return RedirectToAction("Dashboard", new RouteValueDictionary(
-                        new { controller = "NastavnoOsoblje", action = "Dashboard", id = idKorisnika }));
+                        new { controller = "NastavnoOsoblje", action = "Dashboard"}));
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Response.WriteAsync(e.StackTrace);
-                conn.Close();
+                return RedirectToAction("OdjaviSe");
             }
-            return null;
         }
 
         [Route("Početni/OdjaviSe")]

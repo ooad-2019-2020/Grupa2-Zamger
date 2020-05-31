@@ -176,7 +176,15 @@
                                                         {
                                                     <tr role="row" class="odd">
                                                         <td class="sorting_1">
-                                                            <h2><a href="#">@Model.Aktivnosti[i].Naziv</a></h2>
+                                                            @if (Model.Aktivnosti[i].GetType() == typeof(Zadaća))
+                                                            {
+                                                                <h2><a href="/nastavno-osoblje/detalji-o-zadaci/@Model.Aktivnosti[i].IdPredmeta/@Model.Aktivnosti[i].IdAktivnosti">@Model.Aktivnosti[i].Naziv</a></h2>
+                                                            }
+                                                            else
+                                                            {
+                                                                <h2><a href="/nastavno-osoblje/detalji-o-ispitu/@Model.Aktivnosti[i].IdPredmeta/@Model.Aktivnosti[i].IdAktivnosti">@Model.Aktivnosti[i].Naziv</a></h2>
+                                                            }
+
                                                         </td>
                                                         <td>@vrsta</td>
                                                         <td>@Model.Aktivnosti[i].KrajnjiDatum</td>
@@ -194,7 +202,15 @@
                                                         {
                                                                 <tr role="row" class="even">
                                                                     <td class="sorting_1">
-                                                                        <h2><a href="#">@Model.Aktivnosti[i].Naziv</a></h2>
+                                                                        @if (Model.Aktivnosti[i].GetType() == typeof(Zadaća))
+                                                                        {
+                                                                            <h2><a href="/nastavno-osoblje/detalji-o-zadaci/@Model.Aktivnosti[i].IdPredmeta/@Model.Aktivnosti[i].IdAktivnosti">@Model.Aktivnosti[i].Naziv</a></h2>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <h2><a href="/nastavno-osoblje/detalji-o-ispitu/@Model.Aktivnosti[i].IdPredmeta/@Model.Aktivnosti[i].IdAktivnosti">@Model.Aktivnosti[i].Naziv</a></h2>
+                                                                        }
+
                                                                     </td>
                                                                     <td>@vrsta</td>
                                                                     <td>@Model.Aktivnosti[i].KrajnjiDatum</td>

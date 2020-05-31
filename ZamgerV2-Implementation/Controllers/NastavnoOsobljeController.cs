@@ -187,6 +187,22 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 ViewBag.poruka = "Greška pri editovanju zahtjeva";
             }
+            else if(idPoruke == 4)
+            {
+                ViewBag.poruka = "Nemate pravo pristupa ovoj stranici jer ne pripadate ansamblu traženog predmeta!";
+            }
+            else if (idPoruke == 5)
+            {
+                ViewBag.poruka = "Greška prilikom upisa ocjene za studenta!";
+            }
+            else if (idPoruke == 6)
+            {
+                ViewBag.poruka = "Tražena zadaća za traženog studenta na odabranom predmetu ne postoji!";
+            }
+            else if (idPoruke == 7)
+            {
+                ViewBag.poruka = "Morate popuniti formu!";
+            }
             return View();
         }
 
@@ -239,6 +255,97 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.trazeniPredmet = idPredmeta;
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             return View(trenutniKorisnik);
+        }
+
+        [Route("/nastavno-osoblje/predmet/detalji-o-studentu/{idPredmeta}/{idStudenta}")]
+        public IActionResult detaljiOStudentuNaPredmetu(int idPredmeta, int idStudenta)
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            foreach(PredmetZaNastavnoOsoblje p in trenutniKorisnik.PredmetiNaKojimPredaje)
+            {
+                if(p.IdPredmeta == idPredmeta)
+                {
+                    ViewBag.trazeniPredmet = p;
+                    ViewBag.ansambl = zmgr.dajAnsamblNaPredmetu(idPredmeta);
+                    ViewBag.predmet = zmgr.dajPredmetZaStudentaPoID(idStudenta, idPredmeta, DateTime.Now.Year);
+                    KreatorKorisnika creator = new KreatorKorisnika();
+                    Korisnik tempK = creator.FactoryMethod(idStudenta);
+
+                    if (tempK.GetType() == typeof(Student))
+                    {
+                        ViewBag.trazeniStudent = (Student)tempK;
+                    }
+                    else
+                    {
+                        ViewBag.trazeniStudent = (MasterStudent)tempK;
+                    }
+                    return View(trenutniKorisnik);
+                }
+            }
+            return RedirectToAction("prikaziGresku", new { lokacija = "nastavno-osoblje/predmet/detalji-o-studentu", idPoruke = 4 });
+        }
+
+        [Route("/nastavno-osoblje/predmet/{idPredmeta}/ocjeni/{idStudenta}")]
+        [HttpPost]
+        public IActionResult ocjeniStudenta(int idPredmeta, int idStudenta, IFormCollection forma)
+        {
+            if (!String.IsNullOrEmpty(forma["ocjena"]))
+            {
+                zmgr.updateOrInsertOcjenuZaStudenta(idPredmeta, idStudenta, int.Parse(forma["ocjena"]));
+                return RedirectToAction("detaljiOStudentuNaPredmetu", new { idPredmeta = idPredmeta, idStudenta = idStudenta });
+            }
+
+            return RedirectToAction("prikaziGresku", new { lokacija = "predmet/upisi-ocjenu", idPoruke = 5 });
+
+        }
+
+        [Route("/nastavno-osoblje/student-rjesenje-zadace/{idPredmeta}/{idZadaće}/{idStudenta}")]
+        public IActionResult studentovaZadaćaInfo(int idPredmeta, int idZadaće, int idStudenta)
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            KreatorKorisnika creator = new KreatorKorisnika();
+            Korisnik tempK = creator.FactoryMethod(idStudenta);
+
+            if (tempK.GetType() == typeof(Student))
+            {
+                ViewBag.trazeniStudent = (Student)tempK;
+            }
+            else
+            {
+                ViewBag.trazeniStudent = (MasterStudent)tempK;
+            }
+            foreach (PredmetZaStudenta p in ((Student)tempK).Predmeti)
+            {
+                if (p.IdPredmeta == idPredmeta)
+                {
+                    ViewBag.trazeniPredmet = p;
+                    foreach (Aktivnost akt in p.Aktivnosti)
+                    {
+                        if (akt.IdAktivnosti == idZadaće)
+                        {
+                            ViewBag.trazenaZadaca = (Zadaća)akt;
+                            return View(trenutniKorisnik);
+                        }
+                    }
+                }
+            }
+
+            return RedirectToAction("prikaziGresku", new { lokacija = "zadaca-za-studenta", idPoruke = 6 });
+        }
+
+
+        [Route("/nastavno-osoblje/zadaca/boduj-zadacu-za-studenta/{idPredmeta}/{idZadaće}/{idStudenta}")]
+        [HttpPost]
+        public IActionResult bodujZadaćuStudentu(int idPredmeta, int idZadaće, int idStudenta, IFormCollection forma)
+        {
+            if(!String.IsNullOrEmpty(forma["bodovi"]))
+            {
+                NumberFormatInfo format = new NumberFormatInfo();
+                format.NumberDecimalSeparator = ".";
+                zmgr.updateBodoveZadaćeZaStudenta(idZadaće, idStudenta, float.Parse(forma["bodovi"], format));
+                return RedirectToAction("detaljiOStudentuNaPredmetu", new { idPredmeta = idPredmeta, idStudenta = idStudenta });
+            }
+            return RedirectToAction("prikaziGresku", new { lokacija = "boduj-zadacu-za-studenta", idPoruke = 7 });
         }
 
 

@@ -23,5 +23,49 @@ namespace ZamgerV2_Implementation.Models
         public int? BrojIndeksa { get => brojIndeksa; set => brojIndeksa = value; }
         public int GodinaStudija { get => godinaStudija; set => godinaStudija = value; }
         public List<PredmetZaStudenta> Predmeti { get => predmeti; set => predmeti = value; }
+
+        public double dajBrojBodovaNaPredmetu(int idPredmeta)
+        {
+            double brojBodova = 0;
+            PredmetZaStudenta prdmt = null;
+            foreach (PredmetZaStudenta p in predmeti)
+            {
+                if (p.IdPredmeta == idPredmeta)
+                {
+                    prdmt = p;
+                    break;
+                }
+            }
+
+            foreach(Aktivnost akt in prdmt.Aktivnosti)
+            {
+                if(akt.GetType()==typeof(Ispit))
+                {
+                    brojBodova += ((Ispit)akt).Bodovi;
+                }
+                else
+                {
+                    brojBodova += ((Zadaća)akt).Bodovi;
+                }
+            }
+
+            return brojBodova;
+            
+        }
+
+        public int dajOcjenuNaPredmetu(int idPredmeta)
+        {
+            PredmetZaStudenta prdmt = null;
+            foreach (PredmetZaStudenta p in predmeti)
+            {
+                if (p.IdPredmeta == idPredmeta)
+                {
+                    prdmt = p;
+                    break;
+                }
+            }
+            return prdmt.Ocjena;
+        }
+
     }
 }

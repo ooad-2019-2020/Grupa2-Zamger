@@ -1,9 +1,22 @@
 ﻿@model NastavnoOsoblje
 @{
-    ViewData["Title"] = "KreirajAktivnost";
-    Layout = "~/Views/Shared/nastavnoOsobljeKreirajAktivnostLayout.cshtml";
+    ViewData["Title"] = "studentiNaPredmetu";
+    Layout = "~/Views/Shared/nastavnoOsobljeStudentiNaPredmetuLayout.cshtml";
 }
 
+
+@{
+
+    PredmetZaNastavnoOsoblje trazeni = null;
+    foreach (PredmetZaNastavnoOsoblje prdmt in Model.PredmetiNaKojimPredaje)
+    {
+        if (prdmt.IdPredmeta == ViewBag.trazeniPredmet)
+        {
+            trazeni = prdmt;
+            break;
+        }
+    } //ovdje treba nekako ako nakon ovih petlji bude null sve redirectat na error page!(nisam još skonto kako)
+}
 <div class="main-wrapper">
     <div class="header">
         <!-- Header start -->
@@ -118,98 +131,76 @@
 
     <div class="page-wrapper" style="min-height: 723px;">
         <!-- content -->
-        <form asp-antiforgery="false" asp-action="KreirajAktivnost" method="post">
-            <div class="content container-fluid">
-                <div class="page-header">
-                    <div class="row">
-                        <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                            <h5 class="text-uppercase">Kreiraj aktivnost</h5>
-                        </div>
-                        <div class="col-lg-5 col-md-12 col-sm-12 col-12">
-                            <ul class="list-inline breadcrumb float-right">
-                                <li class="list-inline-item"><a href="~/nastavno-osoblje/dashboard">Početna</a></li>
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-12 col-sm-12 col-12">
+                        <h5 class="text-uppercase">Svi studenti na predmetu</h5>
+                    </div>
+                    <div class="col-lg-5 col-md-12 col-sm-12 col-12">
+                        <ul class="list-inline breadcrumb float-right">
+                            <li class="list-inline-item"><a href="~/nastavno-osoblje/dashboard">Početna</a></li>
 
-                                <li class="list-inline-item"> Kreiraj aktivnost</li>
-                            </ul>
-                        </div>
+                            <li class="list-inline-item"> Svi studenti na predmetu</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="page-content">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="card">
-                                <div class="page-title">
-                                    <div class="row">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="Page-title">Informacije o aktivnosti</div>
-                                        </div>
+            </div>
+            <div class="page-content">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            <div class="page-title">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="Page-title">Lista studenata</div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="card-body">
+                            <div class="card-body">
 
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-
-                                            <div class="form-group custom-mt-form-group">
-                                                <input type="text" name="naziv" required>
-                                                <label class="control-label">Naziv aktivnosti</label><i class="bar"></i>
-                                            </div>
-
-
-                                            <div class="form-group custom-mt-form-group">
-                                                <select name="izabraniPredmet" required>
-                                                    @foreach (PredmetZaNastavnoOsoblje p in Model.PredmetiNaKojimPredaje)
-                                                    {
-                                                        <option value="@p.IdPredmeta">@p.Naziv</option>
-                                                    }
-                                                </select>
-                                                <label class="control-label">Izaberite predmet</label><i class="bar"></i>
-                                            </div>
-
-                                            <div class="form-group custom-mt-form-group">
-                                                <input class="datetimepicker" type="text" name="datum" required>
-                                                <label class="control-label">Datum aktivnosti</label><i class="bar"></i>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-
-                                            <div class="form-group custom-mt-form-group" id="vrstaAktivnosti">
-                                                <select name="vrstaAktivnosti">
-                                                    <option>Ispit</option>
-                                                    <option>Zadaća</option>
-                                                </select>
-                                                <label class="control-label">Vrsta aktivnosti</label><i class="bar"></i>
-                                            </div>
-
-                                            <div class="form-group custom-mt-form-group">
-                                                <input type="number" name="maxBrojBodova" required>
-                                                <label class="control-label">Maksimalan broj bodova</label><i class="bar"></i>
-                                            </div>
-
-                                            <div class="form-group custom-mt-form-group">
-                                                <input type="text" name="vrijeme" required>
-                                                <label class="control-label">Vrijeme aktivnosti(hh:mm)</label><i class="bar"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-
-                                            <div class="form-group text-center custom-mt-form-group">
-                                                <button class="btn btn-primary mr-2" type="submit">Kreiraj</button>
-                                                <button class="btn btn-secondary" type="reset">Odustani</button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
+                                <div class="table-responsive">
+                                    <table class="table table-striped m-b-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Ime</th>
+                                                <th>Prezime</th>
+                                                <th>Broj indeksa</th>
+                                                <th>Odsjek</th>
+                                                <th>Email</th>
+                                                <th>Broj Bodova</th>
+                                                <th>Ocjena</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (trazeni.Studenti != null)
+                                            {
+                                                for (int i = 0; i < trazeni.Studenti.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td>@trazeni.Studenti[i].Ime</td>
+                                                        <td>@trazeni.Studenti[i].Prezime</td>
+                                                        <td>@trazeni.Studenti[i].BrojIndeksa</td>
+                                                        <td>@trazeni.Studenti[i].Odsjek</td>
+                                                        <td>@trazeni.Studenti[i].Email</td>
+                                                        <td>@String.Format("{0:0.00}", trazeni.Studenti[i].dajBrojBodovaNaPredmetu(ViewBag.trazeniPredmet))</td>
+                                                        <td>@trazeni.Studenti[i].dajOcjenuNaPredmetu(ViewBag.trazeniPredmet)</td>
+                                                    </tr>
+                                                }
+                                            }
+                                            
+                                        </tbody>
+                                    </table>
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
+
 
 
         <div class="notification-box">
@@ -273,4 +264,7 @@
 <script type="text/javascript" src="~/js/jquery.fullcalendar.js"></script>
 <script type="text/javascript" src="~/js/chart.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
+
+
+
 

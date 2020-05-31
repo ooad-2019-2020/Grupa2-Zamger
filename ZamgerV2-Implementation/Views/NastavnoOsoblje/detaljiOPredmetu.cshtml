@@ -1,7 +1,35 @@
 ﻿@model NastavnoOsoblje
 @{
-    ViewData["Title"] = "detaljiPorukeInbox";
-    Layout = "~/Views/Shared/detaljiPorukeLayout.cshtml";
+    ViewData["Title"] = "detaljiOPredmetu";
+    Layout = "~/Views/Shared/nastanovOsobljeDetaljiOPredmetuLayout.cshtml";
+}
+
+
+
+@{
+    int brojUpisanihOcjena = 0;
+    PredmetZaNastavnoOsoblje trazeni=null;
+    foreach (PredmetZaNastavnoOsoblje prdmt in Model.PredmetiNaKojimPredaje)
+    {
+        if (prdmt.IdPredmeta == ViewBag.trazeniPredmet)
+        {
+            trazeni = prdmt;
+            if (trazeni.Studenti != null)
+            {
+                foreach (Student s in trazeni.Studenti)
+                {
+                    if (s.Predmeti != null)
+                    {
+                        foreach (PredmetZaStudenta p in s.Predmeti)
+                        {
+                            if (p.IdPredmeta == ViewBag.trazeniPredmet && p.Ocjena > 5) brojUpisanihOcjena++;
+                        }
+                    }
+                }
+            }
+            break;
+        }
+    }
 }
 
 <div class="main-wrapper">
@@ -82,8 +110,8 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-table" aria-hidden="true"></i> <span> Aktivnosti</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="#">Moje aktivnosti</a></li>
-                                <li><a href="#">Kreiraj aktivnost</a></li>
+                                <li><a href="/nastavno-osoblje/moje-aktivnosti">Moje aktivnosti</a></li>
+                                <li><a href="/nastavno-osoblje/kreiraj-aktivnost">Kreiraj aktivnost</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
@@ -117,16 +145,18 @@
 
 
     <div class="page-wrapper" style="min-height: 723px;">
+        <!-- content -->
+        
         <div class="content container-fluid">
             <div class="page-header">
                 <div class="row">
                     <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                        <h5 class="text-uppercase">DETALJI PORUKE</h5>
+                        <h5 class="text-uppercase">Detalji o predmetu</h5>
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
                             <li class="list-inline-item"><a href="/nastavno-osoblje/dashboard">Početna</a></li>
-                            <li class="list-inline-item"> Detalji poruke</li>
+                            <li class="list-inline-item">Detalji o predmetu</li>
                         </ul>
                     </div>
                 </div>
@@ -136,37 +166,122 @@
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="aboutprofile-sidebar">
                             <div class="row">
-                                <div class="col-lg-9 col-md-12 col-sm-12 col-12">
-                                    <div class="profile-content">
-                                        <div class="row">
+                                <div class="col-lg-3 col-md-12 col-sm-12 col-12">
 
-                                            <div class="card">
-                                                <!-- Nav tabs -->
-                                                <ul class="nav customtab">
-                                                    <li class="nav-item"><a href="#" class="nav-link active show">@ViewBag.poruka.Naslov</a></li>
-                                                </ul>
-
-                                                <!-- Tab panes -->
-                                                <div class="tab-content">
-                                                    <div class="tab-pane active show">
-                                                        <div id="biography" class="biography">
-                                                            <div class="row">
-
-                                                                <strong>Vrijeme poruke: </strong>
-                                                                <br>
-                                                                <p class="text-muted">  @ViewBag.poruka.VrijemePoruke</p>
-
-                                                            </div>
-                                                            <hr>
-                                                            <p>
-                                                                @ViewBag.Poruka.Sadrzaj
-                                                            </p>
-
+                                    <div class="aboutprofile">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                                        <div class="aboutprofile-pic">
+                                                            <img class="card-img-top" src="/images/user.jpg" alt="Card image">
+                                                        </div>
+                                                        <div class="aboutprofile-name">
+                                                            <h5 class="text-center mt-2">@Model.Ime @Model.Prezime</h5>
+                                                            <p class="text-center">@Model.Titula</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    @if (ViewBag.ansambl != null)
+                                    {
+                                        foreach (NastavnoOsoblje no in ViewBag.ansambl)
+                                        {
+                                            if (!no.Email.Equals(Model.Email))
+                                            {
+                                            <br />
+                                            <div class="aboutprofile">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                <div class="aboutprofile-pic">
+                                                                    <img class="card-img-top" src="/images/user.jpg" alt="Card image">
+                                                                </div>
+                                                                <div class="aboutprofile-name">
+                                                                    <h5 class="text-center mt-2">@no.Ime @no.Prezime</h5>
+                                                                    <p class="text-center">@no.Titula</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                        }
+                                    }
+                                </div>
+                                <div class="col-lg-9 col-md-12 col-sm-12 col-12">
+                                    <div class="profile-content">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card">
+                                                    <!-- Nav tabs -->
+                                                    <ul class="nav customtab">
+                                                        <li class="nav-item"><a href="#" class="nav-link active show">Detalji o predmetu</a></li>
+                                                    </ul>
 
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane active show">
+                                                            <div id="biography" class="biography">
+                                                                <div class="row">
+                                                                    <div class="col-md-3 col-6">
+                                                                        <strong>Naziv predmeta</strong>
+                                                                        <br>
+                                                                        <p class="text-muted">@trazeni.Naziv</p>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-6">
+                                                                        <strong>Broj ECTS poena</strong>
+                                                                        <br>
+                                                                        <p class="text-muted">@trazeni.EctsPoeni</p>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-6">
+                                                                        @{
+                                                                            int brojStudenata = 0;
+                                                                            if (trazeni.Studenti != null) brojStudenata = trazeni.Studenti.Count;
+                                                                        }
+                                                                        <strong>Broj studenata na predmetu</strong>
+                                                                        <br>
+                                                                        <p class="text-muted">@brojStudenata </p>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-6">
+                                                                        <strong>Broj upisanih ocjena</strong>
+                                                                        <br>
+                                                                        <p class="text-muted">@brojUpisanihOcjena</p>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <br>
+                                                                <h4>Aktivnosti na predmetu:</h4>
+                                                                <hr>
+                                                                <ul class="list-unstyled">
+                                                                    @if (Model.Aktivnosti != null)
+                                                                    {
+                                                                        foreach (Aktivnost akt in Model.Aktivnosti)
+                                                                        {   if (akt.IdPredmeta == ViewBag.trazeniPredmet)
+                                                                            {
+                                                                                if (akt.GetType() == typeof(Ispit))
+                                                                                {
+                                                                                <li class="list-item"><a href="/nastavno-osoblje/detalji-o-ispitu/@trazeni.IdPredmeta/@akt.IdAktivnosti">Ispit:  @akt.Naziv     ----   Rok: @akt.KrajnjiDatum </a></li>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                <li class="list-item"><a href="/nastavno-osoblje/detalji-o-zadaci/@trazeni.IdPredmeta/@akt.IdAktivnosti">Zadaća:  @akt.Naziv     ----   Rok:  @akt.KrajnjiDatum </a></li>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </ul>
+                                                                <br>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -175,6 +290,7 @@
                     </div>
                 </div>
             </div>
+        </div>
             <div class="notification-box">
                 <div class="msg-sidebar notifications msg-noti">
                     <div class="topnav-dropdown-header">
@@ -220,8 +336,8 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+ </div>
+
 <div class="sidebar-overlay" data-reff=""></div>
 <script type="text/javascript" src="~/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="~/js/popper.min.js"></script>
@@ -236,4 +352,5 @@
 <script type="text/javascript" src="~/js/jquery.fullcalendar.js"></script>
 <script type="text/javascript" src="~/js/chart.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
+
 

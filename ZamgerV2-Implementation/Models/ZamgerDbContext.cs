@@ -512,7 +512,7 @@ namespace ZamgerV2_Implementation.Models
         public List<Aktivnost> formirajAktivnostiZaNastavnoOsobljePoIdOsobe(int id)
         {
             List<Aktivnost> aktivnosti = new List<Aktivnost>();
-            string kveri = "select a.idAktivnosti , a.idPredmeta, a.naziv, a.rok, a.vrsta from AKTIVNOSTI a, PREDMETI p, ANSAMBL an, NASTAVNO_OSOBLJE no where a.idPredmeta=p.idPredmeta and p.idPredmeta=an.idPredmeta and an.idNastavnogOsoblja=no.idOsobe and no.idOsobe=@userID order by a.rok asc";
+            string kveri = "select a.idAktivnosti , a.idPredmeta, a.naziv, a.rok, a.vrsta, a.maxBrojBodova from AKTIVNOSTI a, PREDMETI p, ANSAMBL an, NASTAVNO_OSOBLJE no where a.idPredmeta=p.idPredmeta and p.idPredmeta=an.idPredmeta and an.idNastavnogOsoblja=no.idOsobe and no.idOsobe=@userID order by a.rok asc";
             var userIDParam = new SqlParameter("userID", System.Data.SqlDbType.Int);
             userIDParam.Value = id;
             SqlCommand command = new SqlCommand(kveri, conn);
@@ -526,11 +526,11 @@ namespace ZamgerV2_Implementation.Models
                     {
                         if(result.GetString(4).Equals("Ispit"))
                         {
-                            aktivnosti.Add(new Ispit(-1,result.GetInt32(1), result.GetString(2), result.GetDateTime(3),0,result.GetInt32(0), 0,0));
+                            aktivnosti.Add(new Ispit(-1,result.GetInt32(1), result.GetString(2), result.GetDateTime(3),0,result.GetInt32(0), result.GetInt32(5),0));
                         }
                         else
                         {
-                            aktivnosti.Add(new Zadaća(result.GetInt32(0), -1, result.GetInt32(1), result.GetString(2), 0, result.GetDateTime(3), null, 0, null));
+                            aktivnosti.Add(new Zadaća(result.GetInt32(0), -1, result.GetInt32(1), result.GetString(2), 0, result.GetDateTime(3), null, result.GetInt32(5), null));
                         }
                     }
                     return aktivnosti;
@@ -814,19 +814,16 @@ namespace ZamgerV2_Implementation.Models
             }
         }
 
-        public List<Zadaća> dajStudentoveZadaće(int indeks,int idPredmeta,int studijskaGodina)
+        public List<Zadaća> dajStudentoveZadaće(int indeks,int idPredmeta)
         {
             List<Zadaća> zadaće = new List<Zadaća>();
-            string kveri = "select z.redniBroj, z.nazivZadaće, z.bodovi, z.rokIsteka, z.rješenjeZadaće, z.maxBrojBodova, z.putanjaDoZadaće from zadaće z,aktivnosti a where z.redniBroj = a.idAktivnosti and a.godinaStudija = @studyYear and z.idStudenta = @studentID and z.idPredmeta = @subjectID";
+            string kveri = "select z.redniBroj, z.nazivZadaće, z.bodovi, z.rokIsteka, z.rješenjeZadaće, z.maxBrojBodova, z.putanjaDoZadaće from zadaće z,aktivnosti a where z.redniBroj = a.idAktivnosti and z.idStudenta = @studentID and z.idPredmeta = @subjectID";
             var studentIDParam = new SqlParameter("studentID", SqlDbType.Int);
             studentIDParam.Value = indeks;
             var subjectIDParam = new SqlParameter("subjectID", SqlDbType.Int);
             subjectIDParam.Value = idPredmeta;
-            var studyYearParam = new SqlParameter("studyYear", SqlDbType.Int);
-            studyYearParam.Value = studijskaGodina;
             SqlCommand command = new SqlCommand(kveri, conn);
             command.Parameters.Add(studentIDParam);
-            command.Parameters.Add(studyYearParam);
             command.Parameters.Add(subjectIDParam);
             try
             {
@@ -835,8 +832,7 @@ namespace ZamgerV2_Implementation.Models
                 {
                     while (result.Read())
                     {
-                        zadaće.Add(new Zadaća(result.GetInt32(0), result.GetInt32(1), result.GetInt32(2), result.GetString(3), result.GetFloat(4),
-                            result.GetDateTime(5), null, result.GetFloat(7), result.GetString(8)));
+                        zadaće.Add(new Zadaća(result.GetInt32(0), indeks, idPredmeta, result.GetString(1), result.GetFloat(2), result.GetDateTime(3), null, result.GetFloat(5), null));
                         //ne znam kako preuzet document iz baze, pa je za sad to null
                     }
                     return zadaće;
@@ -848,24 +844,21 @@ namespace ZamgerV2_Implementation.Models
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace + " greška prilikom dohvaćanja obavještenja po ID iz baze");
+                throw new Exception(e.StackTrace + " greška prilikom dohvaćanja zadaće za studenta iz baze");
             }
 
         }
 
-        public List<Ispit> dajStudentoveIspite(int indeks, int idPredmeta, int studijskaGodina)
+        public List<Ispit> dajStudentoveIspite(int indeks, int idPredmeta)
         {
             List<Ispit> ispiti = new List<Ispit>();
-            string kveri = "select i.naziv,i.datum,i.bodovi,i.idIspita,i.maxBrojBodova,i.brojBodovaZaProlaz from ispiti i, aktivnosti a where i.idIspita = a.idAktivnosti and a.godinaStudija = @studyYear and i.idStudenta = @studentID and i.idPredmeta = @subjectID";
+            string kveri = "select i.naziv,i.datum,i.bodovi,i.idIspita,i.maxBrojBodova,i.brojBodovaZaProlaz from ispiti i, aktivnosti a where i.idIspita = a.idAktivnosti and i.idStudenta = @studentID and i.idPredmeta = @subjectID";
             var studentIDParam = new SqlParameter("studentID", SqlDbType.Int);
             studentIDParam.Value = indeks;
             var subjectIDParam = new SqlParameter("subjectID", SqlDbType.Int);
             subjectIDParam.Value = idPredmeta;
-            var studyYearParam = new SqlParameter("studyYear", SqlDbType.Int);
-            studyYearParam.Value = studijskaGodina;
             SqlCommand command = new SqlCommand(kveri, conn);
             command.Parameters.Add(studentIDParam);
-            command.Parameters.Add(studyYearParam);
             command.Parameters.Add(subjectIDParam);
 
             try
@@ -875,8 +868,7 @@ namespace ZamgerV2_Implementation.Models
                 {
                     while (result.Read())
                     {
-                        ispiti.Add(new Ispit(indeks, idPredmeta, result.GetString(0), result.GetDateTime(1), result.GetFloat(2),
-                            result.GetInt32(3), result.GetInt32(4), result.GetFloat(5)));
+                        ispiti.Add(new Ispit(indeks, idPredmeta, result.GetString(0), result.GetDateTime(1), result.GetFloat(2), result.GetInt32(3), result.GetInt32(4), result.GetFloat(5)));
                     }
                     return ispiti;
                 }
@@ -897,13 +889,12 @@ namespace ZamgerV2_Implementation.Models
         public PredmetZaStudenta dajPredmetZaStudentaPoID(int indeks, int idPredmeta, int studijskaGodina)
         {
             
-            List<Zadaća> zadaće = dajStudentoveZadaće(indeks, idPredmeta, studijskaGodina);
-            List<Ispit> ispiti = dajStudentoveIspite(indeks, idPredmeta, studijskaGodina);
+            List<Zadaća> zadaće = dajStudentoveZadaće(indeks, idPredmeta);
+            List<Ispit> ispiti = dajStudentoveIspite(indeks, idPredmeta);
             List<Aktivnost> aktivnosti = new List<Aktivnost>();
             if(zadaće != null) foreach (Zadaća zadaća in zadaće) aktivnosti.Add(zadaća);
             if(ispiti != null) foreach (Ispit ispit in ispiti) aktivnosti.Add(ispit);
             string kveri = "select p.naziv, p.ectsPoeni, o.bodovi, o.ocjena from ocjene o, predmeti p where o.idStudenta = @studentID and o.idPredmeta = @subjectID and o.studijskaGodina = @studyYear and p.idPredmeta = o.idPredmeta";
-            //string kveri = "select p.naziv, p.ectsPoeni, o.bodovi, o.ocjena, o.idPredmeta, o.idStudenta, o.studijskaGodina from PREDMETI p, OCJENE o where p.idPredmeta=o.idPredmeta and o.idStudenta=@idStudenta";
 
             var studentIDParam = new SqlParameter("studentID", SqlDbType.Int);
             studentIDParam.Value = indeks;
@@ -1079,6 +1070,70 @@ namespace ZamgerV2_Implementation.Models
             {
                 throw new Exception(e.StackTrace + " greška prilikom učitavanja ispita na koje se student nije prijavio!");
             }
+        }
+
+        public Aktivnost dajAktivnostPoId(int idAktivnosti)
+        {
+            string kveri = "select idAktivnosti, idPredmeta, vrsta, naziv, rok, maxBrojBodova from aktivnosti where idAktivnosti=@aktivnostID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("aktivnostID", idAktivnosti);
+            try
+            {
+                var result = cmd.ExecuteReader();
+                if(result.HasRows)
+                {
+                    result.Read();
+                    if(result.GetString(2).Equals("Ispit"))
+                    {
+                        return new Ispit(-1, result.GetInt32(1), result.GetString(3), result.GetDateTime(4), 0, result.GetInt32(0), result.GetInt32(5), 10);
+                    }
+                    else
+                    {
+                        return new Zadaća(result.GetInt32(0), -1, result.GetInt32(1), result.GetString(3), 0, result.GetDateTime(4), null, result.GetInt32(5), null);
+                    }
+                }
+                return null;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom dobijanja aktivnosti po ID");
+            }
+        }
+
+        public void editujAktivnost(int idAktivnosti,string naziv, DateTime datumVrijeme, int maxBrojBodova)
+        {
+            string kveri = "update aktivnosti set naziv=@naziv, rok=@datumVrijeme, maxBrojBodova = @max where idAktivnosti = @aktivnostID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("datumVrijeme", datumVrijeme);
+            cmd.Parameters.AddWithValue("max", maxBrojBodova);
+            cmd.Parameters.AddWithValue("aktivnostID", idAktivnosti);
+            cmd.Parameters.AddWithValue("naziv", naziv);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom izmjene aktivnosti po ID");
+            }
+        }
+
+        public void updateBodoveZadaćeZaStudenta(int idZadaće, int idStudenta, double bodovi)
+        {
+            string kveri = "update zadaće set bodovi = @bodovi where redniBroj = @zadaćaID and idStudenta= @studentID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("bodovi", bodovi);
+            cmd.Parameters.AddWithValue("zadaćaID", idZadaće);
+            cmd.Parameters.AddWithValue("studentID", idStudenta);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom izmjene bodova studentove zadaće");
+            }
+
         }
     }
 

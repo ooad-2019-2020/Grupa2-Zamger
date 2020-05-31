@@ -165,6 +165,11 @@
                                     </div>
                                     <div class="col-md-6">
                                         <ul class="about-author">
+                                            @{ 
+                                                double brojOsvojenih = 0;
+                                                double brojMogućih = 0;
+                                                string strProcenat="";
+                                            }
                                             @if (ViewBag.predmet.Aktivnosti == null || ViewBag.predmet.Aktivnosti.Count == 0)
                                             {
                                                 <div class="progress progress-md">
@@ -174,8 +179,7 @@
                                             }
                                             else
                                             {
-                                                double brojOsvojenih = 0;
-                                                double brojMogućih = 0;
+
                                                 foreach (Aktivnost aktivnost in ViewBag.predmet.Aktivnosti)
                                                 {
                                                     if (aktivnost.GetType() == typeof(Zadaća))
@@ -194,17 +198,19 @@
                                                 double procenat = 0;
                                                 if (brojMogućih != 0)
                                                 {
-                                                    procenat = brojOsvojenih / brojMogućih;
+                                                    procenat = brojOsvojenih*100/ brojMogućih;
+                                                    strProcenat = procenat.ToString() + "%";
+                                                    strProcenat = strProcenat.Replace(',', '.');
                                                 }
                                                 <div class="progress progress-md">
-                                                    <div class="progress-bar bg-info" role="progressbar" style="width: @procenat%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-info" role="progressbar" style="width: @strProcenat" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
 
                                             }
 
                                             <li style="margin-top:8px">
                                                 <span class="text">
-                                                    Broj osvojenih bodova: @ViewBag.predmet.Bodovi
+                                                    Broj osvojenih bodova: @String.Format("{0:0.00}", brojOsvojenih) od mogućih @brojMogućih bodova.
                                                 </span>
                                             </li>
 
@@ -267,7 +273,7 @@
                                                             <tr>
                                                                 <td>@ispit.Naziv</td>
                                                                 <td>@ispit.KrajnjiDatum</td>
-                                                                <td>@ispit.Bodovi</td>
+                                                                <td>@String.Format("{0:0.00}", ispit.Bodovi)</td>
                                                                 <td>@ispit.MaxBrojBodova</td>
                                                             </tr>
                                                         }
@@ -281,8 +287,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="col-lg-6">
                             <div class="content-page">
                                 <div class="row">
@@ -309,7 +313,7 @@
                                                             <tr>
                                                                 <td>@zadaća.Naziv</td>
                                                                 <td>@zadaća.KrajnjiDatum</td>
-                                                                <td>@zadaća.Bodovi</td>
+                                                                <td>@String.Format("{0:0.00}", zadaća.Bodovi)</td>
                                                                 <td>@zadaća.MaxBrojBodova</td>
                                                             </tr>
                                                         }

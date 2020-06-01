@@ -1,20 +1,20 @@
-﻿@model Student
+﻿
 @{
-    ViewData["Title"] = "Student - Sva obavještenja";
-    Layout = "~/Views/Shared/svaStudentObavještenjaListLayout.cshtml";
+    ViewData["Title"] = "infoOIspitu";
+    Layout = "~/Views/Shared/studentInfoOZadaćiLayout.cshtml";
 }
 
 <div class="main-wrapper">
     <div class="header">
         <!-- Header start -->
         <div class="header-left">
-            <a href="~/student/dashboard/" class="logo">
+            <a href="~/student/dashboard" class="logo">
                 <img src="~/images/logo.png" width="40" height="40" alt="">
                 <span class="text-uppercase">Zamger-v2</span>
             </a>
         </div>
         <div class="page-title-box float-left">
-            <h3 class="text-uppercase">Zamger-v2</h3>
+            <h3 class="text-uppercase">Preschool</h3>
         </div>
         <a id="mobile_btn" class="mobile_btn float-left" href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
         <ul class="nav user-menu float-right">
@@ -68,22 +68,25 @@
                     <ul>
                         <li class="menu-title">Glavni meni</li>
                         <li class="active">
-                            <a href="/student/dashboard"><i class="fa fa-tachometer" aria-hidden="true"></i> Početna</a>
+                            <a href="#"><i class="fa fa-tachometer" aria-hidden="true"></i> Početna</a>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fa fa-book" aria-hidden="true"></i><span> Predmeti </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="#">Moji predmeti</a></li>
+
+                                <li><a href="/student/predmeti-list">Moji predmeti</a></li>
+
+
                             </ul>
                         </li>
                         <li>
                             <a href="/student/nadolazece-aktivnosti"><i class="fa fa-table" aria-hidden="true"></i>Nadolazeće aktivnosti</a>
                         </li>
-
+                        
                         <li class="submenu">
                             <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
-                                <li><a href="#">Sva obavještenja</a></li>
+                                <li><a href="/student/sva-obavještenja-list">Sva obavještenja</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
@@ -108,87 +111,90 @@
     </div>
 
 
-
     <div class="page-wrapper" style="min-height: 723px;">
         <!-- content -->
         <div class="content container-fluid">
+
             <div class="page-header">
                 <div class="row">
                     <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                        <h5 class="text-uppercase">Sva obavještenja - list</h5>
+                        <h5 class="text-uppercase">Informacije o ispitu</h5>
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                         <ul class="list-inline breadcrumb float-right">
                             <li class="list-inline-item"><a href="/student/dashboard">Početna</a></li>
-                            <li class="list-inline-item"> Sva obavještenja - list</li>
+                            <li class="list-inline-item"> Informacije o ispitu</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="content-page">
+
+            <div class="page-content">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="table-responsive">
-                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
-                                <div class="col-sm-12">
-                                    <table class="table table-striped custom-table datatable dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
-                                        <thead>
-                                            <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Naslov </th><th style="min-width: 50px; width: 270px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">Sadržaj</th><th style="min-width: 80px; width: 80.4px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date of Birth: activate to sort column ascending">Datum objavljivanja</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            @for (int i = 0; i < ViewBag.listaObavjestenja.Count; i++)
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="page-title">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="page-title">Informacije o ispitu</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                   
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item list-group-item-info">
+                                                Naziv zadaće: @ViewBag.trazeniIspit.Naziv
+                                            </li>
+                                            <li class="list-group-item">Naziv predmeta: @ViewBag.trazeniIspit.Naziv</li>
+                                            <li class="list-group-item list-group-item-info">Maksimalni broj bodova: @ViewBag.trazeniIspit.MaxBrojBodova</li>
+                                            @if (ViewBag.daLiJePrijavljen)
                                             {
-                                                if (i % 2 == 0)
-                                                {
-                                                    <tr role="row" class="odd">
-                                                        <td class="sorting_1">
-                                                            <h2><a href="/student/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja">@ViewBag.listaObavjestenja[i].Naslov</a></h2>
-                                                        </td>
-                                                        @{String kratakSadrzaj;}
-                                                        @if (ViewBag.listaObavjestenja[i].Sadržaj.Length > 60)
-                                                        {
-                                                            kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj.Substring(0, 60);
-                                                            kratakSadrzaj += "...";
-                                                        }
-                                                        else
-                                                        {
-                                                            kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj;
-                                                        }
-                                                        <td>@kratakSadrzaj</td>
-                                                        <td>@ViewBag.listaObavjestenja[i].dateTime</td>
-
-                                                    </tr>
-                                                }
-                                                else
-                                                {
-                                                    <tr role="row" class="even">
-                                                        <td class="sorting_1">
-                                                            <h2><a href="/student/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja">@ViewBag.listaObavjestenja[i].Naslov</a></h2>
-                                                        </td>
-                                                        @{String kratakSadrzaj;}
-                                                        @if (ViewBag.listaObavjestenja[i].Sadržaj.Length > 60)
-                                                        {
-                                                            kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj.Substring(0, 60);
-                                                            kratakSadrzaj += "...";
-                                                        }
-                                                        else
-                                                        {
-                                                            kratakSadrzaj = ViewBag.listaObavjestenja[i].Sadržaj;
-                                                        }
-                                                        <td>@kratakSadrzaj</td>
-                                                        <td>@ViewBag.listaObavjestenja[i].dateTime</td>
-
-                                                    </tr>
-                                                }
+                                                <li class="list-group-item">Ostvareno bodova:<strong> @String.Format("{0:0.00}", ViewBag.trazeniIspit.Bodovi)</strong></li>
                                             }
-                                        </tbody>
-                                    </table>
+                                            else
+                                            {
+                                                <li class="list-group-item">Ostvareno bodova:<strong> Niste prijavljeni na ovaj ispit</strong></li>
+                                            }
+
+                                            <li class="list-group-item list-group-item-info">Rok za prijavu ispita: @ViewBag.trazeniIspit.KrajnjiDatum</li>
+                                        </ul>
+                                        <br />
+
+                                        @if (!ViewBag.daLiJePrijavljen && DateTime.Now < ViewBag.trazeniIspit.KrajnjiDatum)
+                                        {
+                                            <form class="custom-mt-form" asp-antiforgery="false" action="/student/ispit/@ViewBag.trazeniIspit.IdAktivnosti/prijavi-se" method="post">
+                                                <div class="text-right">
+                                                    <button type="submit" class="btn btn-primary">Prijavi me na ispit</button>
+                                                </div>
+                                            </form>
+                                        }
+                                        else if (ViewBag.daLiJePrijavljen && DateTime.Now < ViewBag.trazeniIspit.KrajnjiDatum)
+                                        {
+                                            <form class="custom-mt-form" asp-antiforgery="false" action="/student/ispit/@ViewBag.trazeniIspit.IdAktivnosti/odjavi-se" method="post">
+                                                    <div class="text-right">
+                                                        <button type="submit" class="btn btn-danger mb-1">Odjavi me sa ispita</button>
+                                                    </div>
+                                            </form>
+                                        }
+                                        else
+                                        {
+
+                                        }
+
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="notification-box">
                 <div class="msg-sidebar notifications msg-noti">
                     <div class="topnav-dropdown-header">
@@ -235,10 +241,7 @@
             </div>
         </div>
     </div>
-
-
 </div>
-
 <div class="sidebar-overlay" data-reff=""></div>
 <script type="text/javascript" src="~/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="~/js/popper.min.js"></script>
@@ -253,6 +256,8 @@
 <script type="text/javascript" src="~/js/jquery.fullcalendar.js"></script>
 <script type="text/javascript" src="~/js/chart.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
+
+
 
 
 

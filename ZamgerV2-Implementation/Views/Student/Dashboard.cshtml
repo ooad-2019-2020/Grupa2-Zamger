@@ -80,11 +80,9 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-table" aria-hidden="true"></i>Nadolazeći ispiti</a>
+                                <a href="/student/nadolazece-aktivnosti"><i class="fa fa-table" aria-hidden="true"></i>Nadolazeće aktivnosti</a>
                             </li>
-                            <li>
-                                <a href="#"><i class="fa fa-table" aria-hidden="true"></i> Događaji</a>
-                            </li>
+
                             <li class="submenu">
                                 <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
                                 <ul class="list-unstyled" style="display: none;">
@@ -196,7 +194,7 @@
                                                                             }
                                                                             else
                                                                             {
-                                                                                <td>@Model.Predmeti[i].Aktivnosti[j].Naziv</td>
+                                                                                <td><a href="/student/ispit-info/@Model.Predmeti[i].Aktivnosti[j].IdAktivnosti/@Model.Predmeti[i].IdPredmeta">@Model.Predmeti[i].Aktivnosti[j].Naziv</a></td>
                                                                             }
 
                                                                             <td>@vrsta</td>
@@ -214,7 +212,7 @@
                                                                             else
                                                                             {
                                                                                 <td class="text-right">
-                                                                                    <a href="#" class="btn btn-primary btn-sm mb-1">
+                                                                                    <a href="/student/ispit-info/@Model.Predmeti[i].Aktivnosti[j].IdAktivnosti/@Model.Predmeti[i].Aktivnosti[j].IdPredmeta" class="btn btn-primary btn-sm mb-1">
                                                                                         <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                                                                     </a>
                                                                                 </td>
@@ -231,13 +229,13 @@
                                                     for (int i = 0; i < ViewBag.listaNePrijavljenihIspita.Count; i++)
                                                     {
                                                         <tr>
-                                                            <td>@ViewBag.listaNePrijavljenihIspita[i].Item2.Naziv</td>
+                                                            <td><a href="/student/ispit-info/@ViewBag.listaNePrijavljenihIspita[i].Item2.IdAktivnosti/@ViewBag.listaNePrijavljenihIspita[i].Item2.IdPredmeta">@ViewBag.listaNePrijavljenihIspita[i].Item2.Naziv</a></td>
                                                             <td>Ispit</td>
                                                             <td>@ViewBag.listaNePrijavljenihIspita[i].Item1</td>
                                                             <td>@ViewBag.listaNePrijavljenihIspita[i].Item2.KrajnjiDatum</td>
 
                                                             <td class="text-right">
-                                                                <a href="#" class="btn btn-primary btn-sm mb-1">
+                                                                <a href="/student/ispit-info/@ViewBag.listaNePrijavljenihIspita[i].Item2.IdAktivnosti/@ViewBag.listaNePrijavljenihIspita[i].Item2.IdPredmeta" class="btn btn-primary btn-sm mb-1">
                                                                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                                                 </a>
                                                             </td>

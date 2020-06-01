@@ -80,10 +80,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-table" aria-hidden="true"></i>Nadolazeći ispiti</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-table" aria-hidden="true"></i> Događaji</a>
+                            <a href="/student/nadolazece-aktivnosti"><i class="fa fa-table" aria-hidden="true"></i>Nadolazeće aktivnosti</a>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
@@ -271,7 +268,7 @@
                                                         {
                                                             Ispit ispit = (Ispit)aktivnost;
                                                             <tr>
-                                                                <td>@ispit.Naziv</td>
+                                                                <td><a href="/student/ispit-info/@ispit.IdAktivnosti/@ispit.IdPredmeta">@ispit.Naziv</a></td>
                                                                 <td>@ispit.KrajnjiDatum</td>
                                                                 <td>@String.Format("{0:0.00}", ispit.Bodovi)</td>
                                                                 <td>@ispit.MaxBrojBodova</td>
@@ -311,7 +308,7 @@
                                                         {
                                                             Zadaća zadaća = (Zadaća)aktivnost;
                                                             <tr>
-                                                                <td>@zadaća.Naziv</td>
+                                                                <td><a href="/student/zadaca-info/@zadaća.IdAktivnosti/@zadaća.IdPredmeta">@zadaća.Naziv</a></td>
                                                                 <td>@zadaća.KrajnjiDatum</td>
                                                                 <td>@String.Format("{0:0.00}", zadaća.Bodovi)</td>
                                                                 <td>@zadaća.MaxBrojBodova</td>

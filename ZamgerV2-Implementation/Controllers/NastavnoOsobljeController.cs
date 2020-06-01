@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using ZamgerV2_Implementation.Helpers;
 using ZamgerV2_Implementation.Models;
 
 namespace ZamgerV2_Implementation.Controllers
 {
+    /*OGROMNA NAPOMENA 
+     
+        Problem je autorizacije sto se u svakoj metodi mora provjerit npr kad se ide /poruke/moj-outbox/9 mora se provjerit da li idPoruke se zaista
+        nalazi u outboxu trenutno logovane osobe
+        ako se nalazi onda tek prikazat full poruku a a ko se ne nalazi ide redirectto 401 error u početni kontroler odnoso pristupOdbijen!
+            
+     */
     [Autorizacija(false, TipKorisnika.NastavnoOsoblje, TipKorisnika.Profesor)]
     public class NastavnoOsobljeController : Controller
     {
@@ -187,7 +195,7 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 ViewBag.poruka = "Greška pri editovanju zahtjeva";
             }
-            else if(idPoruke == 4)
+            else if (idPoruke == 4)
             {
                 ViewBag.poruka = "Nemate pravo pristupa ovoj stranici jer ne pripadate ansamblu traženog predmeta!";
             }
@@ -261,9 +269,9 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult detaljiOStudentuNaPredmetu(int idPredmeta, int idStudenta)
         {
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
-            foreach(PredmetZaNastavnoOsoblje p in trenutniKorisnik.PredmetiNaKojimPredaje)
+            foreach (PredmetZaNastavnoOsoblje p in trenutniKorisnik.PredmetiNaKojimPredaje)
             {
-                if(p.IdPredmeta == idPredmeta)
+                if (p.IdPredmeta == idPredmeta)
                 {
                     ViewBag.trazeniPredmet = p;
                     ViewBag.ansambl = zmgr.dajAnsamblNaPredmetu(idPredmeta);
@@ -338,7 +346,7 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpPost]
         public IActionResult bodujZadaćuStudentu(int idPredmeta, int idZadaće, int idStudenta, IFormCollection forma)
         {
-            if(!String.IsNullOrEmpty(forma["bodovi"]))
+            if (!String.IsNullOrEmpty(forma["bodovi"]))
             {
                 NumberFormatInfo format = new NumberFormatInfo();
                 format.NumberDecimalSeparator = ".";
@@ -347,6 +355,98 @@ namespace ZamgerV2_Implementation.Controllers
             }
             return RedirectToAction("prikaziGresku", new { lokacija = "boduj-zadacu-za-studenta", idPoruke = 7 });
         }
+
+
+        [Route("/nastavno-osoblje/detalji-o-ispitu/{idPredmeta}/{idIspita}")]
+        [HttpGet]
+        public IActionResult detaljiOIspitu(int idPredmeta, int idIspita)
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            foreach(PredmetZaNastavnoOsoblje p in trenutniKorisnik.PredmetiNaKojimPredaje)
+            {
+                if(p.IdPredmeta==idPredmeta)
+                {
+                    ViewBag.idIspita = idIspita;
+                    ViewBag.idPredmeta = idPredmeta;
+                    ViewBag.brojPrijavljenih = zmgr.dajBrojPrijavljenihNaIspit(idIspita);
+                    return View(trenutniKorisnik);
+                }
+            }
+
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
+
+        }
+
+        [Route("/nastavno-osoblje/ocjeni-ispit/{idIspita}")]
+        [HttpPost]
+        public IActionResult ocjeniIspit(int idIspita, IFormCollection forma)
+        {
+            NumberFormatInfo format = new NumberFormatInfo();
+            format.NumberDecimalSeparator = ".";
+            foreach (String key in forma.Keys)
+            {
+                if (!String.IsNullOrEmpty(forma[key]))
+                {
+                    zmgr.updateBodoveIspitaZaStudenta(idIspita, int.Parse(key), float.Parse(forma[key], format));
+                }
+
+            }
+            return RedirectToAction("mojiPredmeti");
+        }
+
+
+
+        [Route("/nastavno-osoblje/student-detalji-o-ispitu/{idPredmeta}/{idStudenta}/{idIspita}")]
+        [HttpGet]
+        public IActionResult infoOStudentovomIspitu(int idPredmeta, int idStudenta, int idIspita)
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            foreach(PredmetZaNastavnoOsoblje p in trenutniKorisnik.PredmetiNaKojimPredaje)
+            {
+                if(p.IdPredmeta==idPredmeta)
+                {
+                    foreach(Student s in p.Studenti)
+                    {
+                        if(s.BrojIndeksa.Value==idStudenta)
+                        {
+                            ViewBag.trazeniStudent = s;
+                            foreach(PredmetZaStudenta prdmt in s.Predmeti)
+                            {
+                                if(prdmt.IdPredmeta==idPredmeta)
+                                {
+                                    ViewBag.trazeniPredmet = prdmt;
+                                    foreach(Aktivnost akt in prdmt.Aktivnosti)
+                                    {
+                                        if(akt.IdAktivnosti==idIspita)
+                                        {
+                                            ViewBag.trazeniIspit = (Ispit)akt;
+                                            return View(trenutniKorisnik);
+                                        }
+                                    }
+                                }     
+                            }
+                        }
+                    }
+                }
+            }
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
+        }
+
+
+        [Route("/nastavno-osoblje/ispit/boduj-ispit-za-studenta/{idPredmeta}/{idIspita}/{idStudenta}")]
+        public IActionResult bodujIspitZaStudenta(int idPredmeta, int idIspita, int idStudenta, IFormCollection forma)
+        {
+            if (!String.IsNullOrEmpty(forma["bodovi"]))
+            {
+                NumberFormatInfo format = new NumberFormatInfo();
+                format.NumberDecimalSeparator = ".";
+                zmgr.updateBodoveIspitaZaStudenta(idIspita, idStudenta, float.Parse(forma["bodovi"], format));
+                return RedirectToAction("detaljiOStudentuNaPredmetu", new { idPredmeta = idPredmeta, idStudenta = idStudenta });
+            }
+            return RedirectToAction("prikaziGresku", new { lokacija = "boduj-ispit-za-studenta", idPoruke = 7 });
+        }
+
+
 
 
     }

@@ -100,7 +100,7 @@ namespace ZamgerV2_Implementation.Controllers
 
 
         [Route("/pristup-odbijen")]
-        public IActionResult pristupOdbijen(int idGreške)
+        public IActionResult pristupOdbijen()
         {
             return View();
         }

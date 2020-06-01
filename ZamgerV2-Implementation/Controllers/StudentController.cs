@@ -190,7 +190,6 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/student/{lokacija}/greska/{idPoruke}")]
         public IActionResult prikaziGresku(string lokacija, int idPoruke)
         {
-            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
             if (idPoruke == 1)
             {
                 ViewBag.poruka = "Greška pri kreiranju zahtjeva";
@@ -210,6 +209,10 @@ namespace ZamgerV2_Implementation.Controllers
             else if (idPoruke == 5)
             {
                 ViewBag.poruka = "Morate odabrati fajl za upload!";
+            }
+            else if (idPoruke == 6)
+            {
+                ViewBag.poruka = "Ne mozete se prijaviti na ovaj ispit";
             }
             return View();
         }
@@ -284,6 +287,98 @@ namespace ZamgerV2_Implementation.Controllers
             return RedirectToAction("prikaziGresku", new { lokacija = "posalji-zadacu", idPoruke = 5 });
         }
 
+
+        [Route("/student/ispit-info/{idIspita}/{idPredmeta}")]
+        [HttpGet]
+        public IActionResult infoOIspitu(int idIspita, int idPredmeta)
+        {
+            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext); 
+
+                foreach(PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+                {
+                    if(p.IdPredmeta == idPredmeta)
+                    {
+                        ViewBag.trazeniPredmet = p;
+                        if (zmgr.daLiJePrijavljenNaIspit(trenutniKorisnik.BrojIndeksa.Value, idIspita))
+                        {
+                            foreach (Aktivnost akt in p.Aktivnosti)
+                            {
+                                if (akt.IdAktivnosti == idIspita)
+                                {
+                                    ViewBag.trazeniIspit = (Ispit)akt;
+                                    ViewBag.daLiJePrijavljen = true;
+                                    return View(trenutniKorisnik);
+                                }
+                            }
+                           break;
+                        }
+                        else
+                        {
+
+                            ViewBag.trazeniIspit = (Ispit)zmgr.dajAktivnostPoId(idIspita);
+                            ViewBag.daLiJePrijavljen = false;
+                            return View(trenutniKorisnik);
+
+                        }
+                    }
+                } 
+            return RedirectToAction("/pristup-odbijen", "Početni");
+        }
+
+
+
+        [Route("/student/ispit/{idIspita}/prijavi-se")]
+        [HttpPost]
+        public IActionResult prijaviSeNaIspit(int idIspita)
+        {
+            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
+            var tempIspit =(Ispit)zmgr.dajAktivnostPoId(idIspita);
+            foreach(PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+            {
+                if(p.IdPredmeta==tempIspit.IdPredmeta)
+                {
+                    zmgr.prijaviStudentaNaIspit(trenutniKorisnik.BrojIndeksa.Value, tempIspit);
+                    return RedirectToAction("Dashboard");
+                }
+            }
+
+            return RedirectToAction("prikaziGresku", new { lokacija = "prijavi-ispit", idPoruke = 6 });
+
+        }
+
+
+        [Route("/student/ispit/{idIspita}/odjavi-se")]
+        [HttpPost]
+        public IActionResult odjaviSeSaIspita(int idIspita)
+        {
+            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
+            var tempIspit = zmgr.dajAktivnostPoId(idIspita);
+            foreach (PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+            {
+                if (p.IdPredmeta == tempIspit.IdPredmeta)
+                {
+                    foreach(Aktivnost akt in p.Aktivnosti)
+                    {
+                        if(akt.IdAktivnosti == idIspita)
+                        {
+                            zmgr.odjaviStudentaSaIspita(trenutniKorisnik.BrojIndeksa.Value, idIspita);
+                            return RedirectToAction("Dashboard");
+                        }
+                    }
+                }
+            }
+
+            return RedirectToAction("prikaziGresku", new { lokacija = "prijavi-ispit", idPoruke = 6 });
+
+        }
+
+
+        [Route("/student/nadolazece-aktivnosti")]
+        public IActionResult nadolazećiIspiti()
+        {
+            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
+            return View(trenutniKorisnik);
+        }
 
     }
 }

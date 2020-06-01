@@ -467,15 +467,6 @@ namespace ZamgerV2_Implementation.Models
         }
 
 
-        public List<Aktivnost> dajAktivnostiZaPredmetPoId(int idPredmeta) //treba iskucat ovdje upit koji ce vratit sve aktivnosti na predmetuzanastavnoosoblje po id
-        {
-            List<Aktivnost> aktivnosti = new List<Aktivnost>();
-            string kveri = "select idAktivnosti, idPredmeta, vrsta, naziv, rok, maxBrojBodova from aktivnosti where idPredmeta = @predmetID";
-            SqlCommand cmd = new SqlCommand(kveri, conn);
-            cmd.Parameters.AddWithValue("predmetID", idPredmeta);
-            return null;
-        }
-
         public List<int> dajIdeveStudenataNaPredmetu(int id)
         {
             List<int> idevi = new List<int>();
@@ -1177,6 +1168,86 @@ namespace ZamgerV2_Implementation.Models
                 cmd.ExecuteNonQuery();
             }
             catch (Exception e) { throw new Exception(e.StackTrace + " greška prilikom upisa ocjene za studenta"); }
+        }
+
+        public void prijaviStudentaNaIspit(int idStudenta, Ispit tempIspit)
+        {
+            string kveri = "insert into ODAZVANI_STUDENTI values (@aktivnostID, @studentID)";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("aktivnostID", tempIspit.IdAktivnosti);
+            cmd.Parameters.AddWithValue("studentID", idStudenta);
+
+            string kveri2 = "insert into ISPITI values(@studID, @predID, @naziv, @datum, 0, @ispitID, @maxBrBod, 10)";
+            SqlCommand cmd2 = new SqlCommand(kveri2, conn);
+            cmd2.Parameters.AddWithValue("studID", idStudenta);
+            cmd2.Parameters.AddWithValue("predID", tempIspit.IdPredmeta);
+            cmd2.Parameters.AddWithValue("naziv", tempIspit.Naziv);
+            cmd2.Parameters.AddWithValue("datum", tempIspit.KrajnjiDatum);
+            cmd2.Parameters.AddWithValue("ispitID", tempIspit.IdAktivnosti);
+            cmd2.Parameters.AddWithValue("maxBrBod", tempIspit.MaxBrojBodova);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
+            }
+            catch (Exception e) { throw new Exception(e.StackTrace + " greška prilikom prijavljivanja studenta na ispit"); }
+        }
+
+        public bool daLiJePrijavljenNaIspit(int idStudenta, int idIspita)
+        {
+            string kveri = "select * from ODAZVANI_STUDENTI where idAktivnosti=@aktID and idStudenta = @studID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("aktID", idIspita);
+            cmd.Parameters.AddWithValue("studID", idStudenta);
+            try
+            {
+                var result = cmd.ExecuteReader();
+                return result.HasRows;
+            }catch(Exception e) { throw new Exception(e.StackTrace + " neka greška prilikom provjere da li je student prijavljen na ispit"); }
+        }
+
+        public void odjaviStudentaSaIspita(int idStudenta, int idIspita)
+        {
+            string kveri = "delete from odazvani_studenti where idAktivnosti = @ispitID and idStudenta = @studID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("ispitID", idIspita);
+            cmd.Parameters.AddWithValue("studID", idStudenta);
+
+            string kveri2 = "delete from ISPITI where idIspita = @IDIspit and idStudenta = @IDStud";
+            SqlCommand cmd2 = new SqlCommand(kveri2, conn);
+            cmd2.Parameters.AddWithValue("IDIspit", idIspita);
+            cmd2.Parameters.AddWithValue("IDStud", idStudenta);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
+            }catch(Exception e){ throw new Exception(e.StackTrace + " greška prilikom odjavljivanja studenta sa ispita"); }
+        }
+
+        public int dajBrojPrijavljenihNaIspit(int idIspita)
+        {
+            string kveri = "select ISNULL(Count(idAktivnosti),0) from odazvani_studenti where idAktivnosti = @ispitID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("ispitID", idIspita);
+            try
+            {
+                return (int)cmd.ExecuteScalar();
+            }catch(Exception e) { throw new Exception(e.StackTrace + " greška prilikom dobavljanja broja prijavljenih studenata"); }
+        }
+
+
+        public void updateBodoveIspitaZaStudenta(int idIspita, int idStudenta, double bodovi)
+        {
+            string kveri = "update ispiti set bodovi=@bodovi where idIspita=@ispitID and idStudenta=@studentID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("ispitID", idIspita);
+            cmd.Parameters.AddWithValue("studentID", idStudenta);
+            cmd.Parameters.AddWithValue("bodovi", bodovi);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e) { throw new Exception(e.StackTrace + " greška prilikom bodovanja studenta na ispitu"); }
         }
     }
 

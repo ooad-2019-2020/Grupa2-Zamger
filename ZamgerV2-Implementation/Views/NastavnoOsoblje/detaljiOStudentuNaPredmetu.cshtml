@@ -275,7 +275,7 @@
                                                             {
                                                                 Ispit ispit = (Ispit)aktivnost;
                                                                 <tr>
-                                                                    <td>@ispit.Naziv</td>
+                                                                    <td><a href="/nastavno-osoblje/student-detalji-o-ispitu/@ispit.IdPredmeta/@ViewBag.trazeniStudent.BrojIndeksa/@ispit.IdAktivnosti">@ispit.Naziv</a></td>
                                                                     <td>@ispit.KrajnjiDatum</td>
                                                                     <td>@String.Format("{0:0.00}", ispit.Bodovi)</td>
                                                                     <td>@ispit.MaxBrojBodova</td>

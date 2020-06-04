@@ -445,6 +445,35 @@ namespace ZamgerV2_Implementation.Controllers
             }
             return RedirectToAction("prikaziGresku", new { lokacija = "boduj-ispit-za-studenta", idPoruke = 7 });
         }
+        [Route("/nastavno-osoblje/moj-profil")]
+        public IActionResult mojProfil()
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+
+            ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
+
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/nastavno-osoblje/moj-profil")]
+        [HttpPost]
+        public IActionResult mojProfil(IFormCollection forma)
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext); ;
+
+            ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
+            Logger logg = Logger.GetInstance();
+            try
+            {
+                logg.promijeniPasswordKorisniku((int)trenutniKorisnik.IdOsobe, forma["password"]);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return View(trenutniKorisnik);
+        }
 
 
 

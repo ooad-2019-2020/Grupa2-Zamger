@@ -21,7 +21,7 @@ namespace ZamgerV2_Implementation.Models
         private ZamgerDbContext()
         {
 
-            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
 
             try
             {
@@ -745,18 +745,29 @@ namespace ZamgerV2_Implementation.Models
         }
         public double dajProsjekPoID(int? indeks)
         {
-            string kveri = "select isnull(avg(ocjena),5) from ocjene where ocjena>5 and idStudenta = @StudentID";
+            string kveri = "select isnull(sum(ocjena),0),count(ocjena) from ocjene where ocjena>5 and idStudenta = @StudentID";
+            
             var studentIDParam = new SqlParameter("StudentID", SqlDbType.Int);
             studentIDParam.Value = indeks;
             SqlCommand command = new SqlCommand(kveri, conn);
             command.Parameters.Add(studentIDParam);
             try
             {
-                return (double)command.ExecuteScalar();
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    int suma = result.GetInt32(0);
+                    int count = result.GetInt32(1);
+                    if (count == 0) return 5;
+                    return ((double)suma)/ count;
+                }
             }catch(Exception e)
             {
+                //throw new Exception(e.StackTrace + " greška prilikom dohvaćanja obavještenja po ID iz baze");
                 return 5;
             }
+            return 5;
         }
 
         public List<Obavještenje> dajSvaObavještenja()

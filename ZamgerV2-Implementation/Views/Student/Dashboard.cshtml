@@ -46,7 +46,7 @@
                         <span>@Model.Ime</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Moj Profil</a>
+                        <a class="dropdown-item" href="~/student/moj-profil">Moj Profil</a>
                         <a class="dropdown-item" href="/Početni/OdjaviSe">Odjavi se</a>
                     </div>
                 </li>
@@ -137,7 +137,7 @@
                         <div class="dash-widget dash-widget5">
                             <span class="dash-widget-icon bg-warning"><i class="fa fa-align-center" aria-hidden="true"></i></span>
                             <div class="dash-widget-info">
-                                <h3>@String.Format("{0:0.00}", Model.dajTrenutniProsjek())</h3>
+                                <h3>@String.Format("{0:0.00}", ViewBag.prosjek)</h3>
                                 <span>Trenutni prosjek</span>
                             </div>
                         </div>

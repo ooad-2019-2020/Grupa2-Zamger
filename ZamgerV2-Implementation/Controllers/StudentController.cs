@@ -31,6 +31,7 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.nepolozeni = zmgr.dajBrojNepoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
             ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
             ViewBag.listaNePrijavljenihIspita = zmgr.dajIspiteNaKojeSeStudentNijePrijavio(trenutniKorisnik.BrojIndeksa.Value);
+            ViewBag.prosjek = zmgr.dajProsjekPoID(trenutniKorisnik.BrojIndeksa.Value);
 
             return View(trenutniKorisnik);
         }
@@ -377,6 +378,41 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult nadolazećiIspiti()
         {
             var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
+            return View(trenutniKorisnik);
+        }
+
+
+        [Route("/student/moj-profil")]
+        public IActionResult mojProfil()
+        {
+            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
+
+            ViewBag.polozeni = zmgr.dajBrojPoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
+            ViewBag.nepolozeni = zmgr.dajBrojNepoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
+            ViewBag.prosjek = zmgr.dajProsjekPoID(trenutniKorisnik.BrojIndeksa.Value);
+
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/student/moj-profil")]
+        [HttpPost]
+        public IActionResult mojProfil(IFormCollection forma)
+        {
+            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
+
+            ViewBag.polozeni = zmgr.dajBrojPoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
+            ViewBag.nepolozeni = zmgr.dajBrojNepoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
+            ViewBag.prosjek = zmgr.dajProsjekPoID(trenutniKorisnik.BrojIndeksa.Value);
+            Logger logg = Logger.GetInstance();
+            try
+            {
+                logg.promijeniPasswordKorisniku((int)trenutniKorisnik.BrojIndeksa, forma["password"]);
+            }
+            catch(Exception e)
+            {
+
+            }
+
             return View(trenutniKorisnik);
         }
 

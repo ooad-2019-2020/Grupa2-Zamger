@@ -85,13 +85,16 @@
                                 <li><a href="/nastavno-osoblje/kreiraj-aktivnost">Kreiraj aktivnost</a></li>
                             </ul>
                         </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fa fa-question-circle-o" aria-hidden="true"></i> <span> Ankete</span> <span class="menu-arrow"></span></a>
-                            <ul class="list-unstyled" style="display: none;">
-                                <li><a href="#">Moje ankete</a></li>
-                                <li><a href="#">Kreiraj anketu</a></li>
-                            </ul>
-                        </li>
+                        @if (Model.GetType() == typeof(Profesor))
+                        {
+                            <li class="submenu">
+                                <a href="#"><i class="fa fa-question-circle-o" aria-hidden="true"></i> <span> Ankete</span> <span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
+                                    <li><a href="#">Moje ankete</a></li>
+                                    <li><a href="#">Kreiraj anketu</a></li>
+                                </ul>
+                            </li>
+                        }
                         <li class="submenu">
                             <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">

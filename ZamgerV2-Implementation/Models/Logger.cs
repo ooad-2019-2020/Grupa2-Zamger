@@ -21,7 +21,7 @@ namespace ZamgerV2_Implementation.Models
         private Logger()
         {
             //ST6TE70 - PASHA
-            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
 
 
             //0G31M9N - WHOSO
@@ -1654,6 +1654,34 @@ namespace ZamgerV2_Implementation.Models
             {
                 throw new Exception(e.StackTrace + " greška prilikom mijenjanja prebivališta za osoblje");
             }
+        }
+
+        public List<Tuple<string, string, DateTime>> dajInfoONadolazecimIspitima()
+        {
+            List<Tuple<string, string, DateTime>> list = new List<Tuple<string, string, DateTime>>();
+            string kveri = "select distinct(idIspita),naziv,datum,idPredmeta from ispiti where datum>CURRENT_TIMESTAMP;";
+            SqlCommand command = new SqlCommand(kveri, conn);
+            try
+            {
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        int idPredmeta = result.GetInt32(3);
+                        string naziv = dajPredmetBasicPoId(idPredmeta).Item2;
+                        list.Add(new Tuple<string, string, DateTime>(result.GetString(1), naziv, result.GetDateTime(2)));
+
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace);
+            }
+
+            return list;
         }
 
 

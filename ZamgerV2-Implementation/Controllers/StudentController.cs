@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Hosting.Internal;
 using ZamgerV2_Implementation.Helpers;
 using ZamgerV2_Implementation.Models;
@@ -322,8 +323,8 @@ namespace ZamgerV2_Implementation.Controllers
 
                         }
                     }
-                } 
-            return RedirectToAction("/pristup-odbijen", "Početni");
+                }
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
         }
 
 
@@ -414,6 +415,60 @@ namespace ZamgerV2_Implementation.Controllers
             }
 
             return View(trenutniKorisnik);
+        }
+
+        [Route("/student/aktivne-ankete")]
+        [HttpGet]
+        public IActionResult aktivneAnkete()
+        {
+            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
+            List<Anketa> aktivneAnkete = new List<Anketa>();
+            foreach(PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+            {
+                List<int> ideviAnketa = zmgr.dajIdeveAktivnihAnketaZaPredmet(p.IdPredmeta);
+                if(ideviAnketa!=null)
+                {
+                    foreach (int br in ideviAnketa)
+                    {
+                        if (!zmgr.daLiJeAnketaVecPopunjena(trenutniKorisnik.BrojIndeksa.Value, br))
+                        {
+                            aktivneAnkete.Add(zmgr.dajAnketu(br));
+                        }
+                    }
+                }
+
+            }
+            ViewBag.ankete = aktivneAnkete;
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/student/popuni-anketu/{idPredmeta}/{idAnkete}")]
+        [HttpGet]
+        public IActionResult popuniAnketu(int idPredmeta, int idAnkete)
+        {
+            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
+            foreach(PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+            {
+                if(p.IdPredmeta == idPredmeta)
+                {
+                    ViewBag.trenutnaAnketa = zmgr.dajAnketu(idAnkete);
+                    return View(trenutniKorisnik);
+                }
+            }
+
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
+
+        }
+
+        [Route("/student/popuni-anketu/{idPredmeta}/{idAnkete}")]
+        [HttpPost]
+        public IActionResult popuniAnketu(int idPredmeta, int idAnkete, IFormCollection forma)
+        {
+            var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
+            List<string> odgovori = new List<string>();
+            odgovori.Add(forma["odg1"]); odgovori.Add(forma["odg2"]); odgovori.Add(forma["odg3"]); odgovori.Add(forma["odg4"]); odgovori.Add(forma["odg5"]);
+            zmgr.popuniAnketu(idAnkete, trenutniKorisnik.BrojIndeksa.Value, odgovori, forma["komentar"], int.Parse(forma["ocjena"]));
+            return RedirectToAction("Dashboard");
         }
 
     }

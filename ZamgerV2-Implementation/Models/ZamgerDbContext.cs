@@ -21,7 +21,7 @@ namespace ZamgerV2_Implementation.Models
         private ZamgerDbContext()
         {
 
-            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
 
             try
             {
@@ -597,7 +597,7 @@ namespace ZamgerV2_Implementation.Models
         public List<Anketa> dajAnketeZaPredmetPoId(int id)
         {
             List<Anketa> ankete = new List<Anketa>();
-            string kveri = "select naziv, datum, pitanje1, pitanje2, pitanje3, pitanje4, pitanje5, idAnkete from ANKETE_NA_PREDMETIMA where idPredmeta = @predmetID";
+            string kveri = "select naziv, datum, pitanje1, pitanje2, pitanje3, pitanje4, pitanje5, idAnkete, idPredmeta from ANKETE_NA_PREDMETIMA where idPredmeta = @predmetID order by datum asc";
             var predmetIDParam = new SqlParameter("predmetID", System.Data.SqlDbType.Int);
             predmetIDParam.Value = id;
             SqlCommand command = new SqlCommand(kveri, conn);
@@ -609,7 +609,7 @@ namespace ZamgerV2_Implementation.Models
                 {
                     while (result.Read())
                     {
-                        Anketa tempAnketa = new Anketa(result.GetString(0), result.GetDateTime(1), null, result.GetInt32(7), null);
+                        Anketa tempAnketa = new Anketa(result.GetString(0), result.GetDateTime(1), null, result.GetInt32(7), null, result.GetInt32(8));
                         tempAnketa.Pitanja = new List<string>();
                         for (int i = 2; i < 7; i++)
                         {
@@ -1260,6 +1260,203 @@ namespace ZamgerV2_Implementation.Models
             }
             catch (Exception e) { throw new Exception(e.StackTrace + " greška prilikom bodovanja studenta na ispitu"); }
         }
+
+        public int generišiIdAnkete()
+        {
+            string kveri = "select isnull(Count(idAnkete)+1,0) from ANKETE_NA_PREDMETIMA";
+            SqlCommand komanda = new SqlCommand(kveri, conn);
+            try
+            {
+                return (int)komanda.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom generisanja id za novu anketu");
+            }
+        }
+
+
+
+
+        public int kreirajAnketu(int idPredmeta, string naziv, DateTime datum, string pitanje1, string pitanje2, string pitanje3, string pitanje4, string pitanje5, int ocjena)
+        {
+            int idAnkete = this.generišiIdAnkete();
+            string kveri = "insert into ANKETE_NA_PREDMETIMA values (@predmetID, @naziv, @datum, @anketaID, @pitanje1, @pitanje2, @pitanje3, @pitanje4, @pitanje5, @ocjena)";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+
+            cmd.Parameters.AddWithValue("predmetID", idPredmeta);
+            cmd.Parameters.AddWithValue("naziv", naziv);
+            cmd.Parameters.AddWithValue("datum", datum);
+            cmd.Parameters.AddWithValue("anketaID", idAnkete);
+            cmd.Parameters.AddWithValue("pitanje1", pitanje1);
+            cmd.Parameters.AddWithValue("pitanje2", pitanje2);
+            cmd.Parameters.AddWithValue("pitanje3", pitanje3);
+            cmd.Parameters.AddWithValue("pitanje4", pitanje4);
+            cmd.Parameters.AddWithValue("pitanje5", pitanje5);
+            cmd.Parameters.AddWithValue("ocjena", ocjena);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                return idAnkete;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom kreiranja ankete");
+            }
+        }
+
+        public List<OdgovorNaAnketu> dajOdgovoreNaAnketu(int id)
+        {
+            string kveri = "select idStudenta, idAnkete, odgovor1, odgovor2, odgovor3, odgovor4, odgovor5, komentarStudenta, ocjenaPredmeta from ODGOVORI_NA_ANKETU where idAnkete=@anketaId";
+            SqlCommand komanda = new SqlCommand(kveri, conn);
+            komanda.Parameters.AddWithValue("anketaId", id);
+            try
+            {
+                var rezultat = komanda.ExecuteReader();
+                if (rezultat.HasRows)
+                {
+                    List<OdgovorNaAnketu> o = new List<OdgovorNaAnketu>();
+                    while (rezultat.Read())
+                    {
+                        List<string> odgovori = new List<string>();
+                        odgovori.Add(rezultat.GetString(2));
+                        odgovori.Add(rezultat.GetString(3));
+                        odgovori.Add(rezultat.GetString(4));
+                        odgovori.Add(rezultat.GetString(5));
+                        odgovori.Add(rezultat.GetString(6));
+                        o.Add(new OdgovorNaAnketu(rezultat.GetInt32(1), rezultat.GetInt32(0), odgovori, rezultat.GetString(7), rezultat.GetInt32(8)));
+                    }
+                    return o;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom vraćanja odgovora za anketu po id-u");
+            }
+        }
+        public Anketa dajAnketu(int id)
+        {
+            string kveri = "select idPredmeta, naziv, datum, idAnkete, pitanje1, pitanje2, pitanje3, pitanje4, pitanje5, ocjenaPredmeta from ANKETE_NA_PREDMETIMA where idAnkete=@anketaId";
+            SqlCommand komanda = new SqlCommand(kveri, conn);
+            komanda.Parameters.AddWithValue("anketaId", id);
+            try
+            {
+                var rezultat = komanda.ExecuteReader();
+                if (rezultat.HasRows)
+                {
+                    rezultat.Read();
+                    List<String> pitanja = new List<string>();
+                    pitanja.Add(rezultat.GetString(4));
+                    pitanja.Add(rezultat.GetString(5));
+                    pitanja.Add(rezultat.GetString(6));
+                    pitanja.Add(rezultat.GetString(7));
+                    pitanja.Add(rezultat.GetString(8));
+                    List<OdgovorNaAnketu> odgovori = dajOdgovoreNaAnketu(id);
+                    Anketa a = new Anketa(rezultat.GetString(1), rezultat.GetDateTime(2), pitanja, rezultat.GetInt32(3), odgovori, rezultat.GetInt32(0));
+                    return a;
+                }
+                else
+                {
+                    throw new Exception("Greška, nema ankete pod datim id-em");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + " greška prilikom pretrage ankete po id-u");
+            }
+        }
+
+        public string dajNazivPredmetaPoId(int idPredmeta)
+        {
+            string kveri = "select naziv from predmeti where idPredmeta = @predmetID";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("predmetID", idPredmeta);
+            try
+            {
+                return (string)cmd.ExecuteScalar();
+            }
+            catch(Exception e) { throw new Exception(e.StackTrace + " greška prilikom dobavljanja naziva predmeta po id"); }
+        }
+
+        public List<int> dajIdeveAktivnihAnketaZaPredmet(int idPredmeta)
+        {
+            List<int> idevi = new List<int>();
+            string kveri = "select idAnkete from ANKETE_NA_PREDMETIMA where idPredmeta = @predmetID and datum>@trenutniDatum";
+            SqlCommand cmd = new SqlCommand(kveri, conn);
+            cmd.Parameters.AddWithValue("predmetID", idPredmeta);
+            cmd.Parameters.AddWithValue("trenutniDatum", DateTime.Now);
+            try
+            {
+                var result = cmd.ExecuteReader();
+                if(result.HasRows)
+                {
+                    while(result.Read())
+                    {
+                        idevi.Add(result.GetInt32(0));
+                    }
+                    return idevi;
+                }
+                else
+                {
+                    return null;
+                }
+            }catch(Exception e) { throw new Exception(e.StackTrace + " greška prilikom dobavljanja ideva za ankete po idu predmeta"); }
+        }
+
+
+        public bool popuniAnketu(int idAnkete, int idStudenta, List<String> odgovori, String komentar, int ocjena)
+        {
+            string kveri = "insert into ODGOVORI_NA_ANKETU VALUES (@idStudenta, @idAnkete, @odgovor1, @odgovor2, @odgovor3, @odgovor4, @odgovor5, @komentarStudenta, @ocjenaPredmeta)";
+            SqlCommand komanda = new SqlCommand(kveri, conn);
+            komanda.Parameters.AddWithValue("idStudenta", idStudenta);
+            komanda.Parameters.AddWithValue("idAnkete", idAnkete);
+            komanda.Parameters.AddWithValue("odgovor1", odgovori.ElementAt(0));
+            komanda.Parameters.AddWithValue("odgovor2", odgovori.ElementAt(1));
+            komanda.Parameters.AddWithValue("odgovor3", odgovori.ElementAt(2));
+            komanda.Parameters.AddWithValue("odgovor4", odgovori.ElementAt(3));
+            komanda.Parameters.AddWithValue("odgovor5", odgovori.ElementAt(4));
+            komanda.Parameters.AddWithValue("komentarStudenta", komentar);
+            komanda.Parameters.AddWithValue("ocjenaPredmeta", ocjena);
+            try
+            {
+                komanda.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool daLiJeAnketaVecPopunjena(int idStudenta, int idAnkete)
+        {
+            string kveri = "select * from odgovori_na_anketu where idStudenta=@StudentID and idAnkete=@AnketaID";
+            SqlCommand command = new SqlCommand(kveri, conn);
+            command.Parameters.AddWithValue("StudentID", idStudenta);
+            command.Parameters.AddWithValue("AnketaID", idAnkete);
+            try
+            {
+                var result = command.ExecuteReader();
+                if (result.HasRows) return true;
+                return false;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace + "greška prilikom pretrage odgovora na anketu");
+            }
+
+
+        }
+
+
+
+
+
     }
 
 

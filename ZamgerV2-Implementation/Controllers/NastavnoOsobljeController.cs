@@ -459,7 +459,7 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpPost]
         public IActionResult mojProfil(IFormCollection forma)
         {
-            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext); ;
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext); 
 
             ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
             Logger logg = Logger.GetInstance();
@@ -473,6 +473,65 @@ namespace ZamgerV2_Implementation.Controllers
             }
 
             return View(trenutniKorisnik);
+        }
+
+        [Route("/nastavno-osoblje/moje-ankete")]
+        [HttpGet]
+        public IActionResult mojeAnkete()
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            if(trenutniKorisnik.GetType() != typeof(Profesor))
+            {
+                return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
+            }
+            return View(trenutniKorisnik);
+        }
+
+
+        [Route("/nastavno-osoblje/kreiraj-anketu")]
+        [HttpGet]
+        public IActionResult kreirajAnketu()
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            if (trenutniKorisnik.GetType() != typeof(Profesor))
+            {
+                return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
+            }
+            return View(trenutniKorisnik);
+        }
+
+
+        [Route("/nastavno-osoblje/napravi-anketu")]
+        public IActionResult napraviAnketu(IFormCollection forma)
+        {
+            DateTime oDate = Convert.ToDateTime(forma["datum"] + " " + forma["vrijeme"]);
+            zmgr.kreirajAnketu(int.Parse(forma["izabraniPredmet"]), forma["nazivAnkete"], oDate, forma["pitanje1"], forma["pitanje2"], forma["pitanje3"], forma["pitanje4"], forma["pitanje5"], 5);
+            return RedirectToAction("mojeAnkete");
+        }
+
+        [Route("/nastavno-osoblje/rezultati-ankete/{idAnkete}")]
+        public IActionResult rezultatiAnkete(int idAnkete)
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            if(trenutniKorisnik.GetType() == typeof(Profesor))
+            {
+                if (((Profesor)trenutniKorisnik).AnketeNaPredmetima != null)
+                {
+                    foreach (Anketa an in ((Profesor)trenutniKorisnik).AnketeNaPredmetima)
+                    {
+                        if(an.IdAnkete==idAnkete)
+                        {
+                            ViewBag.nazivPredmeta = zmgr.dajNazivPredmetaPoId(an.IdPredmeta);
+                            ViewBag.trazenaAnketa = zmgr.dajAnketu(idAnkete);
+                            return View(((Profesor)trenutniKorisnik));
+                        }
+                    }
+                }
+              
+            }
+
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
+
         }
 
 

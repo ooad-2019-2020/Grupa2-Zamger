@@ -40,6 +40,7 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.ukupanBrojNastavnogOsoblja = logg.dajUkupanBrojNastavnogOsobljaNaSistemu();
             ViewBag.uposlenici = logg.pretražiNastavnoOsoblje(null, null, "Izaberite");
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            ViewBag.nadolazeciIspiti = logg.dajInfoONadolazecimIspitima();
             return View();
         }
 
@@ -812,6 +813,58 @@ namespace ZamgerV2_Implementation.Controllers
             return View();
         }
 
+
+        [Route("/studentska/moj-profil")]
+        [HttpGet]
+        public IActionResult mojProfil()
+        {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            ViewBag.ukupanBrojOsoba = logg.dajUkupanBrojOsobaNaSistemu();
+            ViewBag.ukupanBrojStudenata = logg.dajUkupanBrojStudenataNaSistemu();
+            ViewBag.ukupanBrojNastavnogOsoblja = logg.dajUkupanBrojNastavnogOsobljaNaSistemu();
+            ViewBag.uposlenici = logg.pretražiNastavnoOsoblje(null, null, "Izaberite");
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+
+            return View();
+        }
+
+        [Route("/studentska/moj-profil")]
+        [HttpPost]
+        public IActionResult mojProfil(IFormCollection forma)
+        {
+
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            ViewBag.ukupanBrojOsoba = logg.dajUkupanBrojOsobaNaSistemu();
+            ViewBag.ukupanBrojStudenata = logg.dajUkupanBrojStudenataNaSistemu();
+            ViewBag.ukupanBrojNastavnogOsoblja = logg.dajUkupanBrojNastavnogOsobljaNaSistemu();
+            ViewBag.uposlenici = logg.pretražiNastavnoOsoblje(null, null, "Izaberite");
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+
+            try
+            {
+                logg.promijeniPasswordKorisniku(1, forma["password"]);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return View();
+        }
+
+        [Route("/studentska/nadolazeci-ispiti")]
+        public IActionResult nadolazeciIspiti()
+        {
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            ViewBag.ukupanBrojOsoba = logg.dajUkupanBrojOsobaNaSistemu();
+            ViewBag.ukupanBrojStudenata = logg.dajUkupanBrojStudenataNaSistemu();
+            ViewBag.ukupanBrojNastavnogOsoblja = logg.dajUkupanBrojNastavnogOsobljaNaSistemu();
+            ViewBag.uposlenici = logg.pretražiNastavnoOsoblje(null, null, "Izaberite");
+            ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            ViewBag.nadolazeciIspiti = logg.dajInfoONadolazecimIspitima();
+
+            return View();
+        }
 
 
 

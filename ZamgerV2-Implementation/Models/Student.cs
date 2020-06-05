@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ZamgerV2_Implementation.Models
 {
-    public class Student : Korisnik
+    public class Student : Korisnik, IEnumerable
     {
 
         private String odsjek;
@@ -13,7 +14,7 @@ namespace ZamgerV2_Implementation.Models
         private int godinaStudija;
         private List<PredmetZaStudenta> predmeti;
 
-        public Student(String tIme, String tPrezime, String tDatumRođenja, String tMjestoPrebivališta, String tUsername, String tEmail, String tSpol, String tOdsjek, int? tBrojIndeksa): base(tIme, tPrezime, tDatumRođenja, tMjestoPrebivališta, tUsername, tEmail, tSpol)
+        public Student(String tIme, String tPrezime, String tDatumRođenja, String tMjestoPrebivališta, String tUsername, String tEmail, String tSpol, String tOdsjek, int? tBrojIndeksa) : base(tIme, tPrezime, tDatumRođenja, tMjestoPrebivališta, tUsername, tEmail, tSpol)
         {
             this.odsjek = tOdsjek;
             this.brojIndeksa = tBrojIndeksa;
@@ -24,6 +25,15 @@ namespace ZamgerV2_Implementation.Models
         public int GodinaStudija { get => godinaStudija; set => godinaStudija = value; }
         public List<PredmetZaStudenta> Predmeti { get => predmeti; set => predmeti = value; }
 
+        public object Current => throw new NotImplementedException();
+
+        public IEnumerator GetEnumerator()
+        {
+            foreach (var predmet in Predmeti)
+            {
+                yield return predmet;
+            }
+        }
         public double dajBrojBodovaNaPredmetu(int idPredmeta)
         {
             double brojBodova = 0;
@@ -37,9 +47,9 @@ namespace ZamgerV2_Implementation.Models
                 }
             }
 
-            foreach(Aktivnost akt in prdmt.Aktivnosti)
+            foreach (Aktivnost akt in prdmt.Aktivnosti)
             {
-                if(akt.GetType()==typeof(Ispit))
+                if (akt.GetType() == typeof(Ispit))
                 {
                     brojBodova += ((Ispit)akt).Bodovi;
                 }
@@ -50,7 +60,7 @@ namespace ZamgerV2_Implementation.Models
             }
 
             return brojBodova;
-            
+
         }
 
         public int dajOcjenuNaPredmetu(int idPredmeta)
@@ -69,11 +79,11 @@ namespace ZamgerV2_Implementation.Models
 
         public double dajTrenutniProsjek()
         {
-            int brPredmeta=0;
-            int sumaOcjena=0;
-            foreach(PredmetZaStudenta p in predmeti)
+            int brPredmeta = 0;
+            int sumaOcjena = 0;
+            foreach (PredmetZaStudenta p in predmeti)
             {
-                if(p.Ocjena>5)
+                if (p.Ocjena > 5)
                 {
                     brPredmeta++;
                     sumaOcjena += p.Ocjena;
@@ -83,5 +93,14 @@ namespace ZamgerV2_Implementation.Models
             return (double)sumaOcjena / brPredmeta;
         }
 
+        public bool MoveNext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Reset()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

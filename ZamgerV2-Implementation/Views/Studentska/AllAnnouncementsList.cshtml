@@ -72,7 +72,7 @@
                     <span>Studentska</span>
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Moj Profil</a>
+                    <a class="dropdown-item" href="/studentska/moj-profil">Moj Profil</a>
                     <a class="dropdown-item" href="/Početni/OdjaviSe">Odjavi se</a>
                 </div>
             </li>
@@ -118,7 +118,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-table" aria-hidden="true"></i>Nadolazeći ispiti</a>
+                            <a href="~/studentska/nadolazeci-ispiti"><i class="fa fa-table" aria-hidden="true"></i>Nadolazeći ispiti</a>
                         </li>
 
                         <li class="submenu">
@@ -180,10 +180,12 @@
                                             <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Naslov </th><th style="min-width: 50px; width: 270px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">Sadržaj</th><th style="min-width: 80px; width: 80.4px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date of Birth: activate to sort column ascending">Datum objavljivanja</th><th class="text-right sorting" style="min-width: 50px; width: 50px;" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Akcija</th></tr>
                                         </thead>
                                         <tbody>
-                                            @for (int i = 0; i < ViewBag.listaObavjestenja.Count; i++)
+                                            @if (ViewBag.listaObavjestenja != null)
                                             {
-                                                if (i % 2 == 0)
+                                                for (int i = 0; i < ViewBag.listaObavjestenja.Count; i++)
                                                 {
+                                                    if (i % 2 == 0)
+                                                    {
                                                     <tr role="row" class="odd">
                                                         <td class="sorting_1">
                                                             <h2><a href="#">@ViewBag.listaObavjestenja[i].Naslov</a></h2>
@@ -209,9 +211,9 @@
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                }
-                                                else
-                                                {
+                                                            }
+                                                            else
+                                                            {
                                                     <tr role="row" class="even">
                                                         <td class="sorting_1">
                                                             <h2><a href="#">@ViewBag.listaObavjestenja[i].Naslov</a></h2>
@@ -237,8 +239,9 @@
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                }
-                                            }
+                                                                    }
+                                                                }
+                                                            }
                                         </tbody>
                                     </table>
                                 </div>

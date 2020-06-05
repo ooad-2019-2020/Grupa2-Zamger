@@ -224,7 +224,7 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult infoOZadaći(int idZadaće, int idPredmeta)
         {
             var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
-            foreach(PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+            foreach(PredmetZaStudenta p in trenutniKorisnik) //iterator pattern
             {
                 if(p.IdPredmeta==idPredmeta)
                 {
@@ -253,7 +253,7 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 if(rjesenje.ContentType.Equals("application/pdf"))
                 {
-                    foreach (PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+                    foreach (PredmetZaStudenta p in trenutniKorisnik) //iterator pattern
                     {
                         if (p.IdPredmeta == idPredmeta)
                         {
@@ -296,7 +296,7 @@ namespace ZamgerV2_Implementation.Controllers
         {
             var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext); 
 
-                foreach(PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+                foreach(PredmetZaStudenta p in trenutniKorisnik) //iterator pattern
                 {
                     if(p.IdPredmeta == idPredmeta)
                     {
@@ -355,7 +355,7 @@ namespace ZamgerV2_Implementation.Controllers
         {
             var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
             var tempIspit = zmgr.dajAktivnostPoId(idIspita);
-            foreach (PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+            foreach (PredmetZaStudenta p in trenutniKorisnik) //iterator pattern
             {
                 if (p.IdPredmeta == tempIspit.IdPredmeta)
                 {
@@ -423,7 +423,7 @@ namespace ZamgerV2_Implementation.Controllers
         {
             var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
             List<Anketa> aktivneAnkete = new List<Anketa>();
-            foreach(PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+            foreach(PredmetZaStudenta p in trenutniKorisnik) //iterator pattern
             {
                 List<int> ideviAnketa = zmgr.dajIdeveAktivnihAnketaZaPredmet(p.IdPredmeta);
                 if(ideviAnketa!=null)
@@ -447,7 +447,7 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult popuniAnketu(int idPredmeta, int idAnkete)
         {
             var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
-            foreach(PredmetZaStudenta p in trenutniKorisnik.Predmeti)
+            foreach(PredmetZaStudenta p in trenutniKorisnik) //iterator pattern
             {
                 if(p.IdPredmeta == idPredmeta)
                 {

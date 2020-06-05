@@ -46,7 +46,7 @@
                     <span>@Model.Ime</span>
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Moj Profil</a>
+                    <a class="dropdown-item" href="~/student/moj-profil">Moj Profil</a>
                     <a class="dropdown-item" href="/Početni/OdjaviSe">Odjavi se</a>
                 </div>
             </li>
@@ -87,6 +87,12 @@
                             </ul>
                         </li>
                         <li class="submenu">
+                            <a href="#"><i class="fa fa-question-circle-o" aria-hidden="true"></i> <span> Aktivne ankete</span> <span class="menu-arrow"></span></a>
+                            <ul class="list-unstyled" style="display: none;">
+                                <li><a href="/student/aktivne-ankete">Moje ankete</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
                             <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Poruke</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="~/student/studenti-list">Pošalji poruku</a></li>
@@ -95,7 +101,7 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Zahtjevi</span> <span class="menu-arrow"></span></a>
+                            <a href="#"><i class="fa fa-plane" aria-hidden="true"></i> <span> Zahtjevi</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="/student/moji-zahtjevi">Moji zahtjevi</a></li>
                                 <li><a href="/student/kreiraj-zahtjev">Pošalji zahtjev</a></li>
@@ -136,10 +142,12 @@
                                             <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Naslov </th><th style="min-width: 50px; width: 270px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">Sadržaj</th><th style="min-width: 80px; width: 80.4px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date of Birth: activate to sort column ascending">Datum objavljivanja</th></tr>
                                         </thead>
                                         <tbody>
-                                            @for (int i = 0; i < ViewBag.listaObavjestenja.Count; i++)
+                                            @if (ViewBag.listaObavjestenja != null)
                                             {
-                                                if (i % 2 == 0)
+                                                for (int i = 0; i < ViewBag.listaObavjestenja.Count; i++)
                                                 {
+                                                    if (i % 2 == 0)
+                                                    {
                                                     <tr role="row" class="odd">
                                                         <td class="sorting_1">
                                                             <h2><a href="/student/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja">@ViewBag.listaObavjestenja[i].Naslov</a></h2>
@@ -158,9 +166,9 @@
                                                         <td>@ViewBag.listaObavjestenja[i].dateTime</td>
 
                                                     </tr>
-                                                }
-                                                else
-                                                {
+                                                            }
+                                                            else
+                                                            {
                                                     <tr role="row" class="even">
                                                         <td class="sorting_1">
                                                             <h2><a href="/student/obavještenje/@ViewBag.listaObavjestenja[i].IdObavještenja">@ViewBag.listaObavjestenja[i].Naslov</a></h2>
@@ -179,8 +187,9 @@
                                                         <td>@ViewBag.listaObavjestenja[i].dateTime</td>
 
                                                     </tr>
-                                                }
-                                            }
+                                                                    }
+                                                                }
+                                                            }
                                         </tbody>
                                     </table>
                                 </div>

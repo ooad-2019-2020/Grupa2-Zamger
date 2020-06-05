@@ -211,11 +211,14 @@
                                                                         <ul class="list-unstyled">
                                                                             @for (int j = 0; j < ViewBag.trazenaAnketa.Odgovori[i].Odgovori.Count; j++)
                                                                             {
-                                                                            <li class="list-item">Pitanje @(j+1): @ViewBag.trazenaAnketa.Odgovori[i].Odgovori[j]</li>
+                                                                                <li class="list-item">Pitanje @(j+1): @ViewBag.trazenaAnketa.Odgovori[i].Odgovori[j]</li>
                                                                             }
+                                                                            <li class="list-item">Komentar: @ViewBag.trazenaAnketa.Odgovori[i].Komentar</li>
+                                                                            <li class="list-item">Ocjena predmeta: @ViewBag.trazenaAnketa.Odgovori[i].OcjenaPredmeta</li>
                                                                         </ul>
 
                                                                         <br>
+                                                                        brojac++;
 
                                                                     }
                                                                 }

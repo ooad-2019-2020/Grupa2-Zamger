@@ -534,6 +534,49 @@ namespace ZamgerV2_Implementation.Controllers
 
         }
 
+        [Route("/nastavno-osoblje/sva-obavještenja-list")]
+        public IActionResult AllAnnouncementsList()
+        {
+            
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+
+            ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
+
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/nastavno-osoblje/kreiraj-obavjestenje")]
+        [HttpGet]
+        public IActionResult KreirajObavjestenje()
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            return View(trenutniKorisnik);
+        }
+
+        [Route("/nastavno-osoblje/kreiraj-obavjestenje")]
+        [HttpPost]
+        public IActionResult KreirajObavjestenje(IFormCollection forma)
+        {
+            if (forma != null)
+            {
+                var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+                Logger logg = Logger.GetInstance();
+                logg.kreirajObavještenje(forma["naslovObavještenja"], forma["sadržajObavještenja"]);
+                Logger.removeInstance();
+                return RedirectToAction("UspješnoKreiranoObavještenje");
+            }
+            return View(trenutniKorisnik);
+        }
+
+
+        [Route("/nastavno-osoblje/uspješno-kreirano-obavjestenje")]
+        public IActionResult UspješnoKreiranoObavještenje()
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+           
+            return View(trenutniKorisnik);
+        }
+
 
 
 

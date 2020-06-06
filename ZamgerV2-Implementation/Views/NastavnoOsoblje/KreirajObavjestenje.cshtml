@@ -1,0 +1,246 @@
+﻿@Model  NastavnoOsoblje
+@{
+    ViewData["Title"] = "KreirajObavjestenje";
+    Layout = "~/Views/Shared/studentskaKreirajObavještenjeLayout.cshtml";
+}
+
+<div class="main-wrapper">
+    <div class="header">
+        <!-- Header start -->
+        <div class="header-left">
+            <a href="~/nastavno-osoblje/dashboard" class="logo">
+                <img src="~/images/logo.png" width="40" height="40" alt="">
+                <span class="text-uppercase">Zamger-v2</span>
+            </a>
+        </div>
+        <div class="page-title-box float-left">
+            <h3 class="text-uppercase">Preschool</h3>
+        </div>
+        <a id="mobile_btn" class="mobile_btn float-left" href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+        <ul class="nav user-menu float-right">
+            @{
+                int brojNeprocitanih = 0;
+                if (Model.Inbox != null)
+                {
+                    foreach (Poruka p in Model.Inbox)
+                    {
+                        if (p.Procitana == 0) brojNeprocitanih++;
+                    }
+                }
+            }
+            <li class="nav-item dropdown d-none d-sm-block">
+                <a href="javascript:void(0);" id="open_msg_box" class="hasnotifications nav-link">
+                    <i class="fa fa-comment"></i>
+                    @if (brojNeprocitanih != 0)
+                    {
+                        <span class="badge badge-pill bg-primary float-right">@brojNeprocitanih</span>
+                    }
+                </a>
+            </li>
+            <li class="nav-item dropdown has-arrow">
+                <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                    <span class="user-img">
+                        <img class="rounded-circle" src="~/images/user.jpg" width="40" alt="Admin">
+                        <span class="status online"></span>
+                    </span>
+                    <span>@Model.Ime</span>
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="~/nastavno-osoblje/moj-profil">Moj Profil</a>
+                    <a class="dropdown-item" href="/Početni/OdjaviSe">Odjavi se</a>
+                </div>
+            </li>
+        </ul>
+        <div class="dropdown mobile-user-menu float-right">
+            <!-- mobile menu -->
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Moj Profil</a>
+                <a class="dropdown-item" href="~/">Odjavi se</a>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar" id="sidebar">
+        <!-- sidebar -->
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 100%; height: 663px;">
+            <div class="sidebar-inner slimscroll" style="overflow: hidden; width: 100%; height: 663px;">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">Glavni meni</li>
+                        <li class="active">
+                            <a href="#"><i class="fa fa-tachometer" aria-hidden="true"></i> Početna</a>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-book" aria-hidden="true"></i><span> Predmeti </span> <span class="menu-arrow"></span></a>
+                            <ul class="list-unstyled" style="display: none;">
+
+                                <li><a href="/nastavno-osoblje/moji-predmeti">Moji predmeti</a></li>
+
+
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-table" aria-hidden="true"></i> <span> Aktivnosti</span> <span class="menu-arrow"></span></a>
+                            <ul class="list-unstyled" style="display: none;">
+                                <li><a href="/nastavno-osoblje/moje-aktivnosti">Moje aktivnosti</a></li>
+                                <li><a href="/nastavno-osoblje/kreiraj-aktivnost">Kreiraj aktivnost</a></li>
+                            </ul>
+                        </li>
+                        @if (Model.GetType() == typeof(Profesor))
+                        {
+                            <li class="submenu">
+                                <a href="#"><i class="fa fa-question-circle-o" aria-hidden="true"></i> <span> Ankete</span> <span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
+                                    <li><a href="/nastavno-osoblje/moje-ankete">Moje ankete</a></li>
+                                    <li><a href="/nastavno-osoblje/kreiraj-anketu">Kreiraj anketu</a></li>
+                                </ul>
+                            </li>
+                        }
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span> Obavještenja</span> <span class="menu-arrow"></span></a>
+                            <ul class="list-unstyled" style="display: none;">
+                                <li><a href="/nastavno-osoblje/sva-obavještenja-list">Sva obavještenja</a></li>
+                                <li><a href="#">Kreiraj obavještenje</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> <span> Poruke</span> <span class="menu-arrow"></span></a>
+                            <ul class="list-unstyled" style="display: none;">
+                                <li><a href="~/nastavno-osoblje/osobe-list">Pošalji poruku</a></li>
+                                <li><a href="/nastavno-osoblje/poruke/moj-inbox">Inbox</a></li>
+                                <li><a href="/nastavno-osoblje/poruke/moj-outbox">Outbox</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div><div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 499.812px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+        </div>
+    </div>
+
+
+    <div class="page-wrapper" style="min-height: 723px;">
+        <!-- content -->
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-12 col-sm-12 col-12">
+                        <h5 class="text-uppercase">Kreiraj obavještenje</h5>
+                    </div>
+                    <div class="col-lg-5 col-md-12 col-sm-12 col-12">
+                        <ul class="list-inline breadcrumb float-right">
+                            <li class="list-inline-item"><a href="~/studentska/dashboard">Početna</a></li>
+
+                            <li class="list-inline-item"> Kreiraj obavještenje</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            <div class="page-title">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="Page-title">Informacije</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="custom-mt-form" asp-antiforgery="false" asp-action="KreirajObavjestenje" method="post">
+                                    <div class="form-group row ">
+                                        <label class="col-form-label col-md-2" style="color:white;">Naslov obavještenja:</label>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" name="naslovObavještenja" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-md-2" style="color:white;">Sadržaj:</label>
+                                        <div class="col-md-10">
+                                            <input type="text" required class="form-control" placeholder="Unesite sadržaj obavještenja" name="sadržajObavještenja">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                                        <div class="form-group text-center custom-mt-form-group">
+                                            <button class="btn btn-primary mr-2" type="submit">Objavi</button>
+                                            <button class="btn btn-secondary" type="reset">Odustani</button>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="notification-box">
+                <div class="msg-sidebar notifications msg-noti">
+                    <div class="topnav-dropdown-header">
+                        <span>Poruke</span>
+                    </div>
+                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 599px;">
+                        <div class="drop-scroll msg-list-scroll" style="overflow: hidden; width: auto; height: 599px;">
+                            <ul class="list-box">
+
+
+                                @if (Model.Inbox != null)
+                                {
+
+
+                                    foreach (Poruka p in Model.Inbox)
+                                    {
+                                        if (p.Procitana == 0)
+                                        {
+                                            <li>
+                                                <a href="/nastavno-osoblje/poruke/moj-inbox/@p.IdPoruke">
+                                                    <div class="list-item">
+                                                        <div class="list-left">
+                                                            <span class="avatar">@p.UserPosiljaoca[0]@p.UserPosiljaoca[1]</span>
+                                                        </div>
+                                                        <div class="list-body">
+                                                            <span class="message-author">@p.UserPosiljaoca</span>
+                                                            <span class="message-time">@p.VrijemePoruke</span>
+                                                            <div class="clearfix"></div>
+                                                            <span class="message-content">@p.Sadrzaj</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                            </ul>
+                        </div><div class="slimScrollBar" style="background: rgb(135, 135, 135); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 809px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                    </div>
+                    <div class="topnav-dropdown-footer">
+                        <a href="/nastavno-osoblje/poruke/moj-inbox">Vidi sve poruke</a>
+                    </div>
+                </div>
+            </div>
+        
+
+    </div>
+    </div>
+</div>
+<div class="sidebar-overlay" data-reff=""></div>
+<script type="text/javascript" src="~/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="~/js/popper.min.js"></script>
+<script type="text/javascript" src="~/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="~/js/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="~/js/select2.min.js"></script>
+<script type="text/javascript" src="~/js/moment.min.js"></script>
+<script type="text/javascript" src="~/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="~/js/morris.min.js"></script>
+<script type="text/javascript" src="~/js/raphael-min.js"></script>
+<script type="text/javascript" src="~/js/fullcalendar.min.js"></script>
+<script type="text/javascript" src="~/js/jquery.fullcalendar.js"></script>
+<script type="text/javascript" src="~/js/chart.js"></script>
+<script type="text/javascript" src="~/js/app.js"></script>
+
+

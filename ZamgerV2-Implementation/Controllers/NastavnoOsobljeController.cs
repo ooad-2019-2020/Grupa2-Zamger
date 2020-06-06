@@ -501,7 +501,8 @@ namespace ZamgerV2_Implementation.Controllers
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
 
             ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
-
+            Logger logg = Logger.GetInstance();
+            ViewBag.sifra = logg.dajPasswordPoId((int)trenutniKorisnik.IdOsobe);
             return View(trenutniKorisnik);
         }
 
@@ -515,7 +516,9 @@ namespace ZamgerV2_Implementation.Controllers
             Logger logg = Logger.GetInstance();
             try
             {
+                
                 logg.promijeniPasswordKorisniku((int)trenutniKorisnik.IdOsobe, forma["password"]);
+                ViewBag.sifra = logg.dajPasswordPoId((int)trenutniKorisnik.IdOsobe);
             }
             catch (Exception e)
             {

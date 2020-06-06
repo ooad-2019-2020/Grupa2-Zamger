@@ -818,6 +818,8 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.ukupanBrojNastavnogOsoblja = logg.dajUkupanBrojNastavnogOsobljaNaSistemu();
             ViewBag.uposlenici = logg.pretražiNastavnoOsoblje(null, null, "Izaberite");
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            ViewBag.sifra = logg.dajPasswordPoId(1);
+            String sifra = logg.dajPasswordPoId(1);
 
             return View();
         }
@@ -833,10 +835,13 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.ukupanBrojNastavnogOsoblja = logg.dajUkupanBrojNastavnogOsobljaNaSistemu();
             ViewBag.uposlenici = logg.pretražiNastavnoOsoblje(null, null, "Izaberite");
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
+            
+            
 
             try
             {
                 logg.promijeniPasswordKorisniku(1, forma["password"]);
+                ViewBag.sifra = logg.dajPasswordPoId(1);
             }
             catch (Exception e)
             {

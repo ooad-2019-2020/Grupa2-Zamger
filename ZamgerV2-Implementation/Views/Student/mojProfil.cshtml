@@ -229,14 +229,19 @@
 
 
                                     <div class="form-group custom-mt-form-group">
-                                        <input id="password" name="password" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Pojačaj tu šifru da bar 6 karaktera ima' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;" placeholder="Unesi šifru" required>
+                                        <input id="oldPassword" name="oldPassword" type="password" pattern="@ViewBag.sifra" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Pogrešno unesena stara šifra' : '');" placeholder="Unesi staru šifru" required>
+                                        <label class="control-label">Stara šifra</label><i class="bar"></i>
+                                    </div>
+
+                                    <div class="form-group custom-mt-form-group">
+                                        <input id="password" name="password" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Šifra mora imati minimalno 6 karaktera' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;" placeholder="Unesi šifru" required>
                                         <label class="control-label">Nova šifra</label><i class="bar"></i>
                                     </div>
 
 
 
                                     <div class="form-group custom-mt-form-group">
-                                        <input id="password_two" name="password_two" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Konju mora ti ista šifra biti' : '');" placeholder="Ponovi šifru" required>
+                                        <input id="password_two" name="password_two" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Šifre se ne podudaraju' : '');" placeholder="Ponovi šifru" required>
                                         <label class="control-label">Ponovi novu šifru</label><i class="bar"></i>
                                     </div>
 

@@ -424,6 +424,9 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.polozeni = zmgr.dajBrojPoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
             ViewBag.nepolozeni = zmgr.dajBrojNepoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
             ViewBag.prosjek = zmgr.dajProsjekPoID(trenutniKorisnik.BrojIndeksa.Value);
+            Logger logg = Logger.GetInstance();
+            ViewBag.sifra = logg.dajPasswordPoId((int)trenutniKorisnik.BrojIndeksa);
+            Logger.removeInstance();
 
             return View(trenutniKorisnik);
         }
@@ -438,15 +441,19 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.nepolozeni = zmgr.dajBrojNepoloženihPredmeta(trenutniKorisnik.BrojIndeksa);
             ViewBag.prosjek = zmgr.dajProsjekPoID(trenutniKorisnik.BrojIndeksa.Value);
             Logger logg = Logger.GetInstance();
+            
             try
             {
+                ViewBag.sifra = logg.dajPasswordPoId((int)trenutniKorisnik.BrojIndeksa);
                 logg.promijeniPasswordKorisniku((int)trenutniKorisnik.BrojIndeksa, forma["password"]);
+                ViewBag.sifra = logg.dajPasswordPoId((int)trenutniKorisnik.BrojIndeksa);
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }
-
+            Logger.removeInstance();
             return View(trenutniKorisnik);
         }
 

@@ -142,35 +142,35 @@
                                             <tr role="row"><th style="min-width: 50px; width: 150px;" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name : activate to sort column descending">Naziv ankete </th><th style="min-width: 50px; width: 270px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Section: activate to sort column ascending">ID ankete</th><th style="min-width: 80px; width: 80.4px;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Date of Birth: activate to sort column ascending">Rok isteka ankete</th></tr>
                                         </thead>
                                         <tbody>
-                                            
-                                           
+
+
                                             @if (ViewBag.ankete != null)
                                             {
                                                 for (int i = 0; i < ViewBag.ankete.Count; i++)
                                                 {
                                                     if (i % 2 == 0)
                                                     {
-                                                    <tr role="row" class="odd">
-                                                        <td class="sorting_1">
-                                                            <h2><a href="/student/popuni-anketu/@ViewBag.ankete[i].IdPredmeta/@ViewBag.ankete[i].IdAnkete">@ViewBag.ankete[i].Naziv</a></h2>
-                                                        </td>
-                                                        <td>@ViewBag.ankete[i].IdAnkete</td>
-                                                        <td>@ViewBag.ankete[i].DatumIsteka</td>
+                                                        <tr role="row" class="odd">
+                                                            <td class="sorting_1">
+                                                                <h2><a href="/student/popuni-anketu/@ViewBag.ankete[i].IdPredmeta/@ViewBag.ankete[i].IdAnkete">@ViewBag.ankete[i].Naziv</a></h2>
+                                                            </td>
+                                                            <td>@ViewBag.ankete[i].IdAnkete</td>
+                                                            <td>@ViewBag.ankete[i].DatumIsteka</td>
 
-                                                    </tr>
-                                                            }
-                                                            else
-                                                            {
-                                                                        <tr role="row" class="even">
-                                                                            <td class="sorting_1">
-                                                                                <h2><a href="/student/popuni-anketu/@ViewBag.ankete[i].IdPredmeta/@ViewBag.ankete[i].IdAnkete">@ViewBag.ankete[i].Naziv</a></h2>
-                                                                            </td>
-                                                                            <td>@ViewBag.ankete[i].IdAnkete</td>
-                                                                            <td>@ViewBag.ankete[i].DatumIsteka</td>
-                                                                        </tr>
-                                                                    }
-                                                                }
-                                                            }
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr role="row" class="even">
+                                                            <td class="sorting_1">
+                                                                <h2><a href="/student/popuni-anketu/@ViewBag.ankete[i].IdPredmeta/@ViewBag.ankete[i].IdAnkete">@ViewBag.ankete[i].Naziv</a></h2>
+                                                            </td>
+                                                            <td>@ViewBag.ankete[i].IdAnkete</td>
+                                                            <td>@ViewBag.ankete[i].DatumIsteka</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
@@ -243,6 +243,8 @@
 <script type="text/javascript" src="~/js/jquery.fullcalendar.js"></script>
 <script type="text/javascript" src="~/js/chart.js"></script>
 <script type="text/javascript" src="~/js/app.js"></script>
+
+
 
 
 

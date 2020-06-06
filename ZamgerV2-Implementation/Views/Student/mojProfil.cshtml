@@ -168,7 +168,7 @@
                         <div class="card-body">
                             <ul>
                                 <li>
-                                    <span class="text">Datum rođenja: @Model.DatumRođenja</span>
+                                    <span class="text">Datum rođenja:@Convert.ToDateTime(Model.DatumRođenja).Date.ToString("d")</span>
                                 </li>
 
                                 <li>

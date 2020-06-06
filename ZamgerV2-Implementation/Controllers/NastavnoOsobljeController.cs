@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Newtonsoft.Json;
 using ZamgerV2_Implementation.Helpers;
 using ZamgerV2_Implementation.Models;
 
@@ -120,14 +122,14 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
         [Route("/nastavno-osoblje/poruke/moj-inbox")]
-        public IActionResult mojInbox(int id)
+        public IActionResult mojInbox()
         {
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             return View(trenutniKorisnik);
         }
 
         [Route("/nastavno-osoblje/poruke/moj-outbox")]
-        public IActionResult mojOutbox(int id)
+        public IActionResult mojOutbox()
         {
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             return View(trenutniKorisnik);
@@ -137,17 +139,31 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult detaljiPorukeInbox(int idPoruke)
         {
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
-            ViewBag.poruka = zmgr.dajPoruku(idPoruke);
-            zmgr.oznaciProcitanu(idPoruke);
-            return View(trenutniKorisnik);
+            foreach(Poruka p in trenutniKorisnik.Inbox)
+            {
+                if(p.IdPoruke==idPoruke)
+                {
+                    ViewBag.poruka = zmgr.dajPoruku(idPoruke);
+                    zmgr.oznaciProcitanu(idPoruke);
+                    return View(trenutniKorisnik);
+                }
+            }
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
         }
 
         [Route("/nastavno-osoblje/poruke/moj-outbox/{idPoruke}")]
         public IActionResult detaljiPorukeOutbox(int idPoruke)
         {
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
-            ViewBag.poruka = zmgr.dajPoruku(idPoruke);
-            return View(trenutniKorisnik);
+            foreach(Poruka p in trenutniKorisnik.Outbox)
+            {
+                if(p.IdPoruke == idPoruke)
+                {
+                    ViewBag.poruka = zmgr.dajPoruku(idPoruke);
+                    return View(trenutniKorisnik);
+                }
+            }
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
         }
 
         [Route("/nastavno-osoblje/edituj-aktivnost/{idAktivnosti}")]
@@ -211,6 +227,10 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 ViewBag.poruka = "Morate popuniti formu!";
             }
+            else if (idPoruke == 8)
+            {
+                ViewBag.poruka = "greška prilikom čitanja API za obavještenja";
+            }
             return View();
         }
 
@@ -225,9 +245,16 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult detaljiOPredmetu(int idPredmeta)
         {
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
-            ViewBag.ansambl = zmgr.dajAnsamblNaPredmetu(idPredmeta);
-            ViewBag.trazeniPredmet = idPredmeta;
-            return View(trenutniKorisnik);
+            foreach(PredmetZaNastavnoOsoblje p in trenutniKorisnik.PredmetiNaKojimPredaje)
+            {
+                if(p.IdPredmeta==idPredmeta)
+                {
+                    ViewBag.ansambl = zmgr.dajAnsamblNaPredmetu(idPredmeta);
+                    ViewBag.trazeniPredmet = idPredmeta;
+                    return View(trenutniKorisnik);
+                }
+            }
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
         }
 
         [Route("/nastavno-osoblje/detalji-o-zadaci/{idPredmeta}/{idZadaće}")]
@@ -235,9 +262,16 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult detaljiOZadaći(int idPredmeta, int idZadaće)
         {
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
-            ViewBag.idZadaće = idZadaće;
-            ViewBag.idPredmeta = idPredmeta;
-            return View(trenutniKorisnik);
+            foreach(PredmetZaNastavnoOsoblje p in trenutniKorisnik.PredmetiNaKojimPredaje)
+            {
+                if(p.IdPredmeta==idPredmeta)
+                {
+                    ViewBag.idZadaće = idZadaće;
+                    ViewBag.idPredmeta = idPredmeta;
+                    return View(trenutniKorisnik);
+                }
+            }
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
         }
 
         [Route("/nastavno-osoblje/ocjeni-zadaću/{idZadaće}")]
@@ -260,9 +294,16 @@ namespace ZamgerV2_Implementation.Controllers
         [Route("/nastavno-osoblje/predmet/{idPredmeta}/svi-studenti")]
         public IActionResult studentiNaPredmetu(int idPredmeta)
         {
-            ViewBag.trazeniPredmet = idPredmeta;
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
-            return View(trenutniKorisnik);
+            foreach(PredmetZaNastavnoOsoblje p in trenutniKorisnik.PredmetiNaKojimPredaje)
+            {
+                if(p.IdPredmeta==idPredmeta)
+                {
+                    ViewBag.trazeniPredmet = idPredmeta;
+                    return View(trenutniKorisnik);
+                }
+            }
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
         }
 
         [Route("/nastavno-osoblje/predmet/detalji-o-studentu/{idPredmeta}/{idStudenta}")]
@@ -313,32 +354,38 @@ namespace ZamgerV2_Implementation.Controllers
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
             KreatorKorisnika creator = new KreatorKorisnika();
             Korisnik tempK = creator.FactoryMethod(idStudenta);
-
-            if (tempK.GetType() == typeof(Student))
+            foreach(PredmetZaNastavnoOsoblje pr in trenutniKorisnik.PredmetiNaKojimPredaje)
             {
-                ViewBag.trazeniStudent = (Student)tempK;
-            }
-            else
-            {
-                ViewBag.trazeniStudent = (MasterStudent)tempK;
-            }
-            foreach (PredmetZaStudenta p in ((Student)tempK).Predmeti)
-            {
-                if (p.IdPredmeta == idPredmeta)
+                if(pr.IdPredmeta==idPredmeta)
                 {
-                    ViewBag.trazeniPredmet = p;
-                    foreach (Aktivnost akt in p.Aktivnosti)
+                    if (tempK.GetType() == typeof(Student))
                     {
-                        if (akt.IdAktivnosti == idZadaće)
+                        ViewBag.trazeniStudent = (Student)tempK;
+                    }
+                    else
+                    {
+                        ViewBag.trazeniStudent = (MasterStudent)tempK;
+                    }
+                    foreach (PredmetZaStudenta p in ((Student)tempK).Predmeti)
+                    {
+                        if (p.IdPredmeta == idPredmeta)
                         {
-                            ViewBag.trazenaZadaca = (Zadaća)akt;
-                            return View(trenutniKorisnik);
+                            ViewBag.trazeniPredmet = p;
+                            foreach (Aktivnost akt in p.Aktivnosti)
+                            {
+                                if (akt.IdAktivnosti == idZadaće)
+                                {
+                                    ViewBag.trazenaZadaca = (Zadaća)akt;
+                                    return View(trenutniKorisnik);
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            return RedirectToAction("prikaziGresku", new { lokacija = "zadaca-za-studenta", idPoruke = 6 });
+                    return RedirectToAction("prikaziGresku", new { lokacija = "zadaca-za-studenta", idPoruke = 6 });
+                } 
+            }
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
         }
 
 
@@ -434,6 +481,7 @@ namespace ZamgerV2_Implementation.Controllers
 
 
         [Route("/nastavno-osoblje/ispit/boduj-ispit-za-studenta/{idPredmeta}/{idIspita}/{idStudenta}")]
+        [HttpPost]
         public IActionResult bodujIspitZaStudenta(int idPredmeta, int idIspita, int idStudenta, IFormCollection forma)
         {
             if (!String.IsNullOrEmpty(forma["bodovi"]))
@@ -445,7 +493,9 @@ namespace ZamgerV2_Implementation.Controllers
             }
             return RedirectToAction("prikaziGresku", new { lokacija = "boduj-ispit-za-studenta", idPoruke = 7 });
         }
+
         [Route("/nastavno-osoblje/moj-profil")]
+        [HttpGet]
         public IActionResult mojProfil()
         {
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
@@ -540,9 +590,21 @@ namespace ZamgerV2_Implementation.Controllers
             
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
 
-            ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:64580/zamger-api/");
+            var responseTask = client.GetAsync("sva-obavjestenja");
+            responseTask.Wait();
 
-            return View(trenutniKorisnik);
+            var resultDisplay = responseTask.Result;
+            if (resultDisplay.IsSuccessStatusCode)
+            {
+                var odgovor = resultDisplay.Content.ReadAsStringAsync();
+                odgovor.Wait();
+                ViewBag.listaObavjestenja = JsonConvert.DeserializeObject<List<Obavještenje>>(odgovor.Result);
+                return View(trenutniKorisnik);
+            }
+
+            return RedirectToAction("prikaziGresku", new { lokacija = "sva-obavjestenja", idPoruke = 8 });
         }
 
         [Route("/nastavno-osoblje/kreiraj-obavjestenje")]

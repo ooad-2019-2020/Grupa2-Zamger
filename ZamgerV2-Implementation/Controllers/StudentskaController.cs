@@ -2,23 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ZamgerV2_Implementation.Helpers;
 using ZamgerV2_Implementation.Models;
 
 
-/*      
- *      NAPOMENA ZA OSTALE ---
- *      Ovi Response.WriteAsync služe samo za debugganje i pretežno su stavljani na mjesto gdje se očekuje odnosno gdje
- *      se desila neka greška kako bi se to signaliziralo.
- *      
- *      Potrebno je sve ove ResponseAsync-e zamijeniti sa odgovarajućim Error stranicama, tipa napraviti custom error 404 page i slično
- *      
- *      
- *      Nova napomena: ove polja forma["ime"] to će trebat sve ono ko u Javi .trim jer može neko u ime unijeti Huso+++ gdje je + whitespace i eto belaja
- *      analogno je i za prezime itd(mjesto prebivalista ne treba provjeravat na to al et
- */
 
 namespace ZamgerV2_Implementation.Controllers
 {
@@ -80,14 +71,12 @@ namespace ZamgerV2_Implementation.Controllers
                     }
                     else
                     {
-                        //Response.WriteAsync("Nije OK - student -> ima nepravilne podatke");
                         return RedirectToAction("prikaziGresku", new { lokacija = "kreiraj-studenta", idPoruke=1 });
                     }
                 }
 
                 else
                 {
-                    //Response.WriteAsync("Nije OK - taj smjer ne postoji");
                     return RedirectToAction("prikaziGresku", new { lokacija = "kreiraj-studenta", idPoruke = 1 });
                 }
             }
@@ -103,7 +92,6 @@ namespace ZamgerV2_Implementation.Controllers
                     }
                     else
                     {
-                        //Response.WriteAsync("Nije OK - Master student -> ima nepravilne podatke");
                         return RedirectToAction("prikaziGresku", new { lokacija = "kreiraj-studenta", idPoruke = 1 });
                     }
                 }
@@ -120,7 +108,6 @@ namespace ZamgerV2_Implementation.Controllers
                 }
                 else
                 {
-                    //Response.WriteAsync("Nije OK - Master student -> ima nepravilne podatke");
                     return RedirectToAction("prikaziGresku", new { lokacija = "kreiraj-studenta", idPoruke = 1 });
                 }
                 
@@ -138,8 +125,6 @@ namespace ZamgerV2_Implementation.Controllers
                 
             }
             return  !(tempStudent.Ime == null || tempStudent.Prezime == null || tempStudent.DatumRođenja == null || tempStudent.MjestoPrebivališta == null || tempStudent.Odsjek == null || tempStudent.Odsjek.Equals("Izaberite smjer"));
-
-            //trebat će napravit bolju validaciju, sama forma ne da da se submita sve dok sva polja koja su oznacena kao tražena ne ispune, no to ne onemogućava npr da neko unese npr prosjek 100
         }
 
         [Route("/studentska/svo-nastavno-osoblje")]
@@ -168,7 +153,6 @@ namespace ZamgerV2_Implementation.Controllers
                 ViewBag.Predmeti = mapaPredmetiImenaID;
                 return View();
             }
-            //Response.WriteAsync("Greška u kreiranju nastavnog osoblja --- Nije OK");
             return RedirectToAction("prikaziGresku", new { lokacija = "kreiraj-nastavno-osoblje", idPoruke = 2 });
 
         }
@@ -217,8 +201,7 @@ namespace ZamgerV2_Implementation.Controllers
             }
             else
             {
-                Response.WriteAsync("Ne postoji niti jedan predmet u bazi");
-                return null;
+                return RedirectToAction("prikaziGresku", new { lokacija = "svo-nastavno-osoblje", idPoruke = 12 });
             }
         }
 
@@ -227,8 +210,22 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult AllAnnouncementsList()
         {
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
-            ViewBag.listaObavjestenja = logg.dajObavještenja();
-            return View();
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:64580/zamger-api/");
+            var responseTask = client.GetAsync("sva-obavjestenja");
+            responseTask.Wait();
+
+            var resultDisplay = responseTask.Result;
+            if(resultDisplay.IsSuccessStatusCode)
+            {
+                var odgovor = resultDisplay.Content.ReadAsStringAsync();
+                odgovor.Wait();
+                ViewBag.listaObavjestenja = JsonConvert.DeserializeObject<List<Obavještenje>>(odgovor.Result);
+                return View();
+            }
+
+            return RedirectToAction("prikaziGresku", new { lokacija = "sva-obavjestenja", idPoruke = 11 });
+
         }
 
 
@@ -327,14 +324,12 @@ namespace ZamgerV2_Implementation.Controllers
                     }
                     else
                     {
-                        //Response.WriteAsync("Nije uredu unos predmeta u bazu");
                         return RedirectToAction("prikaziGresku", new { lokacija = "kreiraj-predmet", idPoruke = 3 });
                     }
                 }
             }
             else
             {
-                //Response.WriteAsync("Nešto nije uredu, checkboxovi najvjerovatnije prazni");
                 return RedirectToAction("prikaziGresku", new { lokacija = "kreiraj-predmet", idPoruke = 3 });
             }
 
@@ -353,7 +348,6 @@ namespace ZamgerV2_Implementation.Controllers
                 ViewBag.brojPredmeta = logg.dajBrojPredmetaPoID(id);
                 return View(tempStudent);
             }
-            //Response.WriteAsync("neka greška prilikom prikazivanja uspješnog logina");
             return RedirectToAction("prikaziGresku", new { lokacija = "student-uspjesno-kreiran", idPoruke = 4 });
         }
 
@@ -380,7 +374,6 @@ namespace ZamgerV2_Implementation.Controllers
             }
             else
             {
-                //Response.WriteAsync("Nešto nije uredu prilikom dodavanja nastavnog osoblja u sistem");
                 return RedirectToAction("prikaziGresku", new { lokacija = "nastavno-osoblje-uspjesno-kreirano", idPoruke = 5 });
 
             }
@@ -435,7 +428,6 @@ namespace ZamgerV2_Implementation.Controllers
             }
             else
             {
-                //Response.WriteAsync("Nešto ne valja prilikom uređivanja obavještenja po ID-u");
                 return RedirectToAction("prikaziGresku", new { lokacija = "uredi-obavjestenje", idPoruke = 6 });
             }
         }
@@ -468,7 +460,6 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 return View(studenti);
             }
-            //Response.WriteAsync("Prazna pretraga studenata ili nešto nije uredu");
             return RedirectToAction("prikaziGresku", new { lokacija = "svi-studenti/pretraga", idPoruke = 7 });
         }
 
@@ -489,7 +480,6 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 return View(studenti);
             }
-            //Response.WriteAsync("Prazna pretraga studenata ili nešto nije uredu");
             return RedirectToAction("prikaziGresku", new { lokacija = "pretraga-list", idPoruke = 7 });
         }
 
@@ -507,7 +497,6 @@ namespace ZamgerV2_Implementation.Controllers
             }
             else
             {
-                //Response.WriteAsync("nešto nije uredu sa pretragom osoblja");
                 return RedirectToAction("prikaziGresku", new { lokacija = "svo-nastavno-osoblje/pretraga", idPoruke = 7 });
             }
         }
@@ -525,7 +514,6 @@ namespace ZamgerV2_Implementation.Controllers
             }
             else
             {
-                //Response.WriteAsync("nešto nije uredu sa pretragom osoblja");
                 return RedirectToAction("prikaziGresku", new { lokacija = "svo-nastavno-osoblje-list/pretraga", idPoruke = 7 });
             }
         }
@@ -639,7 +627,6 @@ namespace ZamgerV2_Implementation.Controllers
                 }
                 catch(Exception)
                 {
-                    //Response.WriteAsync("Nešto nije uredu prilikom editovanja podataka za studenta");
                     return RedirectToAction("prikaziGresku", new { lokacija = "uredi-studenta/"+id, idPoruke = 9 });
                 }
             }
@@ -675,7 +662,6 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 return RedirectToAction("ZahtjevUspješnoObrađen");
             }
-            //Response.WriteAsync("Nešto nije uredu prilikom obrađivanja zahtjeva");
             return RedirectToAction("prikaziGresku", new { lokacija = "uredi-zahtjev/"+id, idPoruke = 10 });
         }
 
@@ -810,6 +796,14 @@ namespace ZamgerV2_Implementation.Controllers
             {
                 ViewBag.poruka = "Greška pri obradi zahtjeva";
             }
+            else if (idPoruke == 11)
+            {
+                ViewBag.poruka = "Greška prilikom parsiranja JSON file-a liste obavještenja";
+            }
+            else if (idPoruke == 12)
+            {
+                ViewBag.poruka = "Ne postoji niti jedan predmet u bazi!";
+            }
             return View();
         }
 
@@ -863,6 +857,15 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             ViewBag.nadolazeciIspiti = logg.dajInfoONadolazecimIspitima();
 
+            return View();
+        }
+
+
+        [Route("/studentska/info-o-studentu/{idStudenta}")]
+        public IActionResult infoOStudentu(int idStudenta)
+        {
+            KreatorKorisnika creator = new KreatorKorisnika();
+            ViewBag.trazeniStudent = creator.FactoryMethod(idStudenta);
             return View();
         }
 

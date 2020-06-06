@@ -21,7 +21,7 @@ namespace ZamgerV2_Implementation.Models
         private ZamgerDbContext()
         {
 
-            String connString = "server=DESKTOP-ST6TE70;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
+            String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
 
             try
             {
@@ -216,7 +216,7 @@ namespace ZamgerV2_Implementation.Models
 
         public int dajNoviPorukaId()
         {
-            string kveri = "SELECT isnull(max(idPoruke)+1, 0) FROM DOPISIVANJE";
+            string kveri = "SELECT isnull(max(idPoruke), 0)+1 FROM DOPISIVANJE";
             SqlCommand komanda = new SqlCommand(kveri, conn);
             try
             {
@@ -690,7 +690,7 @@ namespace ZamgerV2_Implementation.Models
 
         public int generišiIdZahtjeva()
         {
-            string kveri = "select isnull(Count(idZahtjeva)+1,0) from ZAHTJEVI";
+            string kveri = "select isnull(Max(idZahtjeva),0)+1 from ZAHTJEVI";
             SqlCommand cmd = new SqlCommand(kveri, conn);
             try
             {
@@ -764,7 +764,6 @@ namespace ZamgerV2_Implementation.Models
                 }
             }catch(Exception e)
             {
-                //throw new Exception(e.StackTrace + " greška prilikom dohvaćanja obavještenja po ID iz baze");
                 return 5;
             }
             return 5;
@@ -864,7 +863,6 @@ namespace ZamgerV2_Implementation.Models
                             zadaće.Add(new Zadaća(result.GetInt32(0), indeks, idPredmeta, result.GetString(1), result.GetFloat(2), result.GetDateTime(3), null, result.GetFloat(5), null));
                         }
                       
-                        //ne znam kako preuzet document iz baze, pa je za sad to null
                     }
                     return zadaće;
                 }
@@ -1010,7 +1008,7 @@ namespace ZamgerV2_Implementation.Models
 
         public int generišiIdAktivnosti()
         {
-            string kveri = "select isnull(Count(idAktivnosti)+1,0) from AKTIVNOSTI";
+            string kveri = "select isnull(Max(idAktivnosti),0)+1 from AKTIVNOSTI";
             SqlCommand cmd = new SqlCommand(kveri, conn);
             try
             {
@@ -1263,7 +1261,7 @@ namespace ZamgerV2_Implementation.Models
 
         public int generišiIdAnkete()
         {
-            string kveri = "select isnull(Count(idAnkete)+1,0) from ANKETE_NA_PREDMETIMA";
+            string kveri = "select isnull(Max(idAnkete),0)+1 from ANKETE_NA_PREDMETIMA";
             SqlCommand komanda = new SqlCommand(kveri, conn);
             try
             {

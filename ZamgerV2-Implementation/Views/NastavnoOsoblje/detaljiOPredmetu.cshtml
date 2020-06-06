@@ -8,7 +8,7 @@
 
 @{
     int brojUpisanihOcjena = 0;
-    PredmetZaNastavnoOsoblje trazeni=null;
+    PredmetZaNastavnoOsoblje trazeni = null;
     foreach (PredmetZaNastavnoOsoblje prdmt in Model.PredmetiNaKojimPredaje)
     {
         if (prdmt.IdPredmeta == ViewBag.trazeniPredmet)
@@ -149,7 +149,7 @@
 
     <div class="page-wrapper" style="min-height: 723px;">
         <!-- content -->
-        
+
         <div class="content container-fluid">
             <div class="page-header">
                 <div class="row">
@@ -194,24 +194,24 @@
                                         {
                                             if (!no.Email.Equals(Model.Email))
                                             {
-                                            <br />
-                                            <div class="aboutprofile">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                                                <div class="aboutprofile-pic">
-                                                                    <img class="card-img-top" src="/images/user.jpg" alt="Card image">
-                                                                </div>
-                                                                <div class="aboutprofile-name">
-                                                                    <h5 class="text-center mt-2">@no.Ime @no.Prezime</h5>
-                                                                    <p class="text-center">@no.Titula</p>
+                                                <br />
+                                                <div class="aboutprofile">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                    <div class="aboutprofile-pic">
+                                                                        <img class="card-img-top" src="/images/user.jpg" alt="Card image">
+                                                                    </div>
+                                                                    <div class="aboutprofile-name">
+                                                                        <h5 class="text-center mt-2">@no.Ime @no.Prezime</h5>
+                                                                        <p class="text-center">@no.Titula</p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             }
                                         }
                                     }
@@ -264,15 +264,16 @@
                                                                     @if (Model.Aktivnosti != null)
                                                                     {
                                                                         foreach (Aktivnost akt in Model.Aktivnosti)
-                                                                        {   if (akt.IdPredmeta == ViewBag.trazeniPredmet)
+                                                                        {
+                                                                            if (akt.IdPredmeta == ViewBag.trazeniPredmet)
                                                                             {
                                                                                 if (akt.GetType() == typeof(Ispit))
                                                                                 {
-                                                                                <li class="list-item"><a href="/nastavno-osoblje/detalji-o-ispitu/@trazeni.IdPredmeta/@akt.IdAktivnosti">Ispit:  @akt.Naziv     ----   Rok: @akt.KrajnjiDatum </a></li>
+                                                                                    <li class="list-item"><a href="/nastavno-osoblje/detalji-o-ispitu/@trazeni.IdPredmeta/@akt.IdAktivnosti">Ispit:  @akt.Naziv     ----   Rok: @akt.KrajnjiDatum </a></li>
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                <li class="list-item"><a href="/nastavno-osoblje/detalji-o-zadaci/@trazeni.IdPredmeta/@akt.IdAktivnosti">Zadaća:  @akt.Naziv     ----   Rok:  @akt.KrajnjiDatum </a></li>
+                                                                                    <li class="list-item"><a href="/nastavno-osoblje/detalji-o-zadaci/@trazeni.IdPredmeta/@akt.IdAktivnosti">Zadaća:  @akt.Naziv     ----   Rok:  @akt.KrajnjiDatum </a></li>
                                                                                 }
                                                                             }
                                                                         }
@@ -294,52 +295,52 @@
                 </div>
             </div>
         </div>
-            <div class="notification-box">
-                <div class="msg-sidebar notifications msg-noti">
-                    <div class="topnav-dropdown-header">
-                        <span>Poruke</span>
-                    </div>
-                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 599px;">
-                        <div class="drop-scroll msg-list-scroll" style="overflow: hidden; width: auto; height: 599px;">
-                            <ul class="list-box">
+        <div class="notification-box">
+            <div class="msg-sidebar notifications msg-noti">
+                <div class="topnav-dropdown-header">
+                    <span>Poruke</span>
+                </div>
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 599px;">
+                    <div class="drop-scroll msg-list-scroll" style="overflow: hidden; width: auto; height: 599px;">
+                        <ul class="list-box">
 
 
-                                @if (Model.Inbox != null)
+                            @if (Model.Inbox != null)
+                            {
+
+
+                                foreach (Poruka p in Model.Inbox)
                                 {
-
-
-                                    foreach (Poruka p in Model.Inbox)
+                                    if (p.Procitana == 0)
                                     {
-                                        if (p.Procitana == 0)
-                                        {
-                                            <li>
-                                                <a href="/nastavno-osoblje/poruke/moj-inbox/@p.IdPoruke">
-                                                    <div class="list-item">
-                                                        <div class="list-left">
-                                                            <span class="avatar">@p.UserPosiljaoca[0]@p.UserPosiljaoca[1]</span>
-                                                        </div>
-                                                        <div class="list-body">
-                                                            <span class="message-author">@p.UserPosiljaoca</span>
-                                                            <span class="message-time">@p.VrijemePoruke</span>
-                                                            <div class="clearfix"></div>
-                                                            <span class="message-content">@p.Sadrzaj</span>
-                                                        </div>
+                                        <li>
+                                            <a href="/nastavno-osoblje/poruke/moj-inbox/@p.IdPoruke">
+                                                <div class="list-item">
+                                                    <div class="list-left">
+                                                        <span class="avatar">@p.UserPosiljaoca[0]@p.UserPosiljaoca[1]</span>
                                                     </div>
-                                                </a>
-                                            </li>
-                                        }
+                                                    <div class="list-body">
+                                                        <span class="message-author">@p.UserPosiljaoca</span>
+                                                        <span class="message-time">@p.VrijemePoruke</span>
+                                                        <div class="clearfix"></div>
+                                                        <span class="message-content">@p.Sadrzaj</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
                                     }
                                 }
-                            </ul>
-                        </div><div class="slimScrollBar" style="background: rgb(135, 135, 135); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 809px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-                    </div>
-                    <div class="topnav-dropdown-footer">
-                        <a href="/nastavno-osoblje/poruke/moj-inbox">Vidi sve poruke</a>
-                    </div>
+                            }
+                        </ul>
+                    </div><div class="slimScrollBar" style="background: rgb(135, 135, 135); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 809px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                </div>
+                <div class="topnav-dropdown-footer">
+                    <a href="/nastavno-osoblje/poruke/moj-inbox">Vidi sve poruke</a>
                 </div>
             </div>
         </div>
- </div>
+    </div>
+</div>
 
 <div class="sidebar-overlay" data-reff=""></div>
 <script type="text/javascript" src="~/js/jquery-3.2.1.min.js"></script>

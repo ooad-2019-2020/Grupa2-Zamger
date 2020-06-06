@@ -89,7 +89,7 @@ namespace ZamgerV2_Implementation.Models
                     sumaOcjena += p.Ocjena;
                 }
             }
-
+            if (sumaOcjena == 0) return 5;
             return (double)sumaOcjena / brPredmeta;
         }
 

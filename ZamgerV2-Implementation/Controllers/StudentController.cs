@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Hosting.Internal;
+using Newtonsoft.Json;
 using ZamgerV2_Implementation.Helpers;
 using ZamgerV2_Implementation.Models;
 
@@ -83,8 +85,23 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult AllStudentAnnouncementsList(int id)
         {
             var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
-            ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
-            return View(trenutniKorisnik);
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:64580/zamger-api/");
+            var responseTask = client.GetAsync("sva-obavjestenja");
+            responseTask.Wait();
+
+            var resultDisplay = responseTask.Result;
+            if (resultDisplay.IsSuccessStatusCode)
+            {
+                var odgovor = resultDisplay.Content.ReadAsStringAsync();
+                odgovor.Wait();
+                ViewBag.listaObavjestenja = JsonConvert.DeserializeObject<List<Obavještenje>>(odgovor.Result);
+                return View(trenutniKorisnik);
+            }
+
+            return RedirectToAction("prikaziGresku", new { lokacija = "sva-obavjestenja", idPoruke = 7 });
+
+ 
         }
 
 
@@ -131,17 +148,29 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult detaljiPorukeInbox(int idPoruke)
         {
             var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
-            ViewBag.poruka = zmgr.dajPoruku(idPoruke);
-            zmgr.oznaciProcitanu(idPoruke);
-            return View(trenutniKorisnik);
+            foreach(Poruka p in trenutniKorisnik.Inbox)
+            {
+                if(p.IdPoruke==idPoruke)
+                {
+                    ViewBag.poruka = zmgr.dajPoruku(idPoruke);
+                    zmgr.oznaciProcitanu(idPoruke);
+                    return View(trenutniKorisnik);
+                }
+            }
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
+
         }
 
         [Route("/student/poruke/moj-outbox/{idPoruke}")]
         public IActionResult detaljiPorukeOutbox(int idPoruke)
         {
             var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
-            ViewBag.poruka = zmgr.dajPoruku(idPoruke);
-            return View(trenutniKorisnik);
+            foreach(Poruka p in trenutniKorisnik.Outbox)
+            {
+                ViewBag.poruka = zmgr.dajPoruku(idPoruke);
+                return View(trenutniKorisnik);
+            }
+            return RedirectToAction("pristupOdbijen", new RouteValueDictionary(new { controller = "Početni", action = "pristupOdbijen" }));
         }
 
         [Route("/student/studenti-list")]
@@ -215,6 +244,10 @@ namespace ZamgerV2_Implementation.Controllers
             else if (idPoruke == 6)
             {
                 ViewBag.poruka = "Ne mozete se prijaviti na ovaj ispit";
+            }
+            else if (idPoruke == 7)
+            {
+                ViewBag.poruka = "greška prilikom pozivanja API za obavještenja";
             }
             return View();
         }

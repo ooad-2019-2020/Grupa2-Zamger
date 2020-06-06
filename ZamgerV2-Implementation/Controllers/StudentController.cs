@@ -185,8 +185,16 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult searchStudentsForMessageForm(IFormCollection forma)
         {
             var trenutniKorisnik = Autentifikacija.GetLogiraniStudent(HttpContext);
-            List<Korisnik> korisnici = zmgr.pretražiKorisnike(forma["Ime"], forma["Prezime"]);
-            ViewBag.korisnici = korisnici;
+            List<Korisnik> korisnici;
+            try
+            {
+                korisnici = zmgr.pretražiKorisnike(forma["Ime"], forma["Prezime"]);
+                ViewBag.korisnici = korisnici;
+            }
+            catch
+            {
+                ViewBag.korisnici = new List < Korisnik >();
+            }
             return View(trenutniKorisnik);
         }
 

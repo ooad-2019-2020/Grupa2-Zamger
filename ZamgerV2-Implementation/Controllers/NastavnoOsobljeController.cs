@@ -89,8 +89,15 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult searchUsersForMessageForm(IFormCollection forma)
         {
             var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
-            List<Korisnik> korisnici = zmgr.pretražiKorisnike(forma["Ime"], forma["Prezime"]);
-            ViewBag.korisnici = korisnici;
+            try
+            {
+                List<Korisnik> korisnici = zmgr.pretražiKorisnike(forma["Ime"], forma["Prezime"]);
+                ViewBag.korisnici = korisnici;
+            }
+            catch
+            {
+                ViewBag.korisnici = new List<Korisnik>();
+            }
             return View(trenutniKorisnik);
         }
 

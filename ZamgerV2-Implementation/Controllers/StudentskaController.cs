@@ -252,7 +252,15 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpPost]
         public IActionResult PretražiPredmet(IFormCollection forma)
         {
-            var lista = logg.pretražiPredmeteBasic(forma["nazivPredmeta"], forma["godinaStudija"].ToString(), forma["izborni"]);
+            List<Tuple<int, string, double, int, int>> lista;
+            try
+            {
+                lista = logg.pretražiPredmeteBasic(forma["nazivPredmeta"], forma["godinaStudija"].ToString(), forma["izborni"]);
+            }
+            catch
+            {
+                return View(new List<Tuple<int, string, double, int, int>>());
+            }
             return View(lista);
         }
 
@@ -446,41 +454,58 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpPost]
         public IActionResult PretražiStudente(IFormCollection forma)
         {
-            int? brIndeksa;
-            if (String.IsNullOrEmpty(forma["brojIndeksa"].ToString())) brIndeksa = null;
-            else
+            try
             {
-                brIndeksa = int.Parse(forma["brojIndeksa"].ToString());
-            }
-            string pom = forma["odsjek"];
-            if (pom == "Svi odsjeci") pom = null;
 
-            List<Student> studenti = logg.pretražiStudenta(brIndeksa, forma["ime"], forma["Prezime"], pom);
-            if (studenti != null)
-            {
-                return View(studenti);
+
+                int? brIndeksa;
+                if (String.IsNullOrEmpty(forma["brojIndeksa"].ToString())) brIndeksa = null;
+                else
+                {
+                    brIndeksa = int.Parse(forma["brojIndeksa"].ToString());
+                }
+                string pom = forma["odsjek"];
+                if (pom == "Svi odsjeci") pom = null;
+                List<Student> studenti = logg.pretražiStudenta(brIndeksa, forma["ime"], forma["Prezime"], pom);
+                if (studenti != null)
+                {
+                    return View(studenti);
+                }
+                return View(new List<Student>());
             }
-            return RedirectToAction("prikaziGresku", new { lokacija = "svi-studenti/pretraga", idPoruke = 7 });
+            catch (Exception e)
+            {
+                return View(new List<Student>());
+            }
         }
 
         [Route("/studentska/svi-studenti/pretraga-list")]
         [HttpPost]
         public IActionResult PretražiStudenteList(IFormCollection forma)
         {
-            int? brIndeksa;
-            if (String.IsNullOrEmpty(forma["brojIndeksa"].ToString())) brIndeksa = null;
-            else
+            try
             {
-                brIndeksa = int.Parse(forma["brojIndeksa"].ToString());
+
+
+                int? brIndeksa;
+                if (String.IsNullOrEmpty(forma["brojIndeksa"].ToString())) brIndeksa = null;
+                else
+                {
+                    brIndeksa = int.Parse(forma["brojIndeksa"].ToString());
+                }
+                string pom = forma["odsjek"];
+                if (pom == "Svi odsjeci") pom = null;
+                List<Student> studenti = logg.pretražiStudenta(brIndeksa, forma["ime"], forma["Prezime"], pom);
+                if (studenti != null)
+                {
+                    return View(studenti);
+                }
+                return View(new List<Student>());
             }
-            string pom = forma["odsjek"];
-            if (pom == "Svi odsjeci") pom = null;
-            List<Student> studenti = logg.pretražiStudenta(brIndeksa, forma["ime"], forma["Prezime"], pom);
-            if (studenti != null)
+            catch(Exception e)
             {
-                return View(studenti);
+                return View(new List<Student>());
             }
-            return RedirectToAction("prikaziGresku", new { lokacija = "pretraga-list", idPoruke = 7 });
         }
 
 
@@ -488,16 +513,23 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpPost]
         public IActionResult PretražiNastavnoOsoblje(IFormCollection forma)
         {
-            var mapaPredmetiImenaID = logg.dajSvePredmeteImenaID();
-            if (mapaPredmetiImenaID != null)
+            try
             {
-                ViewBag.Predmeti = mapaPredmetiImenaID;
-                List<Tuple<int, NastavnoOsoblje>> ltpl = logg.pretražiNastavnoOsoblje(forma["imeOsobe"], forma["prezimeOsobe"], forma["predmeti"]);
-                return View(ltpl);  
+                var mapaPredmetiImenaID = logg.dajSvePredmeteImenaID();
+                if (mapaPredmetiImenaID != null)
+                {
+                    ViewBag.Predmeti = mapaPredmetiImenaID;
+                    List<Tuple<int, NastavnoOsoblje>> ltpl = logg.pretražiNastavnoOsoblje(forma["imeOsobe"], forma["prezimeOsobe"], forma["predmeti"]);
+                    return View(ltpl);
+                }
+                else
+                {
+                    return View(new List<Tuple<int, NastavnoOsoblje>>());
+                }
             }
-            else
+            catch(Exception e)
             {
-                return RedirectToAction("prikaziGresku", new { lokacija = "svo-nastavno-osoblje/pretraga", idPoruke = 7 });
+                return View(new List<Tuple<int, NastavnoOsoblje>>());
             }
         }
 
@@ -505,16 +537,23 @@ namespace ZamgerV2_Implementation.Controllers
         [HttpPost]
         public IActionResult PretražiNastavnoOsobljeList(IFormCollection forma)
         {
-            var mapaPredmetiImenaID = logg.dajSvePredmeteImenaID();
-            if (mapaPredmetiImenaID != null)
+            try
             {
-                ViewBag.Predmeti = mapaPredmetiImenaID;
-                List<Tuple<int, NastavnoOsoblje>> ltpl = logg.pretražiNastavnoOsoblje(forma["imeOsobe"], forma["prezimeOsobe"], forma["predmeti"]);
-                return View(ltpl);
+                var mapaPredmetiImenaID = logg.dajSvePredmeteImenaID();
+                if (mapaPredmetiImenaID != null)
+                {
+                    ViewBag.Predmeti = mapaPredmetiImenaID;
+                    List<Tuple<int, NastavnoOsoblje>> ltpl = logg.pretražiNastavnoOsoblje(forma["imeOsobe"], forma["prezimeOsobe"], forma["predmeti"]);
+                    return View(ltpl);
+                }
+                else
+                {
+                    return View(new List<Tuple<int, NastavnoOsoblje>>());
+                }
             }
-            else
+            catch (Exception e)
             {
-                return RedirectToAction("prikaziGresku", new { lokacija = "svo-nastavno-osoblje-list/pretraga", idPoruke = 7 });
+                return View(new List<Tuple<int, NastavnoOsoblje>>());
             }
         }
 
@@ -819,7 +858,7 @@ namespace ZamgerV2_Implementation.Controllers
             ViewBag.uposlenici = logg.pretražiNastavnoOsoblje(null, null, "Izaberite");
             ViewBag.zahtjevi = logg.dajSveNeobrađeneZahtjeve();
             ViewBag.sifra = logg.dajPasswordPoId(1);
-            String sifra = logg.dajPasswordPoId(1);
+
 
             return View();
         }

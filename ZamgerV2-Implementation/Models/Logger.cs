@@ -26,7 +26,6 @@ namespace ZamgerV2_Implementation.Models
 
             //0G31M9N - WHOSO
             //47GORSV - RILE
-            //String connString = "server=DESKTOP-0G31M9N;database=zamgerDB-new;Trusted_Connection=true;MultipleActiveResultSets=true";
 
             try
             {

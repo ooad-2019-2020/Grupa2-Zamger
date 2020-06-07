@@ -56,7 +56,7 @@ namespace ZamgerV2_Implementation.Controllers
 
 
 
-        [Autorizacija(false, TipKorisnika.NastavnoOsoblje, TipKorisnika.Profesor, TipKorisnika.StudentskaSluzba)]
+        [Autorizacija(false, TipKorisnika.NastavnoOsoblje, TipKorisnika.Profesor)]
         [Route("/zamger-api/studenti-na-predmetu/{idPredmeta}")]
         [HttpGet]
         public List<Student> dajStudentaPoId(int idPredmeta)
@@ -73,7 +73,7 @@ namespace ZamgerV2_Implementation.Controllers
         }
 
 
-        [Autorizacija(false, TipKorisnika.Profesor, TipKorisnika.StudentskaSluzba)]
+        [Autorizacija(false, TipKorisnika.Profesor)]
         [Route("/zamger-api/odgovori-na-anketu/{idAnkete}")]
         [HttpGet]
         public List<OdgovorNaAnketu> dajOdgovoreNaAnketu(int idAnkete)
@@ -105,6 +105,42 @@ namespace ZamgerV2_Implementation.Controllers
                 }
             }
             return null;
+        }
+
+
+        [Autorizacija(false, TipKorisnika.NastavnoOsoblje, TipKorisnika.Profesor)]
+        [Route("/zamger-api/aktivnosti-za-osobu")]
+        [HttpGet]
+        public List<Aktivnost> aktivnostiZaNastavnoOsobljeID(int idOsobe)
+        {
+            var trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            return trenutniKorisnik.Aktivnosti;
+        }
+
+        [Autorizacija(false, TipKorisnika.Profesor)]
+        [Route("/zamger-api/ankete-za-osobu")]
+        [HttpGet]
+        public List<Anketa> dajSveAnketeZaOsobu()
+        {
+            var trenutniKorisnik =(Profesor)Autentifikacija.GetNastavnoOsoblje(HttpContext);
+            return trenutniKorisnik.AnketeNaPredmetima;
+        }
+
+        [Autorizacija(false, TipKorisnika.Student)]
+        [Route("/zamger-api/zahtjevi-za-studenta")]
+        [HttpGet]
+        public List<Zahtjev> dajStudentoveZahtjeve()
+        {
+            return zmgr.dajZahtjeveZaStudenta(Autentifikacija.GetIdKorisnika(HttpContext).Value);
+        }
+
+
+        [Autorizacija(false, TipKorisnika.Student)]
+        [Route("/zamger-api/moje-zadace-na-predmetu/{idPredmeta}")]
+        [HttpGet]
+        public List<Zadaća> dajZadaćeZaStudenta(int idPredmeta)
+        {
+            return zmgr.dajStudentoveZadaće(Autentifikacija.GetIdKorisnika(HttpContext).Value, idPredmeta);
         }
 
 

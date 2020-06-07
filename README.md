@@ -8,6 +8,14 @@
 - [Paša Džumhur](https://github.com/PasaDzumhur)
 - [Rijad Handžić](https://github.com/rhandzic1)
 
+#### Pokretanje aplikacije:
+Nakon što klonirate projekat, potrebno je da u SQL Management Studio importujete bazu iz foldera ZamgerV2-DataBase te u aplikaciji promijenite connection stringove na 3 mjesta(PočetniController, Logger, ZamgerDbContext) odnosno da unesete naziv vašeg servera. Nakon toga za obavještenja(jer se pozivaju preko API-ja) u Studentska, NastavnoOsoblje i Student kontroleru morate promijeniti Base URI za API(jer se localhost, odnosno PORT razlikuje od osobe do osobe). Razlog ovih promjena je ta što smo se odlučili da ne deployamo aplikaciju na Azure jer bi imali problema sa bazom a i samim deploymentom(plaćanje Azure-ovih usluga). Kako bi pristupili sistemu koristite pristupne podatke za studentsku službu koji su:
+
+Username: studentska
+Password: studentska
+
+Nakon toga kao studentska služba možete kreirati ostale korisnike na sistemu.
+
 ### Opis projekta:
 Visokofunkcionalan informacioni sistem za visokoškolske ustanove koji olakšava dnevni workflow kako studenata tako i profesora. Aplikacija daje uvid u ostvarene rezultate studenta kao i mogućnosti da student prijavi ispite i odazove se na sve fakultetske obaveze i zadaće. Omogućava nastavnom osoblju da ima uvid i kontrolu nad predmetima na kojim su zaduženi kao i kreiranje ispitnih termina, zadaća za iste. Također studentskoj službi olakšava svakodnevne obaveze oko potvrda i papirologije.
 

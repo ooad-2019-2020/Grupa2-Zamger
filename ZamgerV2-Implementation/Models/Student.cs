@@ -29,9 +29,12 @@ namespace ZamgerV2_Implementation.Models
 
         public IEnumerator GetEnumerator()
         {
-            foreach (var predmet in Predmeti)
+            if (Predmeti != null)
             {
-                yield return predmet;
+                foreach (var predmet in Predmeti)
+                {
+                    yield return predmet;
+                }
             }
         }
         public double dajBrojBodovaNaPredmetu(int idPredmeta)

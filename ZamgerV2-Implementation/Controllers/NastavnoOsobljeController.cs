@@ -11,13 +11,7 @@ using ZamgerV2_Implementation.Models;
 
 namespace ZamgerV2_Implementation.Controllers
 {
-    /*OGROMNA NAPOMENA 
-     
-        Problem je autorizacije sto se u svakoj metodi mora provjerit npr kad se ide /poruke/moj-outbox/9 mora se provjerit da li idPoruke se zaista
-        nalazi u outboxu trenutno logovane osobe
-        ako se nalazi onda tek prikazat full poruku a a ko se ne nalazi ide redirectto 401 error u početni kontroler odnoso pristupOdbijen!
-            
-     */
+
     [Autorizacija(false, TipKorisnika.NastavnoOsoblje, TipKorisnika.Profesor)]
     public class NastavnoOsobljeController : Controller
     {
@@ -33,7 +27,6 @@ namespace ZamgerV2_Implementation.Controllers
         public IActionResult Dashboard()
         {
             trenutniKorisnik = Autentifikacija.GetNastavnoOsoblje(HttpContext);
-
             ViewBag.listaObavjestenja = zmgr.dajSvaObavještenja();
             return View(trenutniKorisnik);
         }
